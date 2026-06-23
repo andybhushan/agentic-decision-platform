@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "3f07c26b-a5f4-4fdb-9bc9-7befcf9eba15",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "effective_from",
+        "targetPropertyId": "8486482439810615082"
+      },
+      {
+        "sourceColumnName": "effective_to",
+        "targetPropertyId": "8486482411646429220"
+      },
+      {
+        "sourceColumnName": "policy_number",
+        "targetPropertyId": "8486482459332128169"
+      },
+      {
+        "sourceColumnName": "premium_total",
+        "targetPropertyId": "8486482392118454095"
+      },
+      {
+        "sourceColumnName": "rating_tier",
+        "targetPropertyId": "8486482368309606636"
+      },
+      {
+        "sourceColumnName": "status",
+        "targetPropertyId": "8486482333991516980"
+      },
+      {
+        "sourceColumnName": "term_id",
+        "targetPropertyId": "8486482480853533850"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "policy_term",
+      "sourceSchema": null
+    }
+  }
+}

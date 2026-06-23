@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737269822477577555",
+  "name": "damage_part_has_vehicle_damage",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "193638961334171"
+  },
+  "target": {
+    "entityTypeId": "181587127634814"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v1/input/policy.schema.json",
+  "title": "Policy (agent input contract)",
+  "description": "Canonical policy record the triage/coverage agents consume (read-only input, NOT a domain event). Fields are ontology-bound (auto-claims-ontology.alpha.md: Policy, PolicyTerm, Coverage, Vehicle). Reuses the coverageCode + money defs from event-payloads.schema.json so the input contract and the event contract stay aligned.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policyNumber", "lineOfBusiness", "status", "effectiveDate", "expirationDate", "namedInsured", "coverages", "vehicles"],
+  "properties": {
+    "policyNumber": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-AUTO-\\d{4}-\\d{4}$",
+      "description": "Canonical policy id, e.g. CA-AUTO-2024-7891."
+    },
+    "lineOfBusiness": { "type": "string", "const": "PersonalAuto" },
+    "status": { "type": "string", "enum": ["active", "lapsed", "cancelled", "expired"] },
+    "effectiveDate": { "type": "string", "format": "date" },
+    "expirationDate": { "type": "string", "format": "date" },
+    "ratingState": { "type": "string", "pattern": "^[A-Z]{2}$", "description": "US state for rating/regulatory scope; alpha wedge = CA." },
+    "namedInsured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "partyRef": { "type": "string", "description": "Stable ref to the Party/Claimant entity." },
+        "address": { "$ref": "#/$defs/address" }
+      }
+    },
+    "coverages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "limitPerOccurrence"],
+        "properties": {
+          "code": { "$ref": "#/$defs/coverageCode" },
+          "limitPerOccurrence": { "$ref": "#/$defs/money" },
+          "deductible": { "$ref": "#/$defs/money" },
+          "rentalDailyLimit": { "$ref": "#/$defs/money" },
+          "rentalMaxDays": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "description"],
+        "properties": {
+          "code": { "type": "string" },
+          "description": { "type": "string" },
+          "appliesToCoverage": { "$ref": "#/$defs/coverageCode" }
+        }
+      }
+    },
+    "endorsements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "description"],
+        "properties": {
+          "code": { "type": "string" },
+          "description": { "type": "string" },
+          "effectiveDate": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "vehicles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/insuredVehicle" }
+    }
+  },
+  "$defs": {
+    "money": { "type": "number", "minimum": 0 },
+    "coverageCode": { "type": "string", "enum": ["COLL", "COMP", "RENT", "TOW", "BI", "PD", "MEDPAY", "PIP", "GAP"] },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line1", "city", "state", "postalCode"],
+      "properties": {
+        "line1": { "type": "string" },
+        "line2": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "postalCode": { "type": "string" }
+      }
+    },
+    "insuredVehicle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vin", "year", "make", "model"],
+      "properties": {
+        "vin": { "type": "string", "pattern": "^[A-HJ-NPR-Z0-9]{17}$" },
+        "year": { "type": "integer", "minimum": 1980, "maximum": 2027 },
+        "make": { "type": "string" },
+        "model": { "type": "string" },
+        "trim": { "type": "string" },
+        "garagingState": { "type": "string", "pattern": "^[A-Z]{2}$" }
+      }
+    }
+  }
+}

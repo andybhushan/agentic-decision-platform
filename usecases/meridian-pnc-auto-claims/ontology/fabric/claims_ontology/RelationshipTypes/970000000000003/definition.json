@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "970000000000003",
+  "name": "transcript_about_loss_event",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "900000000000003"
+  },
+  "target": {
+    "entityTypeId": "96568569905534"
+  }
+}

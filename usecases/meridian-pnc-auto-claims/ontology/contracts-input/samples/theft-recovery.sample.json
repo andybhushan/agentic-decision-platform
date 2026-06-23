@@ -1,0 +1,53 @@
+{
+  "_comment": "Sub-type: Theft Recovery. COMP coverage path; police report present; recovered vehicle with damage.",
+  "policy": {
+    "policyNumber": "CA-AUTO-2025-3310",
+    "lineOfBusiness": "PersonalAuto",
+    "status": "active",
+    "effectiveDate": "2025-01-15",
+    "expirationDate": "2026-01-15",
+    "ratingState": "CA",
+    "namedInsured": {
+      "name": "Derek Okafor",
+      "partyRef": "party_derek_okafor",
+      "address": { "line1": "77 Mission Bay Blvd", "city": "San Francisco", "state": "CA", "postalCode": "94158" }
+    },
+    "coverages": [
+      { "code": "COMP", "limitPerOccurrence": 40000, "deductible": 500 },
+      { "code": "RENT", "limitPerOccurrence": 600, "rentalDailyLimit": 40, "rentalMaxDays": 15 }
+    ],
+    "exclusions": [],
+    "endorsements": [
+      { "code": "END-OEM-PARTS", "description": "OEM parts replacement", "effectiveDate": "2025-01-15" }
+    ],
+    "vehicles": [
+      { "vin": "5YJ3E1EA7KF000316", "year": 2023, "make": "Tesla", "model": "Model 3", "garagingState": "CA" }
+    ]
+  },
+  "claim": {
+    "claimId": "CA-2026-0000457",
+    "policyNumber": "CA-AUTO-2025-3310",
+    "lossType": "TheftRecovery",
+    "lossDate": "2026-06-02T03:20:00Z",
+    "reportDate": "2026-06-02T08:05:00Z",
+    "reportingChannel": "Web",
+    "lossLocation": { "city": "San Francisco", "state": "CA", "postalCode": "94158" },
+    "claimant": { "partyRef": "party_derek_okafor", "name": "Derek Okafor", "role": "named-insured" },
+    "involvedVehicles": [
+      { "vin": "5YJ3E1EA7KF000316", "role": "insured-vehicle", "drivable": true, "reportedDamageAreas": ["ignition", "interior", "rear-left"] }
+    ],
+    "injuryReported": false,
+    "policeReportNumber": "SFPD-2026-114523",
+    "narrative": {
+      "text": "My car was stolen overnight from the garage. Police recovered it two days later with damage to the door lock and some interior trim missing.",
+      "language": "en-US",
+      "capturedVia": "Web",
+      "capturedAt": "2026-06-02T08:05:00Z",
+      "piiRedactionApplied": true,
+      "extractedSignals": { "injuryMentioned": false, "vehicleDrivable": true, "otherPartiesMentioned": 0, "policeReportMentioned": true }
+    },
+    "evidence": [
+      { "evidenceId": "asset_doc_theft_01", "type": "police-report", "uri": "onelake://claims/CA-2026-0000457/police-report.pdf", "mimeType": "application/pdf", "capturedAt": "2026-06-02T08:00:00Z", "source": "claimant-upload", "label": "SFPD-2026-114523", "consent": { "required": false, "decision": "not-applicable", "consentType": "none" }, "piiRedactionApplied": true }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737344072283966543",
+  "name": "policy_has_party_person",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "30890140059680"
+  },
+  "target": {
+    "entityTypeId": "273086419246650"
+  }
+}

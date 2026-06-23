@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737333399520013216",
+  "name": "vehicle_has_party_person",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "70293773416807"
+  },
+  "target": {
+    "entityTypeId": "273086419246650"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "6546e4ee-8aea-44e7-aaa4-aed2a1cb2fd8",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "loss_event_id",
+        "targetPropertyId": "8486481539509180736"
+      },
+      {
+        "sourceColumnName": "vin",
+        "targetPropertyId": "8486481521350098467"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "loss_event_vehicle",
+      "sourceSchema": null
+    }
+  }
+}

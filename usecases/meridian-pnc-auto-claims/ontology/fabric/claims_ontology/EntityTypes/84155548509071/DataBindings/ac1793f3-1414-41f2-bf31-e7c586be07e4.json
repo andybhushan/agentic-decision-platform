@@ -1,0 +1,32 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ac1793f3-1414-41f2-bf31-e7c586be07e4",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "claimant_id",
+        "targetPropertyId": "8486481843169203480"
+      },
+      {
+        "sourceColumnName": "claimant_type",
+        "targetPropertyId": "8486481792363537057"
+      },
+      {
+        "sourceColumnName": "demand_amount",
+        "targetPropertyId": "8486481771101065115"
+      },
+      {
+        "sourceColumnName": "person_id",
+        "targetPropertyId": "8486481820420990033"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "claimant",
+      "sourceSchema": null
+    }
+  }
+}

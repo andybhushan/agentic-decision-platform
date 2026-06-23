@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ae73c810-1a1a-4ea2-96e8-c1f6a5b10091",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "description",
+        "targetPropertyId": "8486481586642486056"
+      },
+      {
+        "sourceColumnName": "is_first_party",
+        "targetPropertyId": "8486481631484613060"
+      },
+      {
+        "sourceColumnName": "location_id",
+        "targetPropertyId": "8486481702147536958"
+      },
+      {
+        "sourceColumnName": "loss_cause",
+        "targetPropertyId": "8486481655012697545"
+      },
+      {
+        "sourceColumnName": "loss_event_id",
+        "targetPropertyId": "8486481726616021656"
+      },
+      {
+        "sourceColumnName": "occurred_at",
+        "targetPropertyId": "8486481676107879196"
+      },
+      {
+        "sourceColumnName": "point_of_impact",
+        "targetPropertyId": "8486481609512341928"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "loss_event",
+      "sourceSchema": null
+    }
+  }
+}

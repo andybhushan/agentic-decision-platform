@@ -1,0 +1,13 @@
+<Solution>
+  <Project Path="Agents/Agents.csproj" />
+  <Project Path="ContextLayer/ContextLayer.csproj" />
+  <Project Path="DecisionIngest/DecisionIngest.csproj" />
+  <Project Path="Orchestration/Orchestration.csproj" />
+  <Project Path="PackageCompiler/PackageCompiler.csproj" />
+  <Project Path="PackageModel/PackageModel.csproj" />
+  <Project Path="ToolRuntime/ToolRuntime.csproj" />
+  <Project Path="TracesApi/TracesApi.csproj" />
+  <!-- Track 4 (ADR-0001 v0.6): per-usecase tool kits, referenced by TracesApi + PackageCompiler -->
+  <Project Path="../../usecases/meridian-pnc-auto-claims/tools/MeridianTools.csproj" />
+  <Project Path="../../usecases/banking-loan-origination/tools/BankingTools.csproj" />
+</Solution>

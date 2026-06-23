@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v1/input/claimant-narrative.schema.json",
+  "title": "ClaimantNarrative (agent input contract)",
+  "description": "Normalized claimant account of the loss, channel-agnostic. When the FNOL arrives by voice (sandbox spike A1), the normalized transcript (speaker turns, timestamps, confidence, PII redaction markers) maps into this shape before the triage agent consumes it. Free-text 'text' is always present; 'segments' is populated for voice/IVR.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text", "language", "capturedVia", "capturedAt"],
+  "properties": {
+    "text": { "type": "string", "description": "Full normalized narrative (redacted)." },
+    "language": { "type": "string", "description": "BCP-47 tag, e.g. en-US." },
+    "capturedVia": { "type": "string", "enum": ["Phone", "MobileApp", "Web", "Agent", "Chatbot", "Email", "IVR"] },
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "piiRedactionApplied": { "type": "boolean" },
+    "segments": {
+      "type": "array",
+      "description": "Speaker-turn segmentation for voice/IVR transcripts (spike A1 output).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["speaker", "text"],
+        "properties": {
+          "speaker": { "type": "string", "enum": ["claimant", "agent", "ivr", "unknown"] },
+          "text": { "type": "string" },
+          "startSec": { "type": "number", "minimum": 0 },
+          "endSec": { "type": "number", "minimum": 0 },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "extractedSignals": {
+      "type": "object",
+      "description": "Lightweight signals the intake/triage agent keys on. Optional; advisory only (not a decision).",
+      "additionalProperties": false,
+      "properties": {
+        "injuryMentioned": { "type": "boolean" },
+        "vehicleDrivable": { "type": "boolean" },
+        "otherPartiesMentioned": { "type": "integer", "minimum": 0 },
+        "policeReportMentioned": { "type": "boolean" }
+      }
+    }
+  }
+}

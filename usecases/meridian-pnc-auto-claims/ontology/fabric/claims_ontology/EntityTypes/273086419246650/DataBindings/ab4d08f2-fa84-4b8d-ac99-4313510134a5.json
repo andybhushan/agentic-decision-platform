@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "ab4d08f2-fa84-4b8d-ac99-4313510134a5",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "contact_email",
+        "targetPropertyId": "8486483290683111204"
+      },
+      {
+        "sourceColumnName": "contact_phone",
+        "targetPropertyId": "8486483269394283514"
+      },
+      {
+        "sourceColumnName": "date_of_birth",
+        "targetPropertyId": "8486483360601936373"
+      },
+      {
+        "sourceColumnName": "driver_license_number",
+        "targetPropertyId": "8486483342509389496"
+      },
+      {
+        "sourceColumnName": "driver_license_state",
+        "targetPropertyId": "8486483314274380987"
+      },
+      {
+        "sourceColumnName": "first_name",
+        "targetPropertyId": "8486483416691846774"
+      },
+      {
+        "sourceColumnName": "last_name",
+        "targetPropertyId": "8486483389067081633"
+      },
+      {
+        "sourceColumnName": "mailing_address",
+        "targetPropertyId": "8486483242385680357"
+      },
+      {
+        "sourceColumnName": "person_id",
+        "targetPropertyId": "8486483473335327945"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "party_person",
+      "sourceSchema": null
+    }
+  }
+}

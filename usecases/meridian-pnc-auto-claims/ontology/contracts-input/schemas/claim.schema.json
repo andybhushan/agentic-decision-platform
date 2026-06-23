@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v1/input/claim.schema.json",
+  "title": "Claim submission (agent input contract)",
+  "description": "Canonical claim/FNOL submission the triage agent consumes. Read-only input that composes the policy ref, the structured FNOL, the claimant narrative, and evidence refs. Ontology-bound (Claim, LossEvent, LossLocation, Claimant, Vehicle, VehicleDamage). claimId + policyNumber patterns match the WS2 event contract and the gold_claims data so one id flows end-to-end. The structured fields here are the inputs that later produce FNOLReceived/ClaimOpened domain events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claimId", "policyNumber", "lossType", "lossDate", "reportDate", "reportingChannel", "lossLocation", "claimant", "involvedVehicles", "narrative"],
+  "properties": {
+    "claimId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-\\d{4}-\\d{7}$",
+      "description": "Canonical claim_number, e.g. CA-2026-0000123 (the total-loss anchor)."
+    },
+    "policyNumber": { "type": "string", "pattern": "^[A-Z]{2}-AUTO-\\d{4}-\\d{4}$" },
+    "lossType": {
+      "type": "string",
+      "enum": ["FirstPartyCollision", "TheftRecovery", "HitAndRun", "MultiVehicle"],
+      "description": "Alpha-wedge sub-types. First-Party Collision is the primary path."
+    },
+    "lossDate": { "type": "string", "format": "date-time" },
+    "reportDate": { "type": "string", "format": "date-time" },
+    "reportingChannel": { "type": "string", "enum": ["Phone", "MobileApp", "Web", "Agent", "Telematics", "IoTCrashDetection", "Email", "Chatbot"] },
+    "lossLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "line1": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "postalCode": { "type": "string" },
+        "geocode": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["latitude", "longitude"],
+          "properties": {
+            "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+            "longitude": { "type": "number", "minimum": -180, "maximum": 180 }
+          }
+        }
+      }
+    },
+    "claimant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["partyRef", "role"],
+      "properties": {
+        "partyRef": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["insured", "named-insured", "third-party", "driver", "passenger"] },
+        "contactPhone": { "type": "string" }
+      }
+    },
+    "involvedVehicles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role"],
+        "properties": {
+          "vin": { "type": "string", "pattern": "^[A-HJ-NPR-Z0-9]{17}$" },
+          "role": { "type": "string", "enum": ["insured-vehicle", "third-party-vehicle", "unknown"] },
+          "drivable": { "type": "boolean" },
+          "reportedDamageAreas": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "injuryReported": { "type": "boolean" },
+    "policeReportNumber": { "type": "string" },
+    "narrative": { "$ref": "claimant-narrative.schema.json" },
+    "evidence": {
+      "type": "array",
+      "description": "Multimodal evidence refs (with consent). See evidence-ref.schema.json.",
+      "items": { "$ref": "evidence-ref.schema.json" }
+    }
+  }
+}

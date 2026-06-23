@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Adp.Orchestration</RootNamespace>
+    <AssemblyName>Adp.Orchestration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PackageModel\PackageModel.csproj" />
+    <ProjectReference Include="..\Agents\Agents.csproj" />
+    <ProjectReference Include="..\ContextLayer\ContextLayer.csproj" />
+    <ProjectReference Include="..\DecisionIngest\DecisionIngest.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "30e883f8-2b66-4591-857e-d87f2e71b623",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "claim_number",
+        "targetPropertyId": "8486480623814511598"
+      },
+      {
+        "sourceColumnName": "claimant_id",
+        "targetPropertyId": "8486480599550048599"
+      },
+      {
+        "sourceColumnName": "coverage_code",
+        "targetPropertyId": "8486480552125138702"
+      },
+      {
+        "sourceColumnName": "coverage_id",
+        "targetPropertyId": "8486480576218884990"
+      },
+      {
+        "sourceColumnName": "exposure_id",
+        "targetPropertyId": "8486480648971948851"
+      },
+      {
+        "sourceColumnName": "exposure_type",
+        "targetPropertyId": "8486480530041240915"
+      },
+      {
+        "sourceColumnName": "opened_at",
+        "targetPropertyId": "8486480443241515877"
+      },
+      {
+        "sourceColumnName": "paid_to_date",
+        "targetPropertyId": "8486480461838832456"
+      },
+      {
+        "sourceColumnName": "reserve_amount",
+        "targetPropertyId": "8486480483801961611"
+      },
+      {
+        "sourceColumnName": "status",
+        "targetPropertyId": "8486480507387667361"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "exposure",
+      "sourceSchema": null
+    }
+  }
+}

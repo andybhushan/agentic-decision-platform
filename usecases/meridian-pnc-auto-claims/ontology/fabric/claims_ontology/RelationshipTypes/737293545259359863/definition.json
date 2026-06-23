@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737293545259359863",
+  "name": "fraud_indicator_has_claim",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "218538533755584"
+  },
+  "target": {
+    "entityTypeId": "140535896199627"
+  }
+}

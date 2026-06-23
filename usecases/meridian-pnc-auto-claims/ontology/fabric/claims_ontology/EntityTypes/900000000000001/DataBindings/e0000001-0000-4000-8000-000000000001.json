@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "e0000001-0000-4000-8000-000000000001",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "evidence_id",
+        "targetPropertyId": "950000000000001"
+      },
+      {
+        "sourceColumnName": "evidence_type",
+        "targetPropertyId": "950000000000002"
+      },
+      {
+        "sourceColumnName": "uri",
+        "targetPropertyId": "950000000000003"
+      },
+      {
+        "sourceColumnName": "source",
+        "targetPropertyId": "950000000000004"
+      },
+      {
+        "sourceColumnName": "captured_at",
+        "targetPropertyId": "950000000000005"
+      },
+      {
+        "sourceColumnName": "pii_redaction_applied",
+        "targetPropertyId": "950000000000006"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "evidence",
+      "sourceSchema": null
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737406860905904429",
+  "name": "loss_event_vehicle_has_loss_event",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "109110746791026"
+  },
+  "target": {
+    "entityTypeId": "96568569905534"
+  }
+}

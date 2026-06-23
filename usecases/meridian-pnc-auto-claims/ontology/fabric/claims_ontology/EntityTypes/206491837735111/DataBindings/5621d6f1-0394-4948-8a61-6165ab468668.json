@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "5621d6f1-0394-4948-8a61-6165ab468668",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "actual_cash_value",
+        "targetPropertyId": "8486479960421286825"
+      },
+      {
+        "sourceColumnName": "claim_number",
+        "targetPropertyId": "8486480007742238998"
+      },
+      {
+        "sourceColumnName": "evaluation_id",
+        "targetPropertyId": "8486480049426528378"
+      },
+      {
+        "sourceColumnName": "recommendation",
+        "targetPropertyId": "8486479895034517365"
+      },
+      {
+        "sourceColumnName": "repair_cost_estimate",
+        "targetPropertyId": "8486479986047190855"
+      },
+      {
+        "sourceColumnName": "total_loss_probability",
+        "targetPropertyId": "8486479916634554543"
+      },
+      {
+        "sourceColumnName": "total_loss_ratio",
+        "targetPropertyId": "8486479938668735838"
+      },
+      {
+        "sourceColumnName": "vin",
+        "targetPropertyId": "8486480030096525540"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "total_loss_evaluation",
+      "sourceSchema": null
+    }
+  }
+}

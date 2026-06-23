@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "29eea891-d736-4666-b38f-e37d2d573a43",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "assigned_adjuster_id",
+        "targetPropertyId": "8486480829598830929"
+      },
+      {
+        "sourceColumnName": "claim_number",
+        "targetPropertyId": "8486481326919205305"
+      },
+      {
+        "sourceColumnName": "date_of_loss",
+        "targetPropertyId": "8486481232830869609"
+      },
+      {
+        "sourceColumnName": "fraud_score",
+        "targetPropertyId": "8486480847317006690"
+      },
+      {
+        "sourceColumnName": "line_of_business",
+        "targetPropertyId": "8486480923835212606"
+      },
+      {
+        "sourceColumnName": "loss_event_id",
+        "targetPropertyId": "8486481298730922450"
+      },
+      {
+        "sourceColumnName": "reported_at",
+        "targetPropertyId": "8486481251206689583"
+      },
+      {
+        "sourceColumnName": "reporting_channel",
+        "targetPropertyId": "8486481212103787894"
+      },
+      {
+        "sourceColumnName": "severity_tier",
+        "targetPropertyId": "8486480894951822379"
+      },
+      {
+        "sourceColumnName": "status",
+        "targetPropertyId": "8486481183922339755"
+      },
+      {
+        "sourceColumnName": "term_id",
+        "targetPropertyId": "8486481278922523348"
+      },
+      {
+        "sourceColumnName": "total_incurred",
+        "targetPropertyId": "8486480872398084274"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "claim",
+      "sourceSchema": null
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Adp.PackageCompiler</RootNamespace>
+    <AssemblyName>adpc</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PackageModel\PackageModel.csproj" />
+    <ProjectReference Include="..\Agents\Agents.csproj" />
+    <ProjectReference Include="..\ContextLayer\ContextLayer.csproj" />
+    <ProjectReference Include="..\Orchestration\Orchestration.csproj" />
+    <ProjectReference Include="..\ToolRuntime\ToolRuntime.csproj" />
+    <ProjectReference Include="..\DecisionIngest\DecisionIngest.csproj" />
+    <!-- Use-case tool kits (Track 4 / ADR-0001 v0.6) -->
+    <ProjectReference Include="..\..\..\usecases\meridian-pnc-auto-claims\tools\MeridianTools.csproj" />
+    <ProjectReference Include="..\..\..\usecases\banking-loan-origination\tools\BankingTools.csproj" />
+  </ItemGroup>
+</Project>

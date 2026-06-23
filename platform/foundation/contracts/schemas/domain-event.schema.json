@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v0/domain-event.schema.json",
+  "title": "DomainEvent",
+  "description": "Canonical envelope for agentic-claims-alpha domain events (ADR-0005). The payload is validated against the per-eventType payload schema emitted from the Fabric IQ wedge ontology (the convergence seam). Supersedes the example-only enums in src/services/event-store/openapi.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claimId", "eventType", "topic", "schemaVersion", "timestamp", "producedBy", "payload"],
+  "properties": {
+    "claimId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-\\d{4}-\\d{7}$",
+      "description": "Canonical claim_number; matches the ontology and the gold_claims data, e.g. CA-2026-0000123."
+    },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "FNOLReceived",
+        "ClaimOpened",
+        "TriageCompleted",
+        "CoverageVerified",
+        "EstimateDrafted",
+        "GateTripped",
+        "HitlResolved",
+        "ClaimantNotified",
+        "ExplainabilityRecorded",
+        "ClaimResolved"
+      ]
+    },
+    "topic": {
+      "type": "string",
+      "enum": [
+        "claims.lifecycle",
+        "claims.triage",
+        "claims.coverage",
+        "claims.estimation",
+        "claims.hitl",
+        "claims.explainability"
+      ]
+    },
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+$",
+      "description": "Event-contract major version. v1 for the alpha."
+    },
+    "payloadSchemaRef": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "URI of the payload schema in event-payloads.schema.json (e.g. event-payloads.schema.json#/$defs/EstimateDrafted)."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO-8601."
+    },
+    "producedBy": {
+      "type": "string",
+      "description": "Emitting service/agent, e.g. estimation-agent, gate-engine."
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Demo-run key; groups a run for deterministic replay/reset, e.g. demo-run-001."
+    },
+    "eventId": {
+      "type": "string",
+      "description": "Server-assigned on append; do not set on publish."
+    },
+    "sequenceNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Server-assigned append order within the claim stream."
+    },
+    "payload": {
+      "type": "object",
+      "description": "Validated against the eventType's schema in event-payloads.schema.json."
+    }
+  }
+}

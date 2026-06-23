@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Adp.TracesApi</RootNamespace>
+    <AssemblyName>Adp.TracesApi</AssemblyName>
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+    <NoWarn>$(NoWarn);CA1848;CA1873;CA1826</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.SignalRService" />
+    <PackageReference Include="Microsoft.Azure.SignalR.Management" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DecisionIngest\DecisionIngest.csproj" />
+    <ProjectReference Include="..\Orchestration\Orchestration.csproj" />
+    <ProjectReference Include="..\Agents\Agents.csproj" />
+    <ProjectReference Include="..\ContextLayer\ContextLayer.csproj" />
+    <ProjectReference Include="..\ToolRuntime\ToolRuntime.csproj" />
+    <ProjectReference Include="..\PackageModel\PackageModel.csproj" />
+    <!-- Use-case tool kits (Track 4 / ADR-0001 v0.6). Each industry's tool implementations live
+         under usecases/<x>/tools/. Platform/src/ never imports from these; TracesApi composes them
+         at runtime via IndustryAwareToolRegistry. -->
+    <ProjectReference Include="..\..\..\usecases\meridian-pnc-auto-claims\tools\MeridianTools.csproj" />
+    <ProjectReference Include="..\..\..\usecases\banking-loan-origination\tools\BankingTools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Include="Resources\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

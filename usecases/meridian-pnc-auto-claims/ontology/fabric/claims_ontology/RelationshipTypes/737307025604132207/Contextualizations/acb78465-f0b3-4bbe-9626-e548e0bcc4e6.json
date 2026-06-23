@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "acb78465-f0b3-4bbe-9626-e548e0bcc4e6",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "payment",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "payment_id",
+      "targetPropertyId": "8486479584799864889"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "exposure_id",
+      "targetPropertyId": "8486480648971948851"
+    }
+  ]
+}

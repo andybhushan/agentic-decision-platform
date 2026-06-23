@@ -1,0 +1,1585 @@
+{
+  "$note": "Synthetic claims for adp-v1 v0. Deterministic from seed.",
+  "generatedAt": "2026-05-26T12:58:05.561Z",
+  "seed": 4242,
+  "count": 25,
+  "claims": [
+    {
+      "claimNumber": "CLM-2026-10000",
+      "fnolReceivedAt": "2026-05-13T05:36:00.000Z",
+      "incidentDate": "2026-05-11T05:36:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Sofia",
+        "lastName": "Garcia",
+        "policyholderId": "PH-212627",
+        "contactPhone": "+1-357-561-4863",
+        "address": {
+          "city": "Dallas",
+          "state": "TX",
+          "postalCode": "60924"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-542716",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "medical-payments"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "E5CYZL5A9DTW2S0X8",
+        "plate": "FYZ-972",
+        "year": 2023,
+        "make": "Mazda",
+        "model": "Mazda3",
+        "vehicleId": "VH-429981"
+      },
+      "incident": {
+        "incidentType": "intersection-collision",
+        "location": {
+          "city": "Dallas",
+          "state": "TX",
+          "intersection": "1st & Pine"
+        },
+        "narrative": "Another vehicle ran the stop sign at 5th and Maple and hit my driver-side door. Airbag deployed on that side. Police came and filed a report.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": false,
+        "photos": 5
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": true,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10001",
+      "fnolReceivedAt": "2026-04-18T01:09:00.000Z",
+      "incidentDate": "2026-04-13T01:09:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Mei",
+        "lastName": "Singh",
+        "policyholderId": "PH-476168",
+        "contactPhone": "+1-331-757-6127",
+        "address": {
+          "city": "Norfolk",
+          "state": "VA",
+          "postalCode": "14061"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-664970",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "rental-reimbursement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 250
+        }
+      },
+      "vehicle": {
+        "vin": "V6YAYL1A045ZUB5R2",
+        "plate": "VWY-2437",
+        "year": 2024,
+        "make": "Hyundai",
+        "model": "Elantra",
+        "vehicleId": "VH-127705"
+      },
+      "incident": {
+        "incidentType": "rear-end-collision",
+        "location": {
+          "city": "Norfolk",
+          "state": "VA",
+          "intersection": "Oak & Oak"
+        },
+        "narrative": "I was stopped at a red light when the car behind me hit my rear bumper. Both cars pulled over. The other driver gave me their info. Bumper has visible damage and trunk won't fully close.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": false,
+        "photos": 3
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10002",
+      "fnolReceivedAt": "2026-05-02T20:54:00.000Z",
+      "incidentDate": "2026-05-01T20:54:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Mei",
+        "lastName": "Garcia",
+        "policyholderId": "PH-327164",
+        "contactPhone": "+1-360-537-6498",
+        "address": {
+          "city": "Cleveland",
+          "state": "OH",
+          "postalCode": "29142"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-208860",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "comprehensive",
+          "uninsured-motorist",
+          "medical-payments",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "SRVZNDTJUB80D00HZ",
+        "plate": "GEO-1754",
+        "year": 2021,
+        "make": "Honda",
+        "model": "Accord",
+        "vehicleId": "VH-700942"
+      },
+      "incident": {
+        "incidentType": "comprehensive-theft",
+        "location": {
+          "city": "Cleveland",
+          "state": "OH",
+          "intersection": "Broadway & Maple"
+        },
+        "narrative": "Car was stolen from my driveway between midnight and 6am. Filed police report this morning. Steering wheel was locked.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 0
+      },
+      "flags": {
+        "potentialFraudIndicators": true,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10003",
+      "fnolReceivedAt": "2026-05-07T15:03:00.000Z",
+      "incidentDate": "2026-05-05T15:03:00.000Z",
+      "channel": "agent-portal",
+      "policyholder": {
+        "firstName": "James",
+        "lastName": "Ito",
+        "policyholderId": "PH-656756",
+        "contactPhone": "+1-606-385-2954",
+        "address": {
+          "city": "Seattle",
+          "state": "WA",
+          "postalCode": "59445"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-822551",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "medical-payments",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "3TH2ZLGWDCKN2PEJR",
+        "plate": "PVR-4772",
+        "year": 2017,
+        "make": "Lexus",
+        "model": "RX",
+        "vehicleId": "VH-123437"
+      },
+      "incident": {
+        "incidentType": "comprehensive-theft",
+        "location": {
+          "city": "Seattle",
+          "state": "WA",
+          "intersection": "1st & Oak"
+        },
+        "narrative": "Car was stolen from my driveway between midnight and 6am. Filed police report this morning. Steering wheel was locked.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 5
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "total-loss-suspect",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10004",
+      "fnolReceivedAt": "2026-04-21T23:47:00.000Z",
+      "incidentDate": "2026-04-19T23:47:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Jordan",
+        "lastName": "Brown",
+        "policyholderId": "PH-362596",
+        "contactPhone": "+1-870-696-3497",
+        "address": {
+          "city": "Boston",
+          "state": "MA",
+          "postalCode": "24097"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-562527",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "medical-payments"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "BUN8VNPMXVLYKVHRW",
+        "plate": "EVP-3125",
+        "year": 2022,
+        "make": "Audi",
+        "model": "A4",
+        "vehicleId": "VH-565128"
+      },
+      "incident": {
+        "incidentType": "parking-lot-bump",
+        "location": {
+          "city": "Boston",
+          "state": "MA",
+          "intersection": "Main & Cedar"
+        },
+        "narrative": "Came back to my car at the grocery store and there's a dent and scrape on the passenger side. No note. Reviewing the store cameras with the manager.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 4
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10005",
+      "fnolReceivedAt": "2026-05-19T06:39:00.000Z",
+      "incidentDate": "2026-05-15T06:39:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Ravi",
+        "lastName": "Reyes",
+        "policyholderId": "PH-616130",
+        "contactPhone": "+1-689-271-5443",
+        "address": {
+          "city": "Philadelphia",
+          "state": "PA",
+          "postalCode": "10360"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-947587",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "uninsured-motorist",
+          "medical-payments",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "5JJ7AL430VVDGWD7E",
+        "plate": "AYL-7222",
+        "year": 2020,
+        "make": "Hyundai",
+        "model": "Tucson",
+        "vehicleId": "VH-904487"
+      },
+      "incident": {
+        "incidentType": "hit-and-run-suspected",
+        "location": {
+          "city": "Philadelphia",
+          "state": "PA",
+          "intersection": "5th & Pine"
+        },
+        "narrative": "I was rear-ended at a stoplight and the other driver took off before I could get their plate. I have a partial plate and a dashcam clip.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 1
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": true,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10006",
+      "fnolReceivedAt": "2026-05-10T03:29:00.000Z",
+      "incidentDate": "2026-05-06T03:29:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Yuki",
+        "lastName": "Cohen",
+        "policyholderId": "PH-324923",
+        "contactPhone": "+1-665-352-7851",
+        "address": {
+          "city": "Aurora",
+          "state": "IL",
+          "postalCode": "82038"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-755000",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "comprehensive",
+          "uninsured-motorist",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "VGD0A9BLZ35Z53EFP",
+        "plate": "RLG-6382",
+        "year": 2022,
+        "make": "Tesla",
+        "model": "Model S",
+        "vehicleId": "VH-912404"
+      },
+      "incident": {
+        "incidentType": "parking-lot-bump",
+        "location": {
+          "city": "Aurora",
+          "state": "IL",
+          "intersection": "1st & Maple"
+        },
+        "narrative": "Came back to my car at the grocery store and there's a dent and scrape on the passenger side. No note. Reviewing the store cameras with the manager.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 6
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": true
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "needs-human-review"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10007",
+      "fnolReceivedAt": "2026-05-19T09:10:00.000Z",
+      "incidentDate": "2026-05-16T09:10:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Mateo",
+        "lastName": "Lopez",
+        "policyholderId": "PH-791226",
+        "contactPhone": "+1-325-482-3663",
+        "address": {
+          "city": "Orlando",
+          "state": "FL",
+          "postalCode": "27001"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-171255",
+        "policyType": "personal-auto-rideshare",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "uninsured-motorist",
+          "medical-payments"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "5P5NDXYSBM08ZXSPJ",
+        "plate": "TIQ-1266",
+        "year": 2026,
+        "make": "Mazda",
+        "model": "CX-5",
+        "vehicleId": "VH-742648"
+      },
+      "incident": {
+        "incidentType": "parking-lot-bump",
+        "location": {
+          "city": "Orlando",
+          "state": "FL",
+          "intersection": "Park & Oak"
+        },
+        "narrative": "Came back to my car at the grocery store and there's a dent and scrape on the passenger side. No note. Reviewing the store cameras with the manager.",
+        "injuries": true,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": false,
+        "photos": 5
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10008",
+      "fnolReceivedAt": "2026-04-17T03:04:00.000Z",
+      "incidentDate": "2026-04-15T03:04:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Jordan",
+        "lastName": "Smith",
+        "policyholderId": "PH-693930",
+        "contactPhone": "+1-275-601-7051",
+        "address": {
+          "city": "Miami",
+          "state": "FL",
+          "postalCode": "13501"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-269736",
+        "policyType": "personal-auto-rideshare",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 250
+        }
+      },
+      "vehicle": {
+        "vin": "T9EYRKW837CBFPKJG",
+        "plate": "EQF-1328",
+        "year": 2020,
+        "make": "Mazda",
+        "model": "CX-5",
+        "vehicleId": "VH-991648"
+      },
+      "incident": {
+        "incidentType": "hit-and-run-suspected",
+        "location": {
+          "city": "Miami",
+          "state": "FL",
+          "intersection": "Elm & Pine"
+        },
+        "narrative": "I was rear-ended at a stoplight and the other driver took off before I could get their plate. I have a partial plate and a dashcam clip.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 3
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": true
+      },
+      "expected": {
+        "severityHint": "high",
+        "coverageDecisionHint": "needs-human-review"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10009",
+      "fnolReceivedAt": "2026-05-14T14:41:00.000Z",
+      "incidentDate": "2026-05-12T14:41:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "James",
+        "lastName": "Singh",
+        "policyholderId": "PH-124431",
+        "contactPhone": "+1-482-697-9370",
+        "address": {
+          "city": "Aurora",
+          "state": "IL",
+          "postalCode": "35934"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-840100",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 250
+        }
+      },
+      "vehicle": {
+        "vin": "4T4XCJ49N80KGTZMZ",
+        "plate": "MMM-7138",
+        "year": 2022,
+        "make": "Ford",
+        "model": "Explorer",
+        "vehicleId": "VH-803234"
+      },
+      "incident": {
+        "incidentType": "weather-related-damage",
+        "location": {
+          "city": "Aurora",
+          "state": "IL",
+          "intersection": "5th & Cedar"
+        },
+        "narrative": "Severe hailstorm last night. Hood, roof, and trunk all have dents. Windshield has a crack about 6 inches long.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 2
+      },
+      "flags": {
+        "potentialFraudIndicators": true,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "total-loss-suspect",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10010",
+      "fnolReceivedAt": "2026-04-28T14:10:00.000Z",
+      "incidentDate": "2026-04-28T14:10:00.000Z",
+      "channel": "agent-portal",
+      "policyholder": {
+        "firstName": "Aisha",
+        "lastName": "Hassan",
+        "policyholderId": "PH-389197",
+        "contactPhone": "+1-433-425-4478",
+        "address": {
+          "city": "Orlando",
+          "state": "FL",
+          "postalCode": "62701"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-156120",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "medical-payments",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "H3SPGVJ80MMC5N2Y8",
+        "plate": "DWG-932",
+        "year": 2024,
+        "make": "Ford",
+        "model": "F-150",
+        "vehicleId": "VH-966964"
+      },
+      "incident": {
+        "incidentType": "weather-related-damage",
+        "location": {
+          "city": "Orlando",
+          "state": "FL",
+          "intersection": "1st & Maple"
+        },
+        "narrative": "Severe hailstorm last night. Hood, roof, and trunk all have dents. Windshield has a crack about 6 inches long.",
+        "injuries": true,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 8
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10011",
+      "fnolReceivedAt": "2026-04-23T21:31:00.000Z",
+      "incidentDate": "2026-04-18T21:31:00.000Z",
+      "channel": "website",
+      "policyholder": {
+        "firstName": "Margaret",
+        "lastName": "Rodriguez",
+        "policyholderId": "PH-911121",
+        "contactPhone": "+1-811-390-6088",
+        "address": {
+          "city": "Augusta",
+          "state": "GA",
+          "postalCode": "66581"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-519594",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "comprehensive",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "PANXX40FF7EHK5UXY",
+        "plate": "CZA-7507",
+        "year": 2019,
+        "make": "Ford",
+        "model": "Explorer",
+        "vehicleId": "VH-177032"
+      },
+      "incident": {
+        "incidentType": "weather-related-damage",
+        "location": {
+          "city": "Augusta",
+          "state": "GA",
+          "intersection": "1st & Birch"
+        },
+        "narrative": "Severe hailstorm last night. Hood, roof, and trunk all have dents. Windshield has a crack about 6 inches long.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": false,
+        "photos": 0
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10012",
+      "fnolReceivedAt": "2026-04-22T18:03:00.000Z",
+      "incidentDate": "2026-04-21T18:03:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Chloe",
+        "lastName": "Smith",
+        "policyholderId": "PH-208920",
+        "contactPhone": "+1-387-862-3086",
+        "address": {
+          "city": "Los Angeles",
+          "state": "CA",
+          "postalCode": "42371"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-844991",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "comprehensive",
+          "uninsured-motorist"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "3SEYNKZ8ZW46W32CJ",
+        "plate": "QDC-6045",
+        "year": 2019,
+        "make": "Audi",
+        "model": "A6",
+        "vehicleId": "VH-523169"
+      },
+      "incident": {
+        "incidentType": "rear-end-collision",
+        "location": {
+          "city": "Los Angeles",
+          "state": "CA",
+          "intersection": "Oak & Maple"
+        },
+        "narrative": "I was stopped at a red light when the car behind me hit my rear bumper. Both cars pulled over. The other driver gave me their info. Bumper has visible damage and trunk won't fully close.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 4
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": true
+      },
+      "expected": {
+        "severityHint": "high",
+        "coverageDecisionHint": "needs-human-review"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10013",
+      "fnolReceivedAt": "2026-05-12T02:19:00.000Z",
+      "incidentDate": "2026-05-08T02:19:00.000Z",
+      "channel": "website",
+      "policyholder": {
+        "firstName": "Zara",
+        "lastName": "Reyes",
+        "policyholderId": "PH-274321",
+        "contactPhone": "+1-984-545-1801",
+        "address": {
+          "city": "Pittsburgh",
+          "state": "PA",
+          "postalCode": "99155"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-129928",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "medical-payments"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "GHV4MRDAGUCFYLCF7",
+        "plate": "KLO-6427",
+        "year": 2023,
+        "make": "Subaru",
+        "model": "Crosstrek",
+        "vehicleId": "VH-309866"
+      },
+      "incident": {
+        "incidentType": "intersection-collision",
+        "location": {
+          "city": "Pittsburgh",
+          "state": "PA",
+          "intersection": "Oak & Walnut"
+        },
+        "narrative": "Another vehicle ran the stop sign at 5th and Maple and hit my driver-side door. Airbag deployed on that side. Police came and filed a report.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 8
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": true,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10014",
+      "fnolReceivedAt": "2026-04-26T19:03:00.000Z",
+      "incidentDate": "2026-04-23T19:03:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Chloe",
+        "lastName": "Reyes",
+        "policyholderId": "PH-191470",
+        "contactPhone": "+1-306-448-1924",
+        "address": {
+          "city": "Houston",
+          "state": "TX",
+          "postalCode": "43133"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-759310",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "uninsured-motorist"
+        ],
+        "deductibles": {
+          "collision": 500,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "BRVVP82648PRN0TY6",
+        "plate": "STN-9969",
+        "year": 2021,
+        "make": "Lexus",
+        "model": "RX",
+        "vehicleId": "VH-247745"
+      },
+      "incident": {
+        "incidentType": "hit-and-run-suspected",
+        "location": {
+          "city": "Houston",
+          "state": "TX",
+          "intersection": "Main & Birch"
+        },
+        "narrative": "I was rear-ended at a stoplight and the other driver took off before I could get their plate. I have a partial plate and a dashcam clip.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 8
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10015",
+      "fnolReceivedAt": "2026-05-04T08:33:00.000Z",
+      "incidentDate": "2026-04-30T08:33:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Omar",
+        "lastName": "Tanaka",
+        "policyholderId": "PH-606476",
+        "contactPhone": "+1-417-996-1767",
+        "address": {
+          "city": "Richmond",
+          "state": "VA",
+          "postalCode": "72079"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-550946",
+        "policyType": "personal-auto-rideshare",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "T689LTSC90KW7JVU5",
+        "plate": "TXP-9230",
+        "year": 2023,
+        "make": "Chevrolet",
+        "model": "Silverado",
+        "vehicleId": "VH-947193"
+      },
+      "incident": {
+        "incidentType": "rear-end-collision",
+        "location": {
+          "city": "Richmond",
+          "state": "VA",
+          "intersection": "Elm & Oak"
+        },
+        "narrative": "I was stopped at a red light when the car behind me hit my rear bumper. Both cars pulled over. The other driver gave me their info. Bumper has visible damage and trunk won't fully close.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 4
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10016",
+      "fnolReceivedAt": "2026-05-21T10:14:00.000Z",
+      "incidentDate": "2026-05-21T10:14:00.000Z",
+      "channel": "agent-portal",
+      "policyholder": {
+        "firstName": "Ethan",
+        "lastName": "Reyes",
+        "policyholderId": "PH-891556",
+        "contactPhone": "+1-547-321-7829",
+        "address": {
+          "city": "New Haven",
+          "state": "CT",
+          "postalCode": "50514"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-578771",
+        "policyType": "personal-auto-rideshare",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "JNGD0M5FTMPPP1G9Y",
+        "plate": "BOF-5453",
+        "year": 2026,
+        "make": "Honda",
+        "model": "Civic",
+        "vehicleId": "VH-911362"
+      },
+      "incident": {
+        "incidentType": "single-vehicle-rollover",
+        "location": {
+          "city": "New Haven",
+          "state": "CT",
+          "intersection": "Elm & Pine"
+        },
+        "narrative": "I hit black ice on the highway, lost control, and the car rolled into the median. Towed to the lot. Airbags deployed. I was wearing my seatbelt and have minor bruising.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": false,
+        "photos": 1
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "total-loss-suspect",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10017",
+      "fnolReceivedAt": "2026-04-10T14:44:00.000Z",
+      "incidentDate": "2026-04-08T14:44:00.000Z",
+      "channel": "website",
+      "policyholder": {
+        "firstName": "Noah",
+        "lastName": "Tanaka",
+        "policyholderId": "PH-432950",
+        "contactPhone": "+1-548-711-9231",
+        "address": {
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "25582"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-326128",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "medical-payments",
+          "rental-reimbursement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "8UYM0XDNGX9EW6UBU",
+        "plate": "HPJ-1088",
+        "year": 2022,
+        "make": "Ford",
+        "model": "Explorer",
+        "vehicleId": "VH-436889"
+      },
+      "incident": {
+        "incidentType": "intersection-collision",
+        "location": {
+          "city": "Columbus",
+          "state": "OH",
+          "intersection": "5th & Walnut"
+        },
+        "narrative": "Another vehicle ran the stop sign at 5th and Maple and hit my driver-side door. Airbag deployed on that side. Police came and filed a report.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 6
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10018",
+      "fnolReceivedAt": "2026-04-14T10:04:00.000Z",
+      "incidentDate": "2026-04-14T10:04:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Zara",
+        "lastName": "Khan",
+        "policyholderId": "PH-405683",
+        "contactPhone": "+1-592-265-5108",
+        "address": {
+          "city": "Rochester",
+          "state": "NY",
+          "postalCode": "76049"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-314487",
+        "policyType": "personal-auto-rideshare",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "medical-payments",
+          "rental-reimbursement"
+        ],
+        "deductibles": {
+          "collision": 500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "G9M35Z0FD0H3ACF7R",
+        "plate": "UFG-509",
+        "year": 2017,
+        "make": "Toyota",
+        "model": "Highlander",
+        "vehicleId": "VH-623678"
+      },
+      "incident": {
+        "incidentType": "comprehensive-theft",
+        "location": {
+          "city": "Rochester",
+          "state": "NY",
+          "intersection": "Oak & Oak"
+        },
+        "narrative": "Car was stolen from my driveway between midnight and 6am. Filed police report this morning. Steering wheel was locked.",
+        "injuries": true,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 6
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10019",
+      "fnolReceivedAt": "2026-04-11T22:40:00.000Z",
+      "incidentDate": "2026-04-11T22:40:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Noah",
+        "lastName": "Ito",
+        "policyholderId": "PH-243188",
+        "contactPhone": "+1-830-305-8807",
+        "address": {
+          "city": "Spokane",
+          "state": "WA",
+          "postalCode": "71947"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-801091",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "medical-payments",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 250
+        }
+      },
+      "vehicle": {
+        "vin": "C39JC451W6F2GPRAH",
+        "plate": "JYF-1335",
+        "year": 2017,
+        "make": "Toyota",
+        "model": "Corolla",
+        "vehicleId": "VH-404503"
+      },
+      "incident": {
+        "incidentType": "parking-lot-bump",
+        "location": {
+          "city": "Spokane",
+          "state": "WA",
+          "intersection": "Oak & Walnut"
+        },
+        "narrative": "Came back to my car at the grocery store and there's a dent and scrape on the passenger side. No note. Reviewing the store cameras with the manager.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 3
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10020",
+      "fnolReceivedAt": "2026-05-06T07:14:00.000Z",
+      "incidentDate": "2026-05-06T07:14:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Yuki",
+        "lastName": "Ito",
+        "policyholderId": "PH-140175",
+        "contactPhone": "+1-334-801-9883",
+        "address": {
+          "city": "Augusta",
+          "state": "GA",
+          "postalCode": "19541"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-177838",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "uninsured-motorist",
+          "medical-payments",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "8Z4STKX8ZHYC4GWWJ",
+        "plate": "ONT-7211",
+        "year": 2018,
+        "make": "Volkswagen",
+        "model": "Tiguan",
+        "vehicleId": "VH-988508"
+      },
+      "incident": {
+        "incidentType": "comprehensive-theft",
+        "location": {
+          "city": "Augusta",
+          "state": "GA",
+          "intersection": "Oak & Maple"
+        },
+        "narrative": "Car was stolen from my driveway between midnight and 6am. Filed police report this morning. Steering wheel was locked.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": false,
+        "photos": 5
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "total-loss-suspect",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10021",
+      "fnolReceivedAt": "2026-05-12T11:27:00.000Z",
+      "incidentDate": "2026-05-07T11:27:00.000Z",
+      "channel": "website",
+      "policyholder": {
+        "firstName": "Yuki",
+        "lastName": "Ellison",
+        "policyholderId": "PH-262807",
+        "contactPhone": "+1-258-629-6315",
+        "address": {
+          "city": "San Diego",
+          "state": "CA",
+          "postalCode": "77811"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-109640",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "uninsured-motorist",
+          "medical-payments",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 250
+        }
+      },
+      "vehicle": {
+        "vin": "3RN5JH2UCU07MLDWW",
+        "plate": "MXX-9580",
+        "year": 2019,
+        "make": "Ford",
+        "model": "F-150",
+        "vehicleId": "VH-812370"
+      },
+      "incident": {
+        "incidentType": "intersection-collision",
+        "location": {
+          "city": "San Diego",
+          "state": "CA",
+          "intersection": "Oak & Maple"
+        },
+        "narrative": "Another vehicle ran the stop sign at 5th and Maple and hit my driver-side door. Airbag deployed on that side. Police came and filed a report.",
+        "injuries": false,
+        "thirdPartyInvolved": true,
+        "policeReportFiled": true,
+        "photos": 3
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "medium",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10022",
+      "fnolReceivedAt": "2026-05-12T06:05:00.000Z",
+      "incidentDate": "2026-05-08T06:05:00.000Z",
+      "channel": "agent-portal",
+      "policyholder": {
+        "firstName": "Carlos",
+        "lastName": "Ellison",
+        "policyholderId": "PH-891936",
+        "contactPhone": "+1-939-321-5037",
+        "address": {
+          "city": "Philadelphia",
+          "state": "PA",
+          "postalCode": "30393"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-204865",
+        "policyType": "personal-auto-standard",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "uninsured-motorist",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "V4RY7WSMLK0CTXCL0",
+        "plate": "QCV-5431",
+        "year": 2017,
+        "make": "Volkswagen",
+        "model": "Jetta",
+        "vehicleId": "VH-988845"
+      },
+      "incident": {
+        "incidentType": "comprehensive-theft",
+        "location": {
+          "city": "Philadelphia",
+          "state": "PA",
+          "intersection": "Main & Maple"
+        },
+        "narrative": "Car was stolen from my driveway between midnight and 6am. Filed police report this morning. Steering wheel was locked.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": false,
+        "photos": 3
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "partially-covered"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10023",
+      "fnolReceivedAt": "2026-05-12T21:09:00.000Z",
+      "incidentDate": "2026-05-09T21:09:00.000Z",
+      "channel": "phone-csr",
+      "policyholder": {
+        "firstName": "Jordan",
+        "lastName": "Nguyen",
+        "policyholderId": "PH-696012",
+        "contactPhone": "+1-645-848-3758",
+        "address": {
+          "city": "Richmond",
+          "state": "VA",
+          "postalCode": "99433"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-479669",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "comprehensive",
+          "uninsured-motorist",
+          "medical-payments",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1000,
+          "comprehensive": 500
+        }
+      },
+      "vehicle": {
+        "vin": "1VWBY6EC1GD1TTXRH",
+        "plate": "CQQ-6224",
+        "year": 2018,
+        "make": "Tesla",
+        "model": "Model S",
+        "vehicleId": "VH-803425"
+      },
+      "incident": {
+        "incidentType": "animal-strike",
+        "location": {
+          "city": "Richmond",
+          "state": "VA",
+          "intersection": "Park & Cedar"
+        },
+        "narrative": "A deer ran into the road on Route 9. I couldn't stop in time. Significant front-end damage, possible radiator damage. No injuries.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": true,
+        "photos": 8
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "low",
+        "coverageDecisionHint": "denied"
+      }
+    },
+    {
+      "claimNumber": "CLM-2026-10024",
+      "fnolReceivedAt": "2026-05-19T08:00:00.000Z",
+      "incidentDate": "2026-05-15T08:00:00.000Z",
+      "channel": "mobile-app",
+      "policyholder": {
+        "firstName": "Mateo",
+        "lastName": "Singh",
+        "policyholderId": "PH-759767",
+        "contactPhone": "+1-777-531-2326",
+        "address": {
+          "city": "Charlotte",
+          "state": "NC",
+          "postalCode": "80228"
+        }
+      },
+      "policy": {
+        "policyNumber": "POL-901961",
+        "policyType": "personal-auto-premium",
+        "effectiveStart": "2025-08-01",
+        "effectiveEnd": "2026-08-01",
+        "coverages": [
+          "liability",
+          "collision",
+          "uninsured-motorist",
+          "medical-payments",
+          "rental-reimbursement",
+          "rideshare-endorsement"
+        ],
+        "deductibles": {
+          "collision": 1500,
+          "comprehensive": 1000
+        }
+      },
+      "vehicle": {
+        "vin": "W6P2FDAPADR1PZUNZ",
+        "plate": "KGH-7811",
+        "year": 2016,
+        "make": "Lexus",
+        "model": "ES",
+        "vehicleId": "VH-420979"
+      },
+      "incident": {
+        "incidentType": "single-vehicle-rollover",
+        "location": {
+          "city": "Charlotte",
+          "state": "NC",
+          "intersection": "Broadway & Maple"
+        },
+        "narrative": "I hit black ice on the highway, lost control, and the car rolled into the median. Towed to the lot. Airbags deployed. I was wearing my seatbelt and have minor bruising.",
+        "injuries": false,
+        "thirdPartyInvolved": false,
+        "policeReportFiled": false,
+        "photos": 7
+      },
+      "flags": {
+        "potentialFraudIndicators": false,
+        "expectedLowConfidenceTriage": false,
+        "ambiguousCoverage": false
+      },
+      "expected": {
+        "severityHint": "total-loss-suspect",
+        "coverageDecisionHint": "denied"
+      }
+    }
+  ]
+}

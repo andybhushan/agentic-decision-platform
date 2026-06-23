@@ -1,0 +1,155 @@
+{
+  "$comment": "Synthetic 3-application loan corpus for the banking-loan-origination stress test. After the v0.5 factor-out, the package's digitalWorker.corpusBinding declares arrayKey='applications', subjectIdField='applicationId' so this file uses domain-natural names instead of the P&C-shaped claims/claimNumber it had to use originally. See FINDINGS.md.",
+  "applications": [
+    {
+      "applicationId": "LOAN-2026-00001",
+      "applicationDate": "2026-05-15",
+      "applicant": {
+        "fullName": "Maria Hernandez",
+        "dateOfBirth": "1987-03-12",
+        "ssnLast4": "4521",
+        "addressCity": "Austin",
+        "addressState": "TX",
+        "addressYearsHere": 5,
+        "employerName": "Dell Technologies",
+        "employerTenureYears": 7,
+        "incomeSource": "W-2",
+        "grossAnnualIncome": 92000,
+        "monthlyIncome": 7667,
+        "incomeVerified": true
+      },
+      "existingDebt": {
+        "mortgagePayment": 1900,
+        "autoPayment": 0,
+        "studentLoanPayment": 280,
+        "revolvingCreditPayment": 175,
+        "totalMonthly": 2355,
+        "source": "credit-bureau-merged"
+      },
+      "creditBureau": {
+        "experianFico": 752,
+        "equifaxFico": 745,
+        "transunionFico": 749,
+        "middleScore": 749,
+        "verified": true
+      },
+      "loanRequest": {
+        "amount": 28500,
+        "termMonths": 60,
+        "monthlyPayment": 538,
+        "purpose": "auto",
+        "collateralDescription": "2024 Honda CR-V Hybrid Touring"
+      },
+      "collateral": {
+        "year": 2024,
+        "make": "Honda",
+        "model": "CR-V Hybrid",
+        "trim": "Touring",
+        "mileage": 8200,
+        "appraisedValue": 33000,
+        "valuationSource": "JD-Power",
+        "verified": true
+      }
+    },
+    {
+      "applicationId": "LOAN-2026-00002",
+      "applicationDate": "2026-05-20",
+      "applicant": {
+        "fullName": "James Walker",
+        "dateOfBirth": "1973-11-04",
+        "ssnLast4": "8836",
+        "addressCity": "Cleveland",
+        "addressState": "OH",
+        "addressYearsHere": 12,
+        "employerName": "Cleveland Clinic",
+        "employerTenureYears": 18,
+        "incomeSource": "W-2",
+        "grossAnnualIncome": 145000,
+        "monthlyIncome": 12083,
+        "incomeVerified": true
+      },
+      "existingDebt": {
+        "mortgagePayment": 3200,
+        "autoPayment": 480,
+        "studentLoanPayment": 0,
+        "revolvingCreditPayment": 1850,
+        "totalMonthly": 5530,
+        "source": "credit-bureau-merged"
+      },
+      "creditBureau": {
+        "experianFico": 658,
+        "equifaxFico": 671,
+        "transunionFico": 663,
+        "middleScore": 663,
+        "verified": true
+      },
+      "loanRequest": {
+        "amount": 85000,
+        "termMonths": 180,
+        "monthlyPayment": 720,
+        "purpose": "home-equity",
+        "collateralDescription": "Primary residence at addressed property"
+      },
+      "collateral": {
+        "addressCity": "Cleveland",
+        "addressState": "OH",
+        "appraisedValue": 410000,
+        "outstandingMortgage": 285000,
+        "availableEquity": 125000,
+        "valuationSource": "licensed-appraisal-2026-04",
+        "verified": true
+      }
+    },
+    {
+      "applicationId": "LOAN-2026-00003",
+      "applicationDate": "2026-05-23",
+      "applicant": {
+        "fullName": "Devon Park",
+        "dateOfBirth": "1995-08-22",
+        "ssnLast4": "2017",
+        "addressCity": "Phoenix",
+        "addressState": "AZ",
+        "addressYearsHere": 1,
+        "employerName": "self-employed (freelance graphic designer)",
+        "employerTenureYears": 3,
+        "incomeSource": "1099",
+        "grossAnnualIncome": 58000,
+        "monthlyIncome": 4833,
+        "incomeVerified": false,
+        "verificationNote": "1099 forms for 2024 + 2025 on file; 2026 partial-year only"
+      },
+      "existingDebt": {
+        "mortgagePayment": 0,
+        "autoPayment": 0,
+        "studentLoanPayment": 410,
+        "revolvingCreditPayment": 295,
+        "totalMonthly": 705,
+        "source": "credit-bureau-merged"
+      },
+      "creditBureau": {
+        "experianFico": 712,
+        "equifaxFico": 705,
+        "transunionFico": 708,
+        "middleScore": 708,
+        "verified": true
+      },
+      "loanRequest": {
+        "amount": 19500,
+        "termMonths": 60,
+        "monthlyPayment": 368,
+        "purpose": "auto",
+        "collateralDescription": "2018 Toyota Camry SE used"
+      },
+      "collateral": {
+        "year": 2018,
+        "make": "Toyota",
+        "model": "Camry",
+        "trim": "SE",
+        "mileage": 78400,
+        "appraisedValue": 16800,
+        "valuationSource": "JD-Power",
+        "verified": true
+      }
+    }
+  ]
+}

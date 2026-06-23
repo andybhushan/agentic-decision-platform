@@ -1,0 +1,28 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "e0000004-0000-4000-8000-000000000004",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "visual_evidence_id",
+        "targetPropertyId": "950000000000030"
+      },
+      {
+        "sourceColumnName": "modality",
+        "targetPropertyId": "950000000000031"
+      },
+      {
+        "sourceColumnName": "confidence",
+        "targetPropertyId": "950000000000032"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "visual_evidence",
+      "sourceSchema": null
+    }
+  }
+}

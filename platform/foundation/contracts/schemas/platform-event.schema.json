@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v1/platform-event.schema.json",
+  "title": "PlatformEvent (unified envelope, v1)",
+  "description": "One envelope for both tiers. Tier-1 'domain' events are the append-only source of truth in the event-store (constitution Art. VI); Tier-2 'decision' events are the Decision-Store/telemetry projection derived from them. Extends the WS2 DomainEvent envelope with explicit correlation IDs (claim/decision/agent) and an actor block. payload validates against the per-eventType schema (event-payloads.schema.json for Tier-1; $defs here for Tier-2 and the new evidence events).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventType", "tier", "topic", "schemaVersion", "timestamp", "producedBy", "actor", "correlation", "payload"],
+  "properties": {
+    "eventId": { "type": "string", "description": "Server-assigned by the event-store (append order)." },
+    "tier": { "type": "string", "enum": ["domain", "decision"] },
+    "eventType": {
+      "type": "string",
+      "description": "Tier-1 PascalCase past-tense OR Tier-2 dotted.",
+      "enum": [
+        "FNOLReceived", "ClaimOpened", "TriageCompleted", "CoverageVerified", "EstimateDrafted",
+        "GateTripped", "HitlResolved", "ClaimantNotified", "ExplainabilityRecorded", "ClaimResolved",
+        "EvidenceUploaded", "ConsentCaptured",
+        "decision.raised", "decision.viewed", "decision.disposition", "agent.step", "evidence.opened", "feedback.captured"
+      ]
+    },
+    "topic": {
+      "type": "string",
+      "enum": ["claims.lifecycle", "claims.triage", "claims.coverage", "claims.estimation", "claims.hitl", "claims.explainability", "claims.evidence", "decision.queue", "platform.telemetry", "platform.feedback"]
+    },
+    "schemaVersion": { "type": "string", "pattern": "^\\d+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "producedBy": { "type": "string" },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "type": "string", "enum": ["agent", "service", "human", "ui"] },
+        "id": { "type": "string" },
+        "role": { "type": "string", "description": "e.g. adjuster, licensed-adjuster, supervisor, intake-agent." }
+      }
+    },
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimId", "correlationId"],
+      "properties": {
+        "claimId": { "type": "string", "pattern": "^[A-Z]{2}-\\d{4}-\\d{7}$" },
+        "decisionId": { "type": "string", "description": "Set on Tier-2 events + HitlResolved; ties to the raised decision." },
+        "agentId": { "type": "string", "description": "Digital worker that acted (feeds F9 workforce metrics)." },
+        "correlationId": { "type": "string", "description": "Demo-run/trace key for deterministic replay." }
+      }
+    },
+    "payloadSchemaRef": { "type": "string", "format": "uri-reference" },
+    "payload": { "type": "object" }
+  },
+  "$defs": {
+    "EvidenceUploaded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "type", "uri", "source"],
+      "properties": {
+        "evidenceId": { "type": "string" },
+        "type": { "type": "string", "enum": ["photo", "video", "document", "dashcam-clip", "blackbox-telemetry", "voice-transcript", "police-report"] },
+        "uri": { "type": "string", "format": "uri-reference" },
+        "source": { "type": "string" },
+        "label": { "type": "string" },
+        "piiRedactionApplied": { "type": "boolean" }
+      }
+    },
+    "ConsentCaptured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consentType", "decision", "captureChannel", "captureActor"],
+      "properties": {
+        "consentType": { "type": "string", "enum": ["dashcam_access", "blackbox_diagnostics", "data_sharing", "recording"] },
+        "decision": { "type": "string", "enum": ["granted", "denied"] },
+        "captureChannel": { "type": "string", "enum": ["mobile_pwa", "ivr", "web", "agent", "paper"] },
+        "captureActor": { "type": "string", "enum": ["policyholder", "claimant", "adjuster"] },
+        "evidenceRef": { "type": "string" }
+      }
+    },
+    "DecisionRaised": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decisionId", "category", "title", "confidence", "raisedFromEvent"],
+      "properties": {
+        "decisionId": { "type": "string" },
+        "category": { "type": "string", "description": "e.g. coverage, total-loss, fraud, liability." },
+        "title": { "type": "string", "description": "Action-oriented, e.g. 'Decide if this claim is a total loss'." },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidenceGap": { "type": "number", "minimum": 0, "maximum": 1 },
+        "urgency": { "type": "string", "enum": ["low", "medium", "high"] },
+        "raisedFromEvent": { "type": "string", "description": "eventType that triggered this decision (GateTripped, CoverageVerified, EstimateDrafted, TriageCompleted)." }
+      }
+    },
+    "DecisionDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decisionId", "disposition"],
+      "properties": {
+        "decisionId": { "type": "string" },
+        "disposition": { "type": "string", "enum": ["approved", "overridden", "escalated", "denied"] },
+        "reason": { "type": "string" }
+      }
+    },
+    "AgentStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepName", "status"],
+      "properties": {
+        "stepName": { "type": "string" },
+        "status": { "type": "string", "enum": ["started", "completed", "failed"] },
+        "producedEvent": { "type": "string", "description": "Tier-1 eventType this step emitted, if any." },
+        "toolsInvoked": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "FeedbackCaptured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decisionId", "label"],
+      "properties": {
+        "decisionId": { "type": "string" },
+        "label": { "type": "string", "enum": ["agreed", "overrode", "corrected"] },
+        "reason": { "type": "string" },
+        "correctedValue": { "type": "string" }
+      }
+    }
+  }
+}

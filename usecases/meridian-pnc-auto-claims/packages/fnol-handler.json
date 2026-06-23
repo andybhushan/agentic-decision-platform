@@ -1,0 +1,170 @@
+{
+  "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
+  "package": {
+    "id": "fnol-handler",
+    "version": "0.1.0",
+    "industry": "insurance",
+    "useCase": "p-and-c-auto-claims",
+    "schemaVersion": "v1",
+    "signedBy": "anand-track-stub",
+    "registeredIn": "agent-365://adp-v1",
+    "compiledAt": "2026-05-26T00:00:00Z"
+  },
+  "digitalWorker": {
+    "id": "dw.fnol-handler",
+    "name": "FNOL Handler",
+    "description": "First Notice of Loss handler. Owns intake, coverage verification, initial triage, assignment routing for P&C Auto claims.",
+    "entraAgentId": null,
+    "stateStore": { "kind": "in-memory-stub", "containerName": "dw-fnol-handler-state", "partitionKey": "/subjectId" },
+    "schemaBinding": {
+      "primaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "policyholder_id",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state", "channel"],
+        "dimTable": "dim_policyholder",
+        "dimKeyColumn": "policyholder_id",
+        "dimDisplayColumns": ["first_name", "last_name", "policy_number", "state", "city"],
+        "entitySemantics": "acl:Claim"
+      },
+      "secondaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "vin",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state"],
+        "dimTable": "dim_vehicle",
+        "dimKeyColumn": "vin",
+        "dimDisplayColumns": ["year", "make", "model"],
+        "entitySemantics": "acl:Vehicle"
+      },
+      "similarityFilters": ["incident_type", "state"]
+    },
+    "capabilities": [
+      "claim-intake",
+      "coverage-verification",
+      "initial-triage",
+      "assignment-routing"
+    ],
+    "agentRefs": [
+      "agent.claim-intake",
+      "agent.coverage-verify",
+      "agent.initial-triage",
+      "agent.assignment-routing"
+    ],
+    "slos": [
+      { "metric": "intake_latency_p90_minutes", "target": 15, "comparator": "<=", "window": "P30D" },
+      { "metric": "coverage_error_rate", "target": 0.005, "comparator": "<=", "window": "P30D" }
+    ],
+    "orchestration": {
+      "strategy": "hybrid",
+      "stepFormation": "hybrid",
+      "boundedReasoningZones": [
+        {
+          "zoneId": "zone.triage-reasoning",
+          "allowedAgents": ["agent.initial-triage"],
+          "maxSteps": 3,
+          "returnPoint": "step.assignment-routing"
+        }
+      ],
+      "invariants": [
+        {
+          "id": "inv.coverage-mandatory",
+          "description": "No assignment may complete without a non-null coverage decision.",
+          "ruleExpression": "claim.coverageDecision != null"
+        },
+        {
+          "id": "inv.fnol-within-fifteen-min",
+          "description": "Intake must finish within 15 minutes wall-clock to count toward SLO.",
+          "ruleExpression": "duration(claim.intakeCompletedAt - claim.fnolReceivedAt) <= duration('15m')"
+        }
+      ],
+      "hitlGates": [
+        {
+          "gateId": "gate.low-confidence-triage",
+          "trigger": "step.initial_triage.confidence < 0.6",
+          "surface": "operator-console"
+        }
+      ]
+    }
+  },
+  "agents": [
+    {
+      "id": "agent.claim-intake",
+      "kind": "prompt-agent",
+      "capability": "claim-intake",
+      "systemPrompt": "You are the Claim Intake Agent. Extract structured claim data from unstructured policyholder submissions. Return JSON conforming to the Claim entity schema. State confidence per field. Flag missing required fields explicitly.",
+      "skillRefs": ["skill.field-extraction", "skill.vehicle-identification", "skill.initial-severity-scoring"],
+      "ontologyBinding": ["Claim", "Policyholder", "Vehicle", "Incident"],
+      "confidenceCalibration": { "lowThreshold": 0.4, "highThreshold": 0.85, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.coverage-verify",
+      "kind": "workflow-agent",
+      "capability": "coverage-verification",
+      "systemPrompt": "You are the Coverage Verification Agent. Given a claim and its policy, determine whether the loss is covered. Cite the specific policy clauses you relied on. If ambiguous, mark coverageDecision='needs-human-review'.",
+      "skillRefs": ["skill.policy-clause-lookup", "skill.coverage-decision"],
+      "ontologyBinding": ["Claim", "Policy", "Coverage", "PolicyClause"],
+      "confidenceCalibration": { "lowThreshold": 0.5, "highThreshold": 0.9, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.initial-triage",
+      "kind": "prompt-agent",
+      "capability": "initial-triage",
+      "systemPrompt": "You are the Initial Triage Agent. Classify severity (low/medium/high/total-loss-suspect), estimate complexity, flag fraud indicators, and recommend a routing tier. Use historical context for similar claims.",
+      "skillRefs": ["skill.severity-classification", "skill.fraud-indicator-scan"],
+      "ontologyBinding": ["Claim", "TriageDecision", "FraudSignal"],
+      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.88, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.assignment-routing",
+      "kind": "workflow-agent",
+      "capability": "assignment-routing",
+      "systemPrompt": "You are the Assignment Routing Agent. Given a triaged claim, select the best adjuster based on skill match, current load, and tier. Emit a structured Assignment event.",
+      "skillRefs": ["skill.adjuster-match", "skill.workload-balance"],
+      "ontologyBinding": ["Claim", "Adjuster", "Assignment"],
+      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.9, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    }
+  ],
+  "skills": [
+    { "id": "skill.field-extraction",         "name": "FNOL Field Extraction",         "skillFile": "skills/field-extraction/SKILL.md",         "promptFile": "skills/field-extraction/prompt.md", "evalFile": "skills/field-extraction/eval.jsonl", "domain": "insurance/auto/fnol" },
+    { "id": "skill.vehicle-identification",   "name": "Vehicle Identification",        "skillFile": "skills/vehicle-identification/SKILL.md",   "domain": "insurance/auto/fnol" },
+    { "id": "skill.initial-severity-scoring", "name": "Initial Severity Scoring",      "skillFile": "skills/initial-severity-scoring/SKILL.md", "domain": "insurance/auto/fnol" },
+    { "id": "skill.policy-clause-lookup",     "name": "Policy Clause Lookup",          "skillFile": "skills/policy-clause-lookup/SKILL.md",     "domain": "insurance/auto/coverage" },
+    { "id": "skill.coverage-decision",        "name": "Coverage Decision",             "skillFile": "skills/coverage-decision/SKILL.md",        "domain": "insurance/auto/coverage" },
+    { "id": "skill.severity-classification",  "name": "Severity Classification",       "skillFile": "skills/severity-classification/SKILL.md",  "domain": "insurance/auto/triage" },
+    { "id": "skill.fraud-indicator-scan",     "name": "Fraud Indicator Scan",          "skillFile": "skills/fraud-indicator-scan/SKILL.md",     "domain": "insurance/auto/triage" },
+    { "id": "skill.adjuster-match",           "name": "Adjuster Skill Match",          "skillFile": "skills/adjuster-match/SKILL.md",           "domain": "insurance/auto/routing" },
+    { "id": "skill.workload-balance",         "name": "Workload Balance",              "skillFile": "skills/workload-balance/SKILL.md",         "domain": "insurance/auto/routing" }
+  ],
+  "tools": [
+    { "id": "tool.claim-store",      "name": "Claim Store",                "mcpEndpoint": "mcp://localhost/claim-store",      "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
+    { "id": "tool.policy-store",     "name": "Policy Store",               "mcpEndpoint": "mcp://localhost/policy-store",     "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.vehicle-lookup",   "name": "Vehicle Lookup",             "mcpEndpoint": "mcp://localhost/vehicle-lookup",   "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.adjuster-roster",  "name": "Adjuster Roster",            "mcpEndpoint": "mcp://localhost/adjuster-roster",  "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
+    { "id": "tool.decision-journal", "name": "Decision Journal (RTI)",     "mcpEndpoint": "mcp://localhost/decision-journal", "auth": { "kind": "entra-managed-identity" }, "backendComponent": "fabric-bronze" }
+  ],
+  "contextBindings": [
+    { "intent": "verify_coverage",  "dimensions": ["entity", "procedural", "regulatory"],    "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": null } },
+    { "intent": "triage_decision",  "dimensions": ["entity", "historical", "collaboration"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["similar-claims", "severity-distribution-by-state"], "WorkIQ": ["triage-supervisor-thread"] } },
+    { "intent": "assign_adjuster",  "dimensions": ["collaboration", "entity", "procedural"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["adjuster-availability"] } }
+  ],
+  "decisionJournal": {
+    "eventHubTopic": "adp-v1-decisions",
+    "provenanceTagging": { "defaultOrigin": "DERIVED" },
+    "rtiTable": "adp.rti.decisions",
+    "bronzeTable": "adp.bronze.decisions"
+  }
+}

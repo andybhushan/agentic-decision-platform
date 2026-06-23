@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "970000000000005",
+  "name": "document_corroborates_claim",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "900000000000005"
+  },
+  "target": {
+    "entityTypeId": "140535896199627"
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
+  "package": {
+    "id": "fraud-handler",
+    "version": "0.1.0",
+    "industry": "insurance",
+    "useCase": "p-and-c-auto-claims",
+    "schemaVersion": "v1",
+    "signedBy": "anand-track-stub",
+    "registeredIn": "agent-365://adp-v1",
+    "compiledAt": "2026-05-27T00:00:00Z"
+  },
+  "digitalWorker": {
+    "id": "dw.fraud-handler",
+    "name": "Fraud Handler",
+    "description": "Owns the fraud investigation workflow for flagged P&C auto claims: pattern scan across the policyholder + vehicle history, composite fraud score with regulatory-safe components, SIU referral routing. Iterative — bounded reasoning zone allows the pattern-scan agent multiple LLM passes to corroborate evidence.",
+    "entraAgentId": null,
+    "stateStore": { "kind": "in-memory-stub", "containerName": "dw-fraud-handler-state", "partitionKey": "/subjectId" },
+    "schemaBinding": {
+      "primaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "policyholder_id",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state", "channel"],
+        "dimTable": "dim_policyholder",
+        "dimKeyColumn": "policyholder_id",
+        "dimDisplayColumns": ["first_name", "last_name", "policy_number", "state", "city"],
+        "entitySemantics": "acl:Claim"
+      },
+      "secondaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "vin",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state"],
+        "dimTable": "dim_vehicle",
+        "dimKeyColumn": "vin",
+        "dimDisplayColumns": ["year", "make", "model"],
+        "entitySemantics": "acl:Vehicle"
+      },
+      "similarityFilters": ["incident_type", "state"]
+    },
+    "capabilities": [
+      "fraud-intake",
+      "fraud-pattern-scan",
+      "fraud-score",
+      "siu-routing"
+    ],
+    "agentRefs": [
+      "agent.fraud-intake",
+      "agent.fraud-pattern-scan",
+      "agent.fraud-score",
+      "agent.siu-routing"
+    ],
+    "slos": [
+      { "metric": "fraud_scan_latency_p90_minutes", "target": 10,   "comparator": "<=", "window": "P30D" },
+      { "metric": "siu_referral_false_positive_rate", "target": 0.10, "comparator": "<=", "window": "P90D" },
+      { "metric": "priority_band_review_coverage",   "target": 1.0,  "comparator": ">=", "window": "P30D" }
+    ],
+    "orchestration": {
+      "strategy": "hybrid",
+      "stepFormation": "hybrid",
+      "boundedReasoningZones": [
+        {
+          "zoneId": "zone.pattern-corroboration",
+          "allowedAgents": ["agent.fraud-pattern-scan"],
+          "maxSteps": 5,
+          "returnPoint": "step.fraud-score"
+        }
+      ],
+      "invariants": [
+        {
+          "id": "inv.score-before-referral",
+          "description": "SIU referral may not commence before a composite fraud score is committed.",
+          "ruleExpression": "claim.fraudScore != null"
+        },
+        {
+          "id": "inv.priority-mandatory-hitl",
+          "description": "siu-priority band placement must traverse the priority-fraud-review HITL gate.",
+          "ruleExpression": "if claim.fraudBand == 'siu-priority' then step.fraud_score.status == 'needs-human-review'"
+        },
+        {
+          "id": "inv.no-protected-class-inputs",
+          "description": "Fraud-score inputs must not reference protected class attributes (race, religion, national origin, gender identity, age).",
+          "ruleExpression": "audit.scoreInputs not-contains-any-of(protectedClassFields)"
+        }
+      ],
+      "hitlGates": [
+        {
+          "gateId": "gate.low-confidence-fraud-score",
+          "trigger": "step.fraud_score.confidence < 0.6",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.priority-fraud-review",
+          "trigger": "step.fraud_score.fraudBand == 'siu-priority'",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.no-siu-match",
+          "trigger": "step.siu_routing.confidence < 0.55",
+          "surface": "operator-console"
+        }
+      ]
+    }
+  },
+  "agents": [
+    {
+      "id": "agent.fraud-intake",
+      "kind": "prompt-agent",
+      "capability": "fraud-intake",
+      "systemPrompt": "You are the Fraud Intake Agent. Pull together the claim record, the policyholder's full claim history, the VIN's prior claims, and any indicators raised by the FNOL Handler's first-pass scan ([[PAC-FRD-001]]). Produce a structured FraudIntakeReport with: priorClaimsByPolicyholder (count + summaries), priorClaimsOnVin (count + summaries), perClaimRedFlags (list from PAC-FRD-001), policyEvents (lapse/reinstatement/coverage-change in last 90 days). State confidence per field. Do NOT compute a score at this step — that is the Fraud Score agent's job.",
+      "skillRefs": ["skill.fraud-intake-aggregation", "skill.policy-event-extraction"],
+      "ontologyBinding": ["Claim", "Policyholder", "Vehicle", "FraudIntakeReport"],
+      "confidenceCalibration": { "lowThreshold": 0.4, "highThreshold": 0.85, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.fraud-pattern-scan",
+      "kind": "workflow-agent",
+      "capability": "fraud-pattern-scan",
+      "systemPrompt": "You are the Fraud Pattern Scan Agent. Given the FraudIntakeReport, query Fabric IQ for similar prior claims and the VIN history, and apply the three pattern families in [[PAC-FRD-002]]: frequency-clustering, ring-patterns, sequence-signals. For each family you find evidence for, emit patternFamily, patternEvidence (narrative naming specific claims), populationSize, populationConfidence. Drop confidence when populationSize < 5. Use the bounded-reasoning zone (max 5 LLM passes) to corroborate weak signals — but never invent evidence. If no patterns are found, emit an empty patterns array; that is a valid output.",
+      "skillRefs": ["skill.pattern-clustering", "skill.ring-detection", "skill.sequence-signal-scan"],
+      "ontologyBinding": ["FraudIntakeReport", "PatternFamily", "PatternEvidence"],
+      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.88, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.fraud-score",
+      "kind": "workflow-agent",
+      "capability": "fraud-score",
+      "systemPrompt": "You are the Fraud Score Agent. Compose a single composite fraud score per the formula in [[PAC-FRD-003]] from the per-claim red-flag density, cross-claim pattern strength, narrative divergence, and adjuster historical prior. Emit fraudScore (number), fraudBand (clear|watch|siu-refer|siu-priority), components (the four inputs), bandRationale (narrative), and fraudConfirmed=false. NEVER factor in protected class attributes. If the score sits within +/- 0.05 of a band boundary, flag low confidence and route to HITL. If band == 'siu-priority', the package's HITL gate fires automatically regardless of confidence.",
+      "skillRefs": ["skill.score-composition", "skill.boundary-confidence-calibration"],
+      "ontologyBinding": ["FraudIntakeReport", "PatternFamily", "FraudScore"],
+      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.9, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.siu-routing",
+      "kind": "workflow-agent",
+      "capability": "siu-routing",
+      "systemPrompt": "You are the SIU Routing Agent. Given the fraud score and pattern evidence, pick one SIU investigator per [[PAC-SIU-001]]. Match certification to the policyholder's state. Match pattern specialty to the dominant patternFamily. Honor the hard exclusions (prior claim conflict, relative-of-claimant, expired credential). For siu-priority cases, require >=5 years tenure or OEC certification. Emit siuInvestigatorId, referralMode (standard|priority), routingReason, estimatedFindingDate, regulatoryNotifications. If only out-of-state investigators are eligible or no investigator matches the pattern specialty, drop confidence and route to HITL.",
+      "skillRefs": ["skill.siu-investigator-match", "skill.regulatory-notification-window"],
+      "ontologyBinding": ["FraudScore", "PatternFamily", "SIUInvestigator", "SIUReferral"],
+      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.9, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    }
+  ],
+  "skills": [
+    { "id": "skill.fraud-intake-aggregation",       "name": "Fraud Intake Aggregation",       "skillFile": "skills/fraud-intake-aggregation/SKILL.md",       "domain": "insurance/auto/fraud" },
+    { "id": "skill.policy-event-extraction",        "name": "Policy Event Extraction",        "skillFile": "skills/policy-event-extraction/SKILL.md",        "domain": "insurance/auto/fraud" },
+    { "id": "skill.pattern-clustering",             "name": "Frequency Clustering",           "skillFile": "skills/pattern-clustering/SKILL.md",             "domain": "insurance/auto/fraud" },
+    { "id": "skill.ring-detection",                 "name": "Ring Detection",                 "skillFile": "skills/ring-detection/SKILL.md",                 "domain": "insurance/auto/fraud" },
+    { "id": "skill.sequence-signal-scan",           "name": "Sequence Signal Scan",           "skillFile": "skills/sequence-signal-scan/SKILL.md",           "domain": "insurance/auto/fraud" },
+    { "id": "skill.score-composition",              "name": "Composite Score Composition",    "skillFile": "skills/score-composition/SKILL.md",              "domain": "insurance/auto/fraud" },
+    { "id": "skill.boundary-confidence-calibration","name": "Band Boundary Confidence",       "skillFile": "skills/boundary-confidence-calibration/SKILL.md","domain": "insurance/auto/fraud" },
+    { "id": "skill.siu-investigator-match",         "name": "SIU Investigator Match",         "skillFile": "skills/siu-investigator-match/SKILL.md",         "domain": "insurance/auto/fraud" },
+    { "id": "skill.regulatory-notification-window", "name": "Regulatory Notification Window", "skillFile": "skills/regulatory-notification-window/SKILL.md", "domain": "insurance/auto/fraud" }
+  ],
+  "tools": [
+    { "id": "tool.claim-store",      "name": "Claim Store",            "mcpEndpoint": "mcp://localhost/claim-store",      "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
+    { "id": "tool.vehicle-lookup",   "name": "Vehicle Lookup",         "mcpEndpoint": "mcp://localhost/vehicle-lookup",   "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.policy-store",     "name": "Policy Store",           "mcpEndpoint": "mcp://localhost/policy-store",     "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.adjuster-roster",  "name": "Adjuster Roster (SIU)",  "mcpEndpoint": "mcp://localhost/adjuster-roster",  "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
+    { "id": "tool.decision-journal", "name": "Decision Journal (RTI)", "mcpEndpoint": "mcp://localhost/decision-journal", "auth": { "kind": "entra-managed-identity" }, "backendComponent": "fabric-bronze" }
+  ],
+  "contextBindings": [
+    { "intent": "fraud_intake",            "dimensions": ["entity", "historical"],                  "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["siu-consult-channel"] } },
+    { "intent": "analyze_fraud_patterns",  "dimensions": ["historical", "entity"],                  "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["similar-claims", "hour-of-day-concentration", "incident-type-mix-by-state"], "WorkIQ": ["siu-consult-channel"] } },
+    { "intent": "verify_fraud_signal",     "dimensions": ["entity", "historical", "procedural"],    "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["vehicle-history"], "WorkIQ": ["siu-consult-channel"] } },
+    { "intent": "siu_route",               "dimensions": ["procedural", "collaboration", "entity"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["siu-investigator-availability"] } }
+  ],
+  "decisionJournal": {
+    "eventHubTopic": "adp-v1-decisions",
+    "provenanceTagging": { "defaultOrigin": "DERIVED" },
+    "rtiTable": "adp.rti.decisions",
+    "bronzeTable": "adp.bronze.decisions"
+  }
+}

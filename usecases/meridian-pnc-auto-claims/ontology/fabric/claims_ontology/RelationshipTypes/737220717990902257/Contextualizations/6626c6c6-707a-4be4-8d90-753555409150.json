@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "6626c6c6-707a-4be4-8d90-753555409150",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "coverage",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "coverage_id",
+      "targetPropertyId": "8486482284044786368"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "term_id",
+      "targetPropertyId": "8486482480853533850"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "44f710b8-bd2b-4fd9-9137-b8e2afebf892",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "coverage_code",
+        "targetPropertyId": "8486482237406165295"
+      },
+      {
+        "sourceColumnName": "coverage_id",
+        "targetPropertyId": "8486482284044786368"
+      },
+      {
+        "sourceColumnName": "deductible",
+        "targetPropertyId": "8486482161621502798"
+      },
+      {
+        "sourceColumnName": "limit_per_occurrence",
+        "targetPropertyId": "8486482206445235333"
+      },
+      {
+        "sourceColumnName": "limit_per_person",
+        "targetPropertyId": "8486482182907859997"
+      },
+      {
+        "sourceColumnName": "rental_daily_limit",
+        "targetPropertyId": "8486482140128111182"
+      },
+      {
+        "sourceColumnName": "rental_max_days",
+        "targetPropertyId": "8486482117051897523"
+      },
+      {
+        "sourceColumnName": "term_id",
+        "targetPropertyId": "8486482258239654663"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "coverage",
+      "sourceSchema": null
+    }
+  }
+}

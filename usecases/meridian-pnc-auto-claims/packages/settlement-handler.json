@@ -1,0 +1,189 @@
+{
+  "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
+  "package": {
+    "id": "settlement-handler",
+    "version": "0.1.0",
+    "industry": "insurance",
+    "useCase": "p-and-c-auto-claims",
+    "schemaVersion": "v1",
+    "signedBy": "anand-track-stub",
+    "registeredIn": "agent-365://adp-v1",
+    "compiledAt": "2026-05-27T00:00:00Z"
+  },
+  "digitalWorker": {
+    "id": "dw.settlement-handler",
+    "name": "Settlement Handler",
+    "description": "Owns the terminal claim disposition for P&C auto: settlement amount calculation, state-compliant disclosure language, payment recipient + channel routing. Picks up after Damage Handler (and Fraud Handler when applicable) and closes the claim lifecycle.",
+    "entraAgentId": null,
+    "stateStore": { "kind": "in-memory-stub", "containerName": "dw-settlement-handler-state", "partitionKey": "/subjectId" },
+    "schemaBinding": {
+      "primaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "policyholder_id",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state", "channel"],
+        "dimTable": "dim_policyholder",
+        "dimKeyColumn": "policyholder_id",
+        "dimDisplayColumns": ["first_name", "last_name", "policy_number", "state", "city"],
+        "entitySemantics": "acl:Claim"
+      },
+      "secondaryEntity": {
+        "factTable": "fact_claims",
+        "factSubjectKey": "claim_number",
+        "factForeignKey": "vin",
+        "factDateColumn": "incident_date",
+        "factDescColumns": ["incident_type", "severity_hint", "state"],
+        "dimTable": "dim_vehicle",
+        "dimKeyColumn": "vin",
+        "dimDisplayColumns": ["year", "make", "model"],
+        "entitySemantics": "acl:Vehicle"
+      },
+      "similarityFilters": ["incident_type", "state"]
+    },
+    "capabilities": [
+      "settlement-intake",
+      "settlement-calculation",
+      "settlement-disclosure",
+      "settlement-disbursement"
+    ],
+    "agentRefs": [
+      "agent.settlement-intake",
+      "agent.settlement-calculation",
+      "agent.settlement-disclosure",
+      "agent.settlement-disbursement"
+    ],
+    "slos": [
+      { "metric": "settlement_letter_delivery_p90_days", "target": 15,   "comparator": "<=", "window": "P30D" },
+      { "metric": "disbursement_accuracy_rate",         "target": 0.995, "comparator": ">=", "window": "P90D" },
+      { "metric": "high_value_review_coverage",         "target": 1.0,   "comparator": ">=", "window": "P30D" }
+    ],
+    "orchestration": {
+      "strategy": "hybrid",
+      "stepFormation": "hybrid",
+      "boundedReasoningZones": [
+        {
+          "zoneId": "zone.disclosure-composition",
+          "allowedAgents": ["agent.settlement-disclosure"],
+          "maxSteps": 3,
+          "returnPoint": "step.settlement-disbursement"
+        }
+      ],
+      "invariants": [
+        {
+          "id": "inv.calc-before-disclose",
+          "description": "Disclosure may not begin before settlementAmount is committed.",
+          "ruleExpression": "claim.settlementAmount != null"
+        },
+        {
+          "id": "inv.no-negative-settlement",
+          "description": "settlementAmount must never be negative (deductible-exceeds-gross settles at $0).",
+          "ruleExpression": "claim.settlementAmount >= 0"
+        },
+        {
+          "id": "inv.denial-must-disclose",
+          "description": "A fullDenial settlement requires a state-appropriate denial disclosure.",
+          "ruleExpression": "if claim.fullDenial == true then step.settlement_disclosure.denialDisclosure == true"
+        }
+      ],
+      "hitlGates": [
+        {
+          "gateId": "gate.low-confidence-calc",
+          "trigger": "step.settlement_calculation.confidence < 0.6",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.high-value-settlement",
+          "trigger": "step.settlement_calculation.highValueSettlement == true",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.full-denial-review",
+          "trigger": "step.settlement_disclosure.fullDenial == true",
+          "surface": "operator-console"
+        }
+      ]
+    }
+  },
+  "agents": [
+    {
+      "id": "agent.settlement-intake",
+      "kind": "prompt-agent",
+      "capability": "settlement-intake",
+      "systemPrompt": "You are the Settlement Intake Agent. Pull together upstream-DW outputs for this claim: coverage decision (FNOL Handler), damage category + repair-estimate band + total-loss flag (Damage Handler), fraud finding if any (Fraud Handler). Resolve the policy sub-limits, deductible amount, lienholder/lessor presence from the policyholder record. Produce a SettlementIntakeReport with these fields. State confidence per field; flag missing upstream outputs explicitly. Do NOT compute the settlement amount here.",
+      "skillRefs": ["skill.upstream-aggregation", "skill.policy-limits-resolution"],
+      "ontologyBinding": ["Claim", "Coverage", "DamageDecision", "FraudFinding", "SettlementIntakeReport"],
+      "confidenceCalibration": { "lowThreshold": 0.4, "highThreshold": 0.85, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.settlement-calculation",
+      "kind": "workflow-agent",
+      "capability": "settlement-calculation",
+      "systemPrompt": "You are the Settlement Calculation Agent. Apply [[PAC-SET-001]] to compute the payable amount across the five settlement paths (cosmetic/functional/structural repair, total-loss ACV, diminished value, rental reimbursement, full denial). Apply the deductible to the repair-based path first, then residual to ACV. Honor coverage sub-limits before deductible. Emit settlementAmount, settlementBasis, calculationBreakdown, appliedDeductible, coveragePartsTriggered, acvValueUsed, AND TWO BOOLEANS: highValueSettlement (true if settlementAmount >= 25000) and fullDenial (true if settlementAmount == 0). If any input is missing, drop confidence below 0.6 and route to HITL.",
+      "skillRefs": ["skill.path-decomposition", "skill.deductible-application", "skill.sublimit-cap"],
+      "ontologyBinding": ["SettlementIntakeReport", "SettlementAmount", "DeductibleApplication"],
+      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.9, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.settlement-disclosure",
+      "kind": "workflow-agent",
+      "capability": "settlement-disclosure",
+      "systemPrompt": "You are the Settlement Disclosure Agent. Compose the policyholder-facing settlement letter per [[PAC-SET-002]]. Read the policyholder's state from dim_policyholder and select the applicable state template (CA, NY, TX, FL, MA, IL have specific templates; everything else uses NAIC default). Always include: basis of calculation, deductible applied, appeal rights, time-to-respond, DOI contact. For total-loss include valuation source. For partial-fraud cite only the contractual basis (never the SIU file). Emit disclosureText, deliveryWindowDays, mandatoryClauses, stateTemplateUsed, AND BOOLEAN: denialDisclosure (true if this is composing a full-denial letter). If the settlement is a full denial OR the state requires a Spanish translation we cannot produce, drop confidence and route to HITL.",
+      "skillRefs": ["skill.state-template-selection", "skill.appeal-rights-composition", "skill.denial-language-cite"],
+      "ontologyBinding": ["SettlementAmount", "PolicyholderState", "DisclosureLetter"],
+      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.9, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.settlement-disbursement",
+      "kind": "workflow-agent",
+      "capability": "settlement-disbursement",
+      "systemPrompt": "You are the Settlement Disbursement Agent. Apply [[PAC-SET-003]] to pick payment channel(s) and recipient(s) for the settlement. Recipients may include policyholder, lienholder, lessor, repair shop. For each recipient choose a channel: ACH, mailed check, two-party check, direct-pay (shop), or escrow. Honor lien priority (lienholder first up to payoff, residual to policyholder). Apply anti-fraud safeguards: recipient identity must match policyholder/lienholder of record; reject third-party redirection without assignment-of-benefits. Emit recipients[], totalDisbursed, disbursementDate, verificationRequired. Verify totalDisbursed equals settlementAmount. If verifying fails or any anti-fraud check trips, drop confidence and route to HITL.",
+      "skillRefs": ["skill.recipient-routing", "skill.channel-selection", "skill.anti-fraud-payment-check"],
+      "ontologyBinding": ["SettlementAmount", "Recipient", "PaymentChannel", "Disbursement"],
+      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.9, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    }
+  ],
+  "skills": [
+    { "id": "skill.upstream-aggregation",          "name": "Upstream DW Output Aggregation",  "skillFile": "skills/upstream-aggregation/SKILL.md",          "domain": "insurance/auto/settlement" },
+    { "id": "skill.policy-limits-resolution",      "name": "Policy Limits Resolution",        "skillFile": "skills/policy-limits-resolution/SKILL.md",      "domain": "insurance/auto/settlement" },
+    { "id": "skill.path-decomposition",            "name": "Settlement Path Decomposition",   "skillFile": "skills/path-decomposition/SKILL.md",            "domain": "insurance/auto/settlement" },
+    { "id": "skill.deductible-application",        "name": "Deductible Application Order",    "skillFile": "skills/deductible-application/SKILL.md",        "domain": "insurance/auto/settlement" },
+    { "id": "skill.sublimit-cap",                  "name": "Sub-limit Cap",                   "skillFile": "skills/sublimit-cap/SKILL.md",                  "domain": "insurance/auto/settlement" },
+    { "id": "skill.state-template-selection",      "name": "State Disclosure Template",       "skillFile": "skills/state-template-selection/SKILL.md",      "domain": "insurance/auto/settlement" },
+    { "id": "skill.appeal-rights-composition",     "name": "Appeal-rights Composition",       "skillFile": "skills/appeal-rights-composition/SKILL.md",     "domain": "insurance/auto/settlement" },
+    { "id": "skill.denial-language-cite",          "name": "Denial Language Citation",        "skillFile": "skills/denial-language-cite/SKILL.md",          "domain": "insurance/auto/settlement" },
+    { "id": "skill.recipient-routing",             "name": "Recipient Routing",               "skillFile": "skills/recipient-routing/SKILL.md",             "domain": "insurance/auto/settlement" },
+    { "id": "skill.channel-selection",             "name": "Payment Channel Selection",       "skillFile": "skills/channel-selection/SKILL.md",             "domain": "insurance/auto/settlement" },
+    { "id": "skill.anti-fraud-payment-check",      "name": "Anti-Fraud Payment Check",        "skillFile": "skills/anti-fraud-payment-check/SKILL.md",      "domain": "insurance/auto/settlement" }
+  ],
+  "tools": [
+    { "id": "tool.claim-store",      "name": "Claim Store",            "mcpEndpoint": "mcp://localhost/claim-store",      "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
+    { "id": "tool.policy-store",     "name": "Policy Store",           "mcpEndpoint": "mcp://localhost/policy-store",     "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.vehicle-lookup",   "name": "Vehicle Lookup (ACV)",   "mcpEndpoint": "mcp://localhost/vehicle-lookup",   "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
+    { "id": "tool.decision-journal", "name": "Decision Journal (RTI)", "mcpEndpoint": "mcp://localhost/decision-journal", "auth": { "kind": "entra-managed-identity" }, "backendComponent": "fabric-bronze" }
+  ],
+  "contextBindings": [
+    { "intent": "settlement_intake",   "dimensions": ["entity", "historical", "procedural"],    "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["policyholder-contact-channel"] } },
+    { "intent": "calculate_settlement","dimensions": ["entity", "procedural", "historical"],    "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["vehicle-history", "state-loss-ratio"], "WorkIQ": ["policyholder-contact-channel"] } },
+    { "intent": "state_disclosure",    "dimensions": ["regulatory", "procedural", "entity"],    "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["similar-claims"], "WorkIQ": ["document-review-channel"] } },
+    { "intent": "route_payment",       "dimensions": ["entity", "collaboration", "procedural"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["payment-ops-signal"] } }
+  ],
+  "decisionJournal": {
+    "eventHubTopic": "adp-v1-decisions",
+    "provenanceTagging": { "defaultOrigin": "DERIVED" },
+    "rtiTable": "adp.rti.decisions",
+    "bronzeTable": "adp.bronze.decisions"
+  }
+}

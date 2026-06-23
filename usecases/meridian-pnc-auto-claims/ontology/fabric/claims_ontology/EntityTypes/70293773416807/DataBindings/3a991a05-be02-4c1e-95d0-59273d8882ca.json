@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "3a991a05-be02-4c1e-95d0-59273d8882ca",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "acv",
+        "targetPropertyId": "8486481889697804413"
+      },
+      {
+        "sourceColumnName": "body_style",
+        "targetPropertyId": "8486481934842544372"
+      },
+      {
+        "sourceColumnName": "current_odometer",
+        "targetPropertyId": "8486481910930525909"
+      },
+      {
+        "sourceColumnName": "make",
+        "targetPropertyId": "8486482005673280704"
+      },
+      {
+        "sourceColumnName": "model",
+        "targetPropertyId": "8486481982996264656"
+      },
+      {
+        "sourceColumnName": "owner_person_id",
+        "targetPropertyId": "8486482049511720105"
+      },
+      {
+        "sourceColumnName": "trim",
+        "targetPropertyId": "8486481959354847267"
+      },
+      {
+        "sourceColumnName": "vin",
+        "targetPropertyId": "8486482074063631455"
+      },
+      {
+        "sourceColumnName": "year",
+        "targetPropertyId": "8486482024502198592"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "vehicle",
+      "sourceSchema": null
+    }
+  }
+}

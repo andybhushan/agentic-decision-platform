@@ -1,0 +1,156 @@
+{
+  "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
+  "package": {
+    "id": "loan-handler",
+    "version": "0.2.0",
+    "industry": "banking",
+    "useCase": "consumer-loan-origination",
+    "schemaVersion": "v1",
+    "signedBy": "anand-track-stub",
+    "registeredIn": "agent-365://adp-v1",
+    "compiledAt": "2026-05-29T00:00:00Z"
+  },
+  "digitalWorker": {
+    "id": "dw.loan-handler",
+    "name": "Consumer Loan Handler",
+    "description": "Three-agent banking DW. Intake parses an incoming loan application per BANK-002. Eligibility applies DTI / LTV / FICO gating per BANK-001 with ECOA Reg B compliance per BANK-004. Decision-letter generates the state-aware FCRA-compliant adverse-action letter (denial), the ECOA-compliant approval letter, or the counter-offer per BANK-003 + BANK-005. Three HITL gates: low-confidence eligibility, refer-to-underwriter, full-denial review.",
+    "entraAgentId": null,
+    "stateStore": { "kind": "in-memory-stub", "containerName": "dw-loan-handler-state", "partitionKey": "/subjectId" },
+    "corpusBinding": { "arrayKey": "applications", "subjectIdField": "applicationId" },
+    "schemaBinding": {
+      "primaryEntity": {
+        "factTable": "fact_loan_applications",
+        "factSubjectKey": "application_id",
+        "factForeignKey": "borrower_id",
+        "factDateColumn": "application_date",
+        "factDescColumns": ["loan_purpose", "decision", "state"],
+        "dimTable": "dim_borrower",
+        "dimKeyColumn": "borrower_id",
+        "dimDisplayColumns": ["full_name"]
+      },
+      "similarityFilters": ["loan_purpose", "state"]
+    },
+    "capabilities": [
+      "loan-application-intake",
+      "loan-eligibility",
+      "loan-decision-letter"
+    ],
+    "agentRefs": [
+      "agent.loan-application-intake",
+      "agent.loan-eligibility",
+      "agent.loan-decision-letter"
+    ],
+    "slos": [
+      { "metric": "intake_latency_p90_minutes", "target": 5,    "comparator": "<=", "window": "P30D" },
+      { "metric": "decline_appeal_rate",       "target": 0.10, "comparator": "<=", "window": "P90D" },
+      { "metric": "letter_delivery_p90_days",  "target": 15,   "comparator": "<=", "window": "P30D" }
+    ],
+    "orchestration": {
+      "strategy": "hybrid",
+      "stepFormation": "fully-declared",
+      "invariants": [
+        {
+          "id": "inv.no-protected-class-inputs",
+          "description": "Eligibility decision inputs must not reference protected class attributes per ECOA / Reg B.",
+          "ruleExpression": "audit.eligibilityInputs not-contains-any-of(protectedClassFields)"
+        },
+        {
+          "id": "inv.adverse-action-required-content",
+          "description": "Every adverse-action letter must include the federal ECOA statement, FCRA reason codes, and consumer-reporting-agency contact details per BANK-003.",
+          "ruleExpression": "letter.adverseActionContent contains-all-of(['ecoa-federal-statement', 'fcra-reason-codes', 'cra-contact-info'])"
+        }
+      ],
+      "hitlGates": [
+        {
+          "gateId": "gate.low-confidence-eligibility",
+          "trigger": "step.loan_eligibility.confidence < 0.6",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.refer-to-underwriter",
+          "trigger": "step.loan_eligibility.requiresHumanReview == true",
+          "surface": "operator-console"
+        },
+        {
+          "gateId": "gate.full-denial-review",
+          "trigger": "step.loan_decision_letter.adverseAction == true",
+          "surface": "operator-console"
+        }
+      ],
+      "boundedReasoningZones": [
+        {
+          "zoneId": "zone.letter-multipass",
+          "allowedAgents": ["agent.loan-decision-letter"],
+          "maxSteps": 3,
+          "returnPoint": "agent.loan-decision-letter"
+        }
+      ]
+    }
+  },
+  "agents": [
+    {
+      "id": "agent.loan-application-intake",
+      "kind": "prompt-agent",
+      "capability": "loan-application-intake",
+      "systemPrompt": "You are the Loan Application Intake Agent. Read the incoming loan application and produce a structured LoanApplication record per [[BANK-002]]. Required fields: applicant identity, income (with source + employer tenure), existing monthly debt (from credit bureau report), loan amount + term + purpose, collateral description + appraised value. Output booleans incomeVerified, creditVerified, collateralVerified. State confidence per field. Drop overall confidence below 0.6 if any verification boolean is false.",
+      "skillRefs": ["skill.application-field-extraction", "skill.verification-routing"],
+      "ontologyBinding": ["LoanApplication", "Applicant", "Collateral"],
+      "confidenceCalibration": { "lowThreshold": 0.4, "highThreshold": 0.85, "divergenceDetection": false },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.loan-eligibility",
+      "kind": "workflow-agent",
+      "capability": "loan-eligibility",
+      "systemPrompt": "You are the Loan Eligibility Agent. Apply [[BANK-001]] to the LoanApplication: compute DTI (existing monthly debt + proposed payment / verified gross monthly income), LTV (loan amount / appraised collateral value), and read FICO from the credit bureau merge. Apply the STRICTER of the three signals - no averaging, no auto-override. Emit decision (approve|approve-with-conditions|refer-to-underwriter|decline), decisionRationale, conditions[] (drawn from [[BANK-005]] condition codes), referralReason, riskStratum (A/B/C/D per [[BANK-005]] composite score), and BOOLEAN requiresHumanReview (true if decision is refer-to-underwriter or decline). NEVER factor in race, national origin, religion, gender identity, age, or any protected class per ECOA / Reg B [[BANK-004]].",
+      "skillRefs": ["skill.dti-compute", "skill.ltv-compute", "skill.fico-band-lookup", "skill.stricter-of-application", "skill.risk-stratum-assignment"],
+      "ontologyBinding": ["LoanApplication", "EligibilityDecision"],
+      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.9, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    },
+    {
+      "id": "agent.loan-decision-letter",
+      "kind": "workflow-agent",
+      "capability": "loan-decision-letter",
+      "systemPrompt": "You are the Loan Decision Letter Agent. Read the EligibilityDecision from the previous step and produce a state-aware, FCRA-compliant consumer letter. For decline / counter-offer / approve-with-conditions cases, the letter is an ADVERSE-ACTION notice and MUST include: (1) the verbatim federal ECOA statement per [[BANK-004]], (2) the four-or-fewer FCRA reason codes translated to plain consumer language per [[BANK-003]], (3) the three credit-reporting-agency names + addresses + toll-free phone numbers, (4) the state-specific overlay per BANK-003 (CA / NY / TX / MA / FL / IL / NAIC-default), and (5) the consumer's right to a free credit report + dispute rights. For approve cases, generate the offer letter with APR drawn from the BANK-005 pricing band for the assigned risk stratum + any conditions per BANK-005 condition codes. Emit BOOLEAN adverseAction (true for decline / counter / approve-with-conditions), the reason codes array, the letter text body, the language code (en / es), and BOOLEAN qualityCheckPassed (reading level <= grade 8, no protected-class references, ECOA statement verbatim, FCRA content present). NEVER reference race, religion, national origin, gender, age, marital status, or any protected class per [[BANK-004]]. Reading level: 8th grade or simpler.",
+      "skillRefs": ["skill.fcra-reason-translation", "skill.state-overlay-selection", "skill.spanish-co-sign", "skill.reading-level-check"],
+      "ontologyBinding": ["EligibilityDecision", "AdverseActionNotice", "OfferLetter"],
+      "confidenceCalibration": { "lowThreshold": 0.7, "highThreshold": 0.92, "divergenceDetection": true },
+      "foundryModel": "gpt-4o",
+      "deploymentTarget": "foundry-agent-service"
+    }
+  ],
+  "skills": [
+    { "id": "skill.application-field-extraction", "name": "Application Field Extraction", "skillFile": "skills/application-field-extraction/SKILL.md", "domain": "banking/consumer-lending/intake" },
+    { "id": "skill.verification-routing",         "name": "Verification Routing",         "skillFile": "skills/verification-routing/SKILL.md",         "domain": "banking/consumer-lending/intake" },
+    { "id": "skill.dti-compute",                  "name": "DTI Computation",              "skillFile": "skills/dti-compute/SKILL.md",                  "domain": "banking/consumer-lending/eligibility" },
+    { "id": "skill.ltv-compute",                  "name": "LTV Computation",              "skillFile": "skills/ltv-compute/SKILL.md",                  "domain": "banking/consumer-lending/eligibility" },
+    { "id": "skill.fico-band-lookup",             "name": "FICO Band Lookup",             "skillFile": "skills/fico-band-lookup/SKILL.md",             "domain": "banking/consumer-lending/eligibility" },
+    { "id": "skill.stricter-of-application",      "name": "Stricter-Of Rule Application", "skillFile": "skills/stricter-of-application/SKILL.md",      "domain": "banking/consumer-lending/eligibility" },
+    { "id": "skill.risk-stratum-assignment",      "name": "Risk Stratum Assignment",      "skillFile": "skills/risk-stratum-assignment/SKILL.md",      "domain": "banking/consumer-lending/eligibility" },
+    { "id": "skill.fcra-reason-translation",      "name": "FCRA Reason Code Translation", "skillFile": "skills/fcra-reason-translation/SKILL.md",      "domain": "banking/consumer-lending/disclosure" },
+    { "id": "skill.state-overlay-selection",      "name": "State Overlay Selection",      "skillFile": "skills/state-overlay-selection/SKILL.md",      "domain": "banking/consumer-lending/disclosure" },
+    { "id": "skill.spanish-co-sign",              "name": "Spanish Letter Co-Sign",       "skillFile": "skills/spanish-co-sign/SKILL.md",              "domain": "banking/consumer-lending/disclosure" },
+    { "id": "skill.reading-level-check",          "name": "Reading Level Quality Check",  "skillFile": "skills/reading-level-check/SKILL.md",          "domain": "banking/consumer-lending/disclosure" }
+  ],
+  "tools": [
+    { "id": "tool.borrower-profile",     "name": "Borrower Profile",      "mcpEndpoint": "mcp://localhost/borrower-profile",     "auth": { "kind": "entra-managed-identity" }, "backendComponent": "core-banking-stub" },
+    { "id": "tool.credit-bureau-lookup", "name": "Credit Bureau Lookup",  "mcpEndpoint": "mcp://localhost/credit-bureau",        "auth": { "kind": "api-key-stub" },           "backendComponent": "tri-bureau-stub" }
+  ],
+  "contextBindings": [
+    { "intent": "parse_loan_application", "dimensions": ["entity", "procedural"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["entity-history"], "WorkIQ": null } },
+    { "intent": "evaluate_eligibility",   "dimensions": ["procedural", "regulatory", "entity"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["entity-history"], "WorkIQ": null } },
+    { "intent": "draft_decision_letter",  "dimensions": ["regulatory", "procedural", "collaboration"], "latencyTier": "warm",
+      "sourceBindings": { "FabricIQ": ["entity-history"], "WorkIQ": null } }
+  ],
+  "decisionJournal": {
+    "eventHubTopic": "adp-v1-decisions",
+    "provenanceTagging": { "defaultOrigin": "DERIVED" },
+    "rtiTable": "adp.rti.decisions",
+    "bronzeTable": "adp.bronze.decisions"
+  }
+}

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Adp.ToolRuntime</RootNamespace>
+    <AssemblyName>Adp.ToolRuntime</AssemblyName>
+  </PropertyGroup>
+</Project>

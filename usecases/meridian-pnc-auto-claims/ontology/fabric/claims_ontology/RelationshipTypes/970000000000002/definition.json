@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "970000000000002",
+  "name": "evidence_has_consent",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "900000000000001"
+  },
+  "target": {
+    "entityTypeId": "900000000000002"
+  }
+}

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Adp.PackageModel</RootNamespace>
+    <AssemblyName>Adp.PackageModel</AssemblyName>
+  </PropertyGroup>
+</Project>

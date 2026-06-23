@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "970000000000004",
+  "name": "visual_evidence_depicts_vehicle_damage",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "900000000000004"
+  },
+  "target": {
+    "entityTypeId": "181587127634814"
+  }
+}

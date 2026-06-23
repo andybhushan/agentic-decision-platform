@@ -1,0 +1,64 @@
+{
+  "_comment": "Sub-type: Hit & Run. Unknown third-party vehicle; COLL with possible deductible waiver; witness narrative.",
+  "policy": {
+    "policyNumber": "CA-AUTO-2024-9052",
+    "lineOfBusiness": "PersonalAuto",
+    "status": "active",
+    "effectiveDate": "2024-09-01",
+    "expirationDate": "2026-09-01",
+    "ratingState": "CA",
+    "namedInsured": {
+      "name": "Priya Nair",
+      "partyRef": "party_priya_nair",
+      "address": { "line1": "1200 Telegraph Ave", "city": "Oakland", "state": "CA", "postalCode": "94612" }
+    },
+    "coverages": [
+      { "code": "COLL", "limitPerOccurrence": 45000, "deductible": 750 },
+      { "code": "MEDPAY", "limitPerOccurrence": 5000 },
+      { "code": "TOW", "limitPerOccurrence": 150 }
+    ],
+    "exclusions": [],
+    "endorsements": [],
+    "vehicles": [
+      { "vin": "JTDKARFU2J3059921", "year": 2021, "make": "Toyota", "model": "Prius", "garagingState": "CA" }
+    ]
+  },
+  "claim": {
+    "claimId": "CA-2026-0000688",
+    "policyNumber": "CA-AUTO-2024-9052",
+    "lossType": "HitAndRun",
+    "lossDate": "2026-06-05T22:15:00Z",
+    "reportDate": "2026-06-05T22:55:00Z",
+    "reportingChannel": "Phone",
+    "lossLocation": {
+      "line1": "Broadway & 14th St",
+      "city": "Oakland",
+      "state": "CA",
+      "postalCode": "94612",
+      "geocode": { "latitude": 37.8044, "longitude": -122.2712 }
+    },
+    "claimant": { "partyRef": "party_priya_nair", "name": "Priya Nair", "role": "named-insured", "contactPhone": "+1-510-555-0199" },
+    "involvedVehicles": [
+      { "vin": "JTDKARFU2J3059921", "role": "insured-vehicle", "drivable": true, "reportedDamageAreas": ["rear", "rear-right", "bumper"] },
+      { "role": "third-party-vehicle", "drivable": true, "reportedDamageAreas": [] }
+    ],
+    "injuryReported": false,
+    "policeReportNumber": "OPD-2026-220817",
+    "narrative": {
+      "text": "Someone rear-ended me at the light and drove off before I could get their plate. A witness stopped and gave a statement. My rear bumper is damaged.",
+      "language": "en-US",
+      "capturedVia": "Phone",
+      "capturedAt": "2026-06-05T22:55:00Z",
+      "piiRedactionApplied": true,
+      "segments": [
+        { "speaker": "agent", "text": "Can you tell me what happened?", "startSec": 12.0, "endSec": 14.5, "confidence": 0.98 },
+        { "speaker": "claimant", "text": "Someone rear-ended me and drove off. A witness stopped.", "startSec": 15.0, "endSec": 21.0, "confidence": 0.93 }
+      ],
+      "extractedSignals": { "injuryMentioned": false, "vehicleDrivable": true, "otherPartiesMentioned": 1, "policeReportMentioned": true }
+    },
+    "evidence": [
+      { "evidenceId": "asset_photo_har_01", "type": "photo", "uri": "onelake://claims/CA-2026-0000688/rear.jpg", "mimeType": "image/jpeg", "capturedAt": "2026-06-05T22:40:00Z", "source": "claimant-upload", "label": "rear-bumper", "consent": { "required": false, "decision": "not-applicable", "consentType": "none" }, "piiRedactionApplied": true },
+      { "evidenceId": "asset_transcript_har_01", "type": "voice-transcript", "uri": "onelake://claims/CA-2026-0000688/fnol-call.json", "mimeType": "application/json", "capturedAt": "2026-06-05T22:55:00Z", "source": "ivr-call", "label": "fnol-intake-call", "consent": { "required": true, "decision": "granted", "consentType": "recording", "capturedAt": "2026-06-05T22:50:00Z", "captureChannel": "ivr", "captureActor": "claimant" }, "piiRedactionApplied": true }
+    ]
+  }
+}

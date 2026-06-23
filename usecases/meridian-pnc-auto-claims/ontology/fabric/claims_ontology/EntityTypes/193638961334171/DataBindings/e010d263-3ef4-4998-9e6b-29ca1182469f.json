@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "e010d263-3ef4-4998-9e6b-29ca1182469f",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "damage_id",
+        "targetPropertyId": "8486480185849267652"
+      },
+      {
+        "sourceColumnName": "damage_severity",
+        "targetPropertyId": "8486480139438140208"
+      },
+      {
+        "sourceColumnName": "labor_hours",
+        "targetPropertyId": "8486480119163845137"
+      },
+      {
+        "sourceColumnName": "part_cost",
+        "targetPropertyId": "8486480094673554722"
+      },
+      {
+        "sourceColumnName": "part_id",
+        "targetPropertyId": "8486480207713856710"
+      },
+      {
+        "sourceColumnName": "part_name",
+        "targetPropertyId": "8486480163044863377"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "damage_part",
+      "sourceSchema": null
+    }
+  }
+}

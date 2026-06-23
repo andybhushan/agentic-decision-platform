@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v0/event-payloads.schema.json",
+  "title": "Claims domain event payloads (v1)",
+  "description": "Per-eventType payload schemas. Every field is an attribute (or ontology-derived value) of the wedge ontology (auto-claims-ontology.alpha.md), so this file IS the ontology-emitted validation contract for DomainEvent.payload. The event-store resolves eventType -> $def via x-eventTypeMap and validates before append.",
+  "x-eventTypeMap": {
+    "FNOLReceived": "#/$defs/FNOLReceived",
+    "ClaimOpened": "#/$defs/ClaimOpened",
+    "TriageCompleted": "#/$defs/TriageCompleted",
+    "CoverageVerified": "#/$defs/CoverageVerified",
+    "EstimateDrafted": "#/$defs/EstimateDrafted",
+    "GateTripped": "#/$defs/GateTripped",
+    "HitlResolved": "#/$defs/HitlResolved",
+    "ClaimantNotified": "#/$defs/ClaimantNotified",
+    "ExplainabilityRecorded": "#/$defs/ExplainabilityRecorded",
+    "ClaimResolved": "#/$defs/ClaimResolved"
+  },
+  "$defs": {
+    "money": { "type": "number", "minimum": 0 },
+    "probability": { "type": "number", "minimum": 0, "maximum": 1 },
+    "coverageCode": { "type": "string", "enum": ["COLL", "COMP", "RENT", "TOW", "BI", "PD", "MEDPAY", "PIP", "GAP"] },
+    "reportingChannel": { "type": "string", "enum": ["Phone", "MobileApp", "Web", "Agent", "Telematics", "IoTCrashDetection", "Email", "Chatbot"] },
+    "geocode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["latitude", "longitude"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 }
+      }
+    },
+
+    "FNOLReceived": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawFnolRef", "claimantRef", "reportingChannel"],
+      "properties": {
+        "rawFnolRef": { "type": "string" },
+        "claimantRef": { "type": "string" },
+        "geocode": { "$ref": "#/$defs/geocode" },
+        "reportingChannel": { "$ref": "#/$defs/reportingChannel" }
+      }
+    },
+
+    "ClaimOpened": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policyNumber", "lossDate", "reportingChannel"],
+      "properties": {
+        "policyNumber": { "type": "string", "pattern": "^[A-Z]{2}-AUTO-\\d{4}-\\d{4}$" },
+        "lossDate": { "type": "string", "format": "date-time" },
+        "reportingChannel": { "$ref": "#/$defs/reportingChannel" },
+        "lineOfBusiness": { "type": "string", "const": "PersonalAuto" }
+      }
+    },
+
+    "TriageCompleted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence", "fraudSignal", "recommendedPath"],
+      "properties": {
+        "confidence": { "$ref": "#/$defs/probability" },
+        "fraudSignal": { "type": "string", "enum": ["clean", "flagged", "escalate"] },
+        "recommendedPath": { "type": "string", "enum": ["STP", "HITL"] },
+        "classification": { "type": "string" }
+      }
+    },
+
+    "CoverageVerified": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["determination", "adverseDetermination", "applicableCoverages"],
+      "properties": {
+        "determination": { "type": "string", "enum": ["covered", "partial", "adverse"] },
+        "adverseDetermination": { "type": "boolean" },
+        "deductible": { "$ref": "#/$defs/money" },
+        "limitPerOccurrence": { "$ref": "#/$defs/money" },
+        "rentalDailyLimit": { "$ref": "#/$defs/money" },
+        "rentalMaxDays": { "type": "integer", "minimum": 0 },
+        "applicableCoverages": { "type": "array", "items": { "$ref": "#/$defs/coverageCode" }, "minItems": 1 },
+        "citations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "EstimateDrafted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repairCostEstimate", "actualCashValue", "totalLossRatio", "totalLossProbability", "recommendation"],
+      "properties": {
+        "repairCostEstimate": { "$ref": "#/$defs/money" },
+        "actualCashValue": { "$ref": "#/$defs/money" },
+        "totalLossRatio": { "type": "number", "minimum": 0 },
+        "totalLossProbability": { "$ref": "#/$defs/probability" },
+        "recommendation": { "type": "string", "enum": ["repair", "total-loss-probable"] },
+        "lineItemCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+
+    "GateTripped": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateId", "ruleId", "ruleVersion", "gateType", "triggerReason"],
+      "properties": {
+        "gateId": { "type": "string", "enum": ["G1", "G2", "G3", "G5"] },
+        "ruleId": { "type": "string" },
+        "ruleVersion": { "type": "string" },
+        "gateType": { "type": "string", "enum": ["soft", "hard"] },
+        "triggerReason": { "type": "string" },
+        "evidenceRefs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "HitlResolved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateId", "approver", "approverRole", "decision", "resolvedAt"],
+      "properties": {
+        "gateId": { "type": "string", "enum": ["G1", "G2", "G3", "G5"] },
+        "approver": { "type": "string" },
+        "approverRole": { "type": "string", "enum": ["adjuster", "licensed-adjuster", "supervisor"] },
+        "decision": { "type": "string", "enum": ["approved", "denied", "escalate"] },
+        "edits": { "type": "string" },
+        "resolvedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "ClaimantNotified": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["messageRef", "channel"],
+      "properties": {
+        "messageRef": { "type": "string" },
+        "channel": { "type": "string", "enum": ["sms", "web", "email"] },
+        "postG5ApprovalRef": { "type": "string" }
+      }
+    },
+
+    "ExplainabilityRecorded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "ontologyVersion", "ruleVersions"],
+      "properties": {
+        "artifactId": { "type": "string" },
+        "ontologyVersion": { "type": "string" },
+        "ruleVersions": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "naicRefs": { "type": "array", "items": { "type": "string" } },
+        "caFcsprRefs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "ClaimResolved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolution"],
+      "properties": {
+        "resolution": { "type": "string" },
+        "totalCycleMinutes": { "type": "integer", "minimum": 0 },
+        "adjusterTouches": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

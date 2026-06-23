@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737197039375488504",
+  "name": "claim_has_adjuster",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "140535896199627"
+  },
+  "target": {
+    "entityTypeId": "4218324214423"
+  }
+}

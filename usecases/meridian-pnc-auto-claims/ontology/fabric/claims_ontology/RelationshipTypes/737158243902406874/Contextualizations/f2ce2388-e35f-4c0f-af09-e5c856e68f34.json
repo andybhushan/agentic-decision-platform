@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "f2ce2388-e35f-4c0f-af09-e5c856e68f34",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "exposure",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "exposure_id",
+      "targetPropertyId": "8486480648971948851"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "coverage_id",
+      "targetPropertyId": "8486482284044786368"
+    }
+  ]
+}

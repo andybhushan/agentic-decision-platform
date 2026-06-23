@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "2f4d1799-6f0a-4060-962e-42a955fe66e4",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "amount",
+        "targetPropertyId": "8486479496924885448"
+      },
+      {
+        "sourceColumnName": "approved_by_adjuster_id",
+        "targetPropertyId": "8486479515806886611"
+      },
+      {
+        "sourceColumnName": "cleared_at",
+        "targetPropertyId": "8486479406738206742"
+      },
+      {
+        "sourceColumnName": "exposure_id",
+        "targetPropertyId": "8486479559530878674"
+      },
+      {
+        "sourceColumnName": "issued_at",
+        "targetPropertyId": "8486479429135912497"
+      },
+      {
+        "sourceColumnName": "payee_person_id",
+        "targetPropertyId": "8486479540581046271"
+      },
+      {
+        "sourceColumnName": "payment_id",
+        "targetPropertyId": "8486479584799864889"
+      },
+      {
+        "sourceColumnName": "payment_method",
+        "targetPropertyId": "8486479470964363427"
+      },
+      {
+        "sourceColumnName": "payment_type",
+        "targetPropertyId": "8486479449599670237"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "payment",
+      "sourceSchema": null
+    }
+  }
+}

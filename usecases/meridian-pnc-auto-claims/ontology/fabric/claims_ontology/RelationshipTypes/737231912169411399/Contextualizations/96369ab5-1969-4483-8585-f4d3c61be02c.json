@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "96369ab5-1969-4483-8585-f4d3c61be02c",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "policy_term",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "term_id",
+      "targetPropertyId": "8486482480853533850"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "policy_number",
+      "targetPropertyId": "8486482632809044585"
+    }
+  ]
+}

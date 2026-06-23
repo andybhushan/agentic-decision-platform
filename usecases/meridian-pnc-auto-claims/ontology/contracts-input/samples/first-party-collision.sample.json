@@ -1,0 +1,61 @@
+{
+  "_comment": "Sub-type: First-Party Collision. This is the alpha anchor claim (CA-2026-0000123) that drives the G3 total-loss gate (~0.71). Validates against policy.schema.json + claim.schema.json.",
+  "policy": {
+    "policyNumber": "CA-AUTO-2024-7891",
+    "lineOfBusiness": "PersonalAuto",
+    "status": "active",
+    "effectiveDate": "2024-03-01",
+    "expirationDate": "2026-03-01",
+    "ratingState": "CA",
+    "namedInsured": {
+      "name": "Maya Alvarez",
+      "partyRef": "party_maya_alvarez",
+      "address": { "line1": "482 Laurel Ave", "city": "San Jose", "state": "CA", "postalCode": "95126" }
+    },
+    "coverages": [
+      { "code": "COLL", "limitPerOccurrence": 50000, "deductible": 1000 },
+      { "code": "COMP", "limitPerOccurrence": 50000, "deductible": 500 },
+      { "code": "RENT", "limitPerOccurrence": 900, "rentalDailyLimit": 50, "rentalMaxDays": 30 },
+      { "code": "TOW", "limitPerOccurrence": 200 }
+    ],
+    "exclusions": [
+      { "code": "EXCL-RACING", "description": "Loss during organized racing", "appliesToCoverage": "COLL" }
+    ],
+    "endorsements": [],
+    "vehicles": [
+      { "vin": "1HGCM82633A004352", "year": 2022, "make": "Honda", "model": "Accord", "trim": "EX-L", "garagingState": "CA" }
+    ]
+  },
+  "claim": {
+    "claimId": "CA-2026-0000123",
+    "policyNumber": "CA-AUTO-2024-7891",
+    "lossType": "FirstPartyCollision",
+    "lossDate": "2026-05-30T18:42:00Z",
+    "reportDate": "2026-05-30T19:10:00Z",
+    "reportingChannel": "MobileApp",
+    "lossLocation": {
+      "line1": "I-280 N near Bird Ave",
+      "city": "San Jose",
+      "state": "CA",
+      "postalCode": "95126",
+      "geocode": { "latitude": 37.3251, "longitude": -121.8967 }
+    },
+    "claimant": { "partyRef": "party_maya_alvarez", "name": "Maya Alvarez", "role": "named-insured", "contactPhone": "+1-408-555-0142" },
+    "involvedVehicles": [
+      { "vin": "1HGCM82633A004352", "role": "insured-vehicle", "drivable": false, "reportedDamageAreas": ["front", "front-left", "engine-bay"] }
+    ],
+    "injuryReported": false,
+    "narrative": {
+      "text": "I was merging onto the freeway and hit the center divider hard. The front end is crushed and the airbags went off. The car won't start.",
+      "language": "en-US",
+      "capturedVia": "MobileApp",
+      "capturedAt": "2026-05-30T19:10:00Z",
+      "piiRedactionApplied": true,
+      "extractedSignals": { "injuryMentioned": false, "vehicleDrivable": false, "otherPartiesMentioned": 0, "policeReportMentioned": false }
+    },
+    "evidence": [
+      { "evidenceId": "asset_photo_fpc_01", "type": "photo", "uri": "onelake://claims/CA-2026-0000123/front.jpg", "mimeType": "image/jpeg", "capturedAt": "2026-05-30T19:08:00Z", "source": "mobile-pwa", "label": "front-crush", "consent": { "required": false, "decision": "not-applicable", "consentType": "none" }, "piiRedactionApplied": true },
+      { "evidenceId": "asset_dashcam_fpc_01", "type": "dashcam-clip", "uri": "onelake://claims/CA-2026-0000123/dashcam.mp4", "mimeType": "video/mp4", "capturedAt": "2026-05-30T18:42:10Z", "source": "telematics", "label": "impact", "consent": { "required": true, "decision": "granted", "consentType": "dashcam_access", "capturedAt": "2026-05-30T19:09:00Z", "captureChannel": "mobile_pwa", "captureActor": "policyholder", "provider": "DriveSync" }, "piiRedactionApplied": true }
+    ]
+  }
+}

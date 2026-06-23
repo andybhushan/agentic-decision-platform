@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737395148077694083",
+  "name": "payment_has_adjuster",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "232012111412554"
+  },
+  "target": {
+    "entityTypeId": "4218324214423"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "8316b2b0-c833-4597-b3bd-2ae58b5e8702",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "loss_event_party",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "loss_event_id",
+      "targetPropertyId": "8486481425213456590"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "loss_event_id",
+      "targetPropertyId": "8486481726616021656"
+    }
+  ]
+}

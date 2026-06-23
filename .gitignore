@@ -1,0 +1,39 @@
+# --- Node / Vite ---
+node_modules/
+dist/
+.vite/
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# --- .NET ---
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# --- Azure Functions / secrets ---
+local.settings.json
+.env
+.env.local
+.env.*.local
+*.publishsettings
+
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+
+# --- Build / deploy artifacts & secrets ---
+build/.sql-admin-pw
+build/tracesapi-publish/
+build/tracesapi.zip
+build/*.log
+build/*.err
+
+# --- generated build/data outputs (full) ---
+build/
+**/build/
+out/
+**/out/
+*.tsbuildinfo

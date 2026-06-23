@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "e0000002-0000-4000-8000-000000000002",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "consent_id",
+        "targetPropertyId": "950000000000010"
+      },
+      {
+        "sourceColumnName": "consent_type",
+        "targetPropertyId": "950000000000011"
+      },
+      {
+        "sourceColumnName": "decision",
+        "targetPropertyId": "950000000000012"
+      },
+      {
+        "sourceColumnName": "capture_channel",
+        "targetPropertyId": "950000000000013"
+      },
+      {
+        "sourceColumnName": "capture_actor",
+        "targetPropertyId": "950000000000014"
+      },
+      {
+        "sourceColumnName": "captured_at",
+        "targetPropertyId": "950000000000015"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "consent",
+      "sourceSchema": null
+    }
+  }
+}

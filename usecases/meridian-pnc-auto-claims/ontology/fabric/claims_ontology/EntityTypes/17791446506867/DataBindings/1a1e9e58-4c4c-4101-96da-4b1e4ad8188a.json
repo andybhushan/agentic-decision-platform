@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "1a1e9e58-4c4c-4101-96da-4b1e4ad8188a",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "address_line",
+        "targetPropertyId": "8486482747616691303"
+      },
+      {
+        "sourceColumnName": "city",
+        "targetPropertyId": "8486482724008459540"
+      },
+      {
+        "sourceColumnName": "latitude",
+        "targetPropertyId": "8486482788891978090"
+      },
+      {
+        "sourceColumnName": "location_id",
+        "targetPropertyId": "8486482816942444635"
+      },
+      {
+        "sourceColumnName": "longitude",
+        "targetPropertyId": "8486482769809527766"
+      },
+      {
+        "sourceColumnName": "postal_code",
+        "targetPropertyId": "8486482678276912740"
+      },
+      {
+        "sourceColumnName": "state",
+        "targetPropertyId": "8486482699449198893"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "loss_location",
+      "sourceSchema": null
+    }
+  }
+}

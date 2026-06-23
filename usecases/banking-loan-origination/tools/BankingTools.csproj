@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Adp.UseCases.Banking.Tools</RootNamespace>
+    <AssemblyName>Adp.UseCases.Banking.Tools</AssemblyName>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\platform\src\ToolRuntime\ToolRuntime.csproj" />
+  </ItemGroup>
+</Project>

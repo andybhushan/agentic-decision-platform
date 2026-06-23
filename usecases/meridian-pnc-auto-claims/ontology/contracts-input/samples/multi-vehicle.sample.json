@@ -1,0 +1,63 @@
+{
+  "_comment": "Sub-type: Multi-Vehicle. Multiple involved vehicles, injury reported (MEDPAY/PIP path), liability split context for downstream estimation.",
+  "policy": {
+    "policyNumber": "CA-AUTO-2025-6644",
+    "lineOfBusiness": "PersonalAuto",
+    "status": "active",
+    "effectiveDate": "2025-04-10",
+    "expirationDate": "2026-04-10",
+    "ratingState": "CA",
+    "namedInsured": {
+      "name": "Sofia Romano",
+      "partyRef": "party_sofia_romano",
+      "address": { "line1": "9 Crescent Dr", "city": "Sacramento", "state": "CA", "postalCode": "95814" }
+    },
+    "coverages": [
+      { "code": "COLL", "limitPerOccurrence": 60000, "deductible": 1000 },
+      { "code": "BI", "limitPerOccurrence": 100000 },
+      { "code": "PD", "limitPerOccurrence": 50000 },
+      { "code": "MEDPAY", "limitPerOccurrence": 10000 },
+      { "code": "RENT", "limitPerOccurrence": 1000, "rentalDailyLimit": 50, "rentalMaxDays": 20 }
+    ],
+    "exclusions": [],
+    "endorsements": [],
+    "vehicles": [
+      { "vin": "1FTFW1ET5DFC10312", "year": 2020, "make": "Ford", "model": "F-150", "garagingState": "CA" }
+    ]
+  },
+  "claim": {
+    "claimId": "CA-2026-0000931",
+    "policyNumber": "CA-AUTO-2025-6644",
+    "lossType": "MultiVehicle",
+    "lossDate": "2026-06-08T17:05:00Z",
+    "reportDate": "2026-06-08T17:48:00Z",
+    "reportingChannel": "IoTCrashDetection",
+    "lossLocation": {
+      "line1": "US-50 W near 16th St",
+      "city": "Sacramento",
+      "state": "CA",
+      "postalCode": "95814",
+      "geocode": { "latitude": 38.5688, "longitude": -121.4905 }
+    },
+    "claimant": { "partyRef": "party_sofia_romano", "name": "Sofia Romano", "role": "named-insured", "contactPhone": "+1-916-555-0177" },
+    "involvedVehicles": [
+      { "vin": "1FTFW1ET5DFC10312", "role": "insured-vehicle", "drivable": false, "reportedDamageAreas": ["front", "hood", "radiator"] },
+      { "role": "third-party-vehicle", "drivable": false, "reportedDamageAreas": ["rear"] },
+      { "role": "third-party-vehicle", "drivable": true, "reportedDamageAreas": ["side"] }
+    ],
+    "injuryReported": true,
+    "policeReportNumber": "CHP-2026-558102",
+    "narrative": {
+      "text": "Traffic stopped suddenly. I couldn't brake in time and hit the car ahead, then a third car hit me from behind. My passenger has neck pain and we called an ambulance.",
+      "language": "en-US",
+      "capturedVia": "MobileApp",
+      "capturedAt": "2026-06-08T17:48:00Z",
+      "piiRedactionApplied": true,
+      "extractedSignals": { "injuryMentioned": true, "vehicleDrivable": false, "otherPartiesMentioned": 2, "policeReportMentioned": true }
+    },
+    "evidence": [
+      { "evidenceId": "asset_telemetry_mv_01", "type": "blackbox-telemetry", "uri": "onelake://claims/CA-2026-0000931/telemetry.json", "mimeType": "application/json", "capturedAt": "2026-06-08T17:05:05Z", "source": "telematics", "label": "crash-pulse", "consent": { "required": true, "decision": "granted", "consentType": "blackbox_diagnostics", "capturedAt": "2026-06-08T17:46:00Z", "captureChannel": "mobile_pwa", "captureActor": "policyholder" }, "piiRedactionApplied": true },
+      { "evidenceId": "asset_photo_mv_01", "type": "photo", "uri": "onelake://claims/CA-2026-0000931/front.jpg", "mimeType": "image/jpeg", "capturedAt": "2026-06-08T17:30:00Z", "source": "claimant-upload", "label": "front-impact", "consent": { "required": false, "decision": "not-applicable", "consentType": "none" }, "piiRedactionApplied": true }
+    ]
+  }
+}

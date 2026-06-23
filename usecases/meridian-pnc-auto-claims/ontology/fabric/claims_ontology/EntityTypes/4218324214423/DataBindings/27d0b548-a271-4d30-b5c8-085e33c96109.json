@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "27d0b548-a271-4d30-b5c8-085e33c96109",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "adjuster_id",
+        "targetPropertyId": "8486482988743288717"
+      },
+      {
+        "sourceColumnName": "authority_level",
+        "targetPropertyId": "8486482916209184102"
+      },
+      {
+        "sourceColumnName": "display_name",
+        "targetPropertyId": "8486482961970235045"
+      },
+      {
+        "sourceColumnName": "licensed_states",
+        "targetPropertyId": "8486482892514224589"
+      },
+      {
+        "sourceColumnName": "queue_id",
+        "targetPropertyId": "8486482941984117828"
+      },
+      {
+        "sourceColumnName": "specialty",
+        "targetPropertyId": "8486482868294062655"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "adjuster",
+      "sourceSchema": null
+    }
+  }
+}

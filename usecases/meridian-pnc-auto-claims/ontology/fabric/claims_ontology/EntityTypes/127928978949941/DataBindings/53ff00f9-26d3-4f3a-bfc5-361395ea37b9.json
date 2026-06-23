@@ -1,0 +1,28 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "53ff00f9-26d3-4f3a-bfc5-361395ea37b9",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "loss_event_id",
+        "targetPropertyId": "8486481425213456590"
+      },
+      {
+        "sourceColumnName": "person_id",
+        "targetPropertyId": "8486481398679295465"
+      },
+      {
+        "sourceColumnName": "role",
+        "targetPropertyId": "8486481377697045488"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "loss_event_party",
+      "sourceSchema": null
+    }
+  }
+}

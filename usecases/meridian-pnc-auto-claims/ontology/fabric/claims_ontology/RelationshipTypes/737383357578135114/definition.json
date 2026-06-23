@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737383357578135114",
+  "name": "payment_has_party_person",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "232012111412554"
+  },
+  "target": {
+    "entityTypeId": "273086419246650"
+  }
+}

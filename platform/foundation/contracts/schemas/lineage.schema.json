@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology.adp/claims/v1/lineage.schema.json",
+  "title": "Lineage block (multimodal / derived events)",
+  "description": "Attached to derived/multimodal PlatformEvents so any artifact traces to its origin and replays deterministically (spike X1 / issue #11). Combined with correlation.correlationId this forms the lineage chain EvidenceUploaded -> EvidenceAnalyzed -> downstream domain events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sourceEvidenceId", "sourceModality", "derivationStep", "processedBy"],
+  "properties": {
+    "parentEventId": { "type": "string", "description": "The event this was derived from." },
+    "sourceEvidenceId": { "type": "string", "description": "Originating EvidenceRef id." },
+    "sourceModality": { "type": "string", "enum": ["voice", "image", "video", "document"] },
+    "derivationStep": { "type": "string", "enum": ["ingest", "extract", "normalize", "summarize"] },
+    "processedBy": { "type": "string", "description": "agent/tool id (+ model) that produced this artifact." },
+    "ontologyRefs": { "type": "array", "items": { "type": "string" }, "description": "Ontology entity ids this artifact maps to (D1)." }
+  }
+}

@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adp-v1.local/schemas/agent-package.v1.schema.json",
+  "title": "Agent Package v1",
+  "description": "Runtime contract for a deployable agent package. A package declares one Digital Worker, the agents composing it, the skills each agent invokes, the tools each skill calls, orchestration policy, invariants, HITL gates, SLOs, and context bindings. The package is the only thing the platform compiles and executes — everything use-case-specific lives here, not in platform code. Schema is the contract; typed DSL authoring (TypedPackage) compiles to this JSON shape.",
+  "type": "object",
+  "required": ["package", "digitalWorker", "agents", "skills", "tools"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "description": "Optional pointer to this schema's location, useful for IDE autocomplete." },
+    "package": {
+      "type": "object",
+      "required": ["id", "version", "industry", "useCase", "schemaVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.-]+)?$" },
+        "industry": { "type": "string", "examples": ["insurance", "banking", "public-sector"] },
+        "useCase": { "type": "string", "examples": ["p-and-c-auto-claims"] },
+        "schemaVersion": { "const": "v1" },
+        "signedBy": { "type": "string" },
+        "registeredIn": { "type": "string", "description": "Agent 365 registry slug; null until registration", "examples": ["agent-365://adp-v1"] },
+        "compiledAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "digitalWorker": {
+      "type": "object",
+      "description": "Composition of agents with persistent identity (Entra Agent ID), state (Cosmos), accountability (SLOs).",
+      "required": ["id", "name", "capabilities", "agentRefs", "slos", "orchestration"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "entraAgentId": { "type": ["string", "null"], "description": "Persistent identity in Entra Agent ID; null until registered" },
+        "stateStore": {
+          "type": "object",
+          "properties": {
+            "kind": { "enum": ["cosmos-db", "in-memory-stub"] },
+            "containerName": { "type": "string" },
+            "partitionKey": { "type": "string", "description": "Field on the state document used as the Cosmos partition key", "default": "/subjectId" }
+          }
+        },
+        "corpusBinding": {
+          "type": "object",
+          "description": "Optional declaration of how the platform should resolve subject records from the corpus JSON file. Default (when omitted): arrayKey='claims', subjectIdField='claimNumber' (P&C-shaped historical default). Banking, healthcare, etc. packages declare their own keys.",
+          "properties": {
+            "arrayKey": { "type": "string", "default": "claims" },
+            "subjectIdField": { "type": "string", "default": "claimNumber" }
+          }
+        },
+        "schemaBinding": {
+          "type": "object",
+          "description": "Track 5 (ADR-0016): declares the Fabric/SQL schema this package's row-level semantic primitives target. The platform's primitives (primary-entity-history, similar-by-attributes, secondary-entity-history) are generic shapes; the package teaches its tables + columns. Without this binding, FabricLakehouseSource falls back to P&C defaults (fact_claims/dim_policyholder/dim_vehicle) for backward compat.",
+          "properties": {
+            "primaryEntity": { "$ref": "#/definitions/entityBinding" },
+            "secondaryEntity": { "$ref": "#/definitions/entityBinding" },
+            "similarityFilters": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Column names on the primary fact table used for the similar-by-attributes primitive's grouping (e.g., ['incident_type','state'] for Meridian, ['loan_purpose','state'] for banking)."
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "description": "Business capabilities this DW owns",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "agentRefs": {
+          "type": "array",
+          "description": "IDs of agents composing this DW (resolved against top-level 'agents')",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "slos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["metric", "target", "window"],
+            "properties": {
+              "metric": { "type": "string", "examples": ["intake_latency_p90_minutes", "decision_error_rate"] },
+              "target": { "type": "number" },
+              "comparator": { "enum": ["<=", "<", ">=", ">", "=="], "default": "<=" },
+              "window": { "type": "string", "examples": ["P30D", "P7D"] }
+            }
+          }
+        },
+        "orchestration": {
+          "type": "object",
+          "required": ["strategy", "stepFormation"],
+          "properties": {
+            "strategy": {
+              "enum": ["whole-path", "sense-then-act", "hybrid"],
+              "description": "Whole-path = plan upfront; sense-then-act = step-by-step; hybrid = sketch + step + meta-confidence. Hybrid recommended."
+            },
+            "stepFormation": {
+              "enum": ["fully-declared", "agent-planned", "hybrid"],
+              "description": "How runtime steps are formed. Hybrid = declared structure + bounded reasoning zones + invariants."
+            },
+            "boundedReasoningZones": {
+              "type": "array",
+              "description": "Constrained regions where an agent-planner may form steps from a limited agent set, with hard step limits and a return point.",
+              "items": {
+                "type": "object",
+                "required": ["zoneId", "allowedAgents", "maxSteps", "returnPoint"],
+                "properties": {
+                  "zoneId": { "type": "string" },
+                  "allowedAgents": { "type": "array", "items": { "type": "string" } },
+                  "maxSteps": { "type": "integer", "minimum": 1 },
+                  "returnPoint": { "type": "string" }
+                }
+              }
+            },
+            "invariants": {
+              "type": "array",
+              "description": "Hard constraints enforced across all execution paths",
+              "items": {
+                "type": "object",
+                "required": ["id", "description", "ruleExpression"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "description": { "type": "string" },
+                  "ruleExpression": { "type": "string", "description": "CEL-style expression evaluated by the platform at runtime" }
+                }
+              }
+            },
+            "hitlGates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["gateId", "trigger", "surface"],
+                "properties": {
+                  "gateId": { "type": "string" },
+                  "trigger": { "type": "string", "description": "CEL-style expression that opens the gate" },
+                  "surface": { "enum": ["operator-console", "teams-card", "m365-copilot-page", "email"] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "agents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "capability", "systemPrompt", "skillRefs"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "kind": {
+            "enum": ["prompt-agent", "workflow-agent", "hosted-agent", "edge-agent"],
+            "description": "prompt-agent = single LLM call; workflow-agent = multi-step graph; hosted-agent = long-running stateful (e.g. fraud); edge-agent = Foundry Local"
+          },
+          "capability": { "type": "string", "description": "Business service this agent exposes" },
+          "systemPrompt": { "type": "string" },
+          "skillRefs": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "ontologyBinding": {
+            "type": "array",
+            "description": "Fabric IQ entity types this agent reads/writes",
+            "items": { "type": "string" }
+          },
+          "confidenceCalibration": {
+            "type": "object",
+            "properties": {
+              "lowThreshold": { "type": "number", "minimum": 0, "maximum": 1 },
+              "highThreshold": { "type": "number", "minimum": 0, "maximum": 1 },
+              "divergenceDetection": { "type": "boolean", "default": false }
+            }
+          },
+          "foundryModel": { "type": "string", "examples": ["gpt-4o", "gpt-4o-mini", "phi-4"] },
+          "deploymentTarget": {
+            "enum": ["foundry-agent-service", "foundry-local", "container-apps"],
+            "default": "foundry-agent-service",
+            "description": "Where the agent runs. foundry-local for edge/private; container-apps for self-hosted Aspire services."
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Knowledge packages: SKILL.md + prompts + scripts + evaluation",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "skillFile"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "skillFile": { "type": "string", "description": "Relative path to SKILL.md" },
+          "promptFile": { "type": "string" },
+          "evalFile": { "type": "string", "description": "JSONL eval set used by the package compiler's Stage 2 validator" },
+          "domain": { "type": "string" }
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "MCP server endpoints",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "mcpEndpoint"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "mcpEndpoint": { "type": "string", "format": "uri-reference" },
+          "auth": {
+            "type": "object",
+            "properties": {
+              "kind": { "enum": ["entra-managed-identity", "entra-workload-identity", "api-key-stub", "oauth2"] },
+              "scope": { "type": "string" }
+            }
+          },
+          "backendComponent": {
+            "type": "string",
+            "examples": ["cosmos-db", "fabric-bronze", "azure-ai-search", "duck-creek-stub"]
+          }
+        }
+      }
+    },
+    "contextBindings": {
+      "type": "array",
+      "description": "Intent-based queries this package routes through the context layer (Fabric IQ + Foundry IQ + Work IQ).",
+      "items": {
+        "type": "object",
+        "required": ["intent", "dimensions"],
+        "properties": {
+          "intent": { "type": "string", "examples": ["verify_coverage", "triage_decision", "assign_adjuster"] },
+          "dimensions": {
+            "type": "array",
+            "items": { "enum": ["entity", "procedural", "regulatory", "historical", "collaboration", "temporal"] }
+          },
+          "latencyTier": { "enum": ["hot", "warm", "cold"], "default": "warm" },
+          "sourceBindings": {
+            "type": "object",
+            "description": "Per-source named-primitive routing for this intent. Key = context-source id (e.g., 'FabricIQ', 'WorkIQ'). Value = list of primitive names the source should invoke (allowing multiple shapes per intent — e.g., row-level history AND aggregated rollup). Empty list / null = 'this source has nothing for this intent'.",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "null" },
+                { "type": "array", "items": { "type": "string" } }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "decisionJournal": {
+      "type": "object",
+      "description": "Append-only record of every agent decision with provenance.",
+      "properties": {
+        "eventHubTopic": { "type": "string", "description": "Azure Event Hubs (Kafka API) topic name" },
+        "provenanceTagging": {
+          "type": "object",
+          "properties": {
+            "defaultOrigin": { "enum": ["GROUNDED", "DERIVED"], "default": "DERIVED", "description": "GROUNDED = traceable to authoritative source; DERIVED = inferred by an agent" }
+          }
+        },
+        "rtiTable": { "type": "string", "description": "Fabric Real-Time Intelligence KQL table", "examples": ["adp.rti.decisions"] },
+        "bronzeTable": { "type": "string", "description": "Cold-storage medallion landing table", "examples": ["adp.bronze.decisions"] }
+      }
+    }
+  },
+  "definitions": {
+    "entityBinding": {
+      "type": "object",
+      "required": ["factTable", "factSubjectKey", "factForeignKey", "factDateColumn", "factDescColumns"],
+      "properties": {
+        "factTable":           { "type": "string", "examples": ["fact_claims", "fact_loan_applications"] },
+        "factSubjectKey":      { "type": "string", "description": "Column on fact table that identifies an individual subject row", "examples": ["claim_number", "application_id"] },
+        "factForeignKey":      { "type": "string", "description": "Column that joins fact to dim entity (grouping key)", "examples": ["policyholder_id", "borrower_id"] },
+        "factDateColumn":      { "type": "string", "description": "Column used for ORDER BY DESC", "examples": ["incident_date", "application_date"] },
+        "factDescColumns":     { "type": "array", "items": { "type": "string" }, "description": "Columns surfaced in the fragment narrative" },
+        "dimTable":            { "type": "string", "description": "Optional dim table for JOIN to enrich display", "examples": ["dim_policyholder", "dim_borrower"] },
+        "dimKeyColumn":        { "type": "string", "description": "Dim table's primary key" },
+        "dimDisplayColumns":   { "type": "array", "items": { "type": "string" }, "description": "Columns from dim table used to format the display name" },
+        "entitySemantics":     { "type": "string", "description": "v1.1: ontology entity ID this table represents (e.g. 'acl:Claim', 'acl:Vehicle'). Optional label that flows into traces + docs portal so the runtime is honest about what each Delta table means in the v2.4 auto-claims ontology vocabulary.", "examples": ["acl:Claim", "acl:Vehicle", "acl:Borrower"] }
+      }
+    }
+  }
+}

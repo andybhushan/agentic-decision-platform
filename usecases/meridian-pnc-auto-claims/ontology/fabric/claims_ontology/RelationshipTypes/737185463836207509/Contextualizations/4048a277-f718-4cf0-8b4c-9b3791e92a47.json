@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "4048a277-f718-4cf0-8b4c-9b3791e92a47",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "claim",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "claim_number",
+      "targetPropertyId": "8486481326919205305"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "loss_event_id",
+      "targetPropertyId": "8486481726616021656"
+    }
+  ]
+}

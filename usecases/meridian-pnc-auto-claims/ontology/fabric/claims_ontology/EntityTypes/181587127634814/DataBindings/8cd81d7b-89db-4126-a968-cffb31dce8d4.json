@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "8cd81d7b-89db-4126-a968-cffb31dce8d4",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "claim_number",
+        "targetPropertyId": "8486480343014836679"
+      },
+      {
+        "sourceColumnName": "damage_id",
+        "targetPropertyId": "8486480389450740357"
+      },
+      {
+        "sourceColumnName": "estimate_amount",
+        "targetPropertyId": "8486480322625618200"
+      },
+      {
+        "sourceColumnName": "is_driveable",
+        "targetPropertyId": "8486480301285582497"
+      },
+      {
+        "sourceColumnName": "is_total_loss",
+        "targetPropertyId": "8486480278630812224"
+      },
+      {
+        "sourceColumnName": "repair_facility_id",
+        "targetPropertyId": "8486480252970407352"
+      },
+      {
+        "sourceColumnName": "vin",
+        "targetPropertyId": "8486480365381640245"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "vehicle_damage",
+      "sourceSchema": null
+    }
+  }
+}

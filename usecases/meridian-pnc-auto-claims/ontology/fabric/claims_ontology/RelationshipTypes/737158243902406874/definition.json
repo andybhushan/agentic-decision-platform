@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737158243902406874",
+  "name": "exposure_has_coverage",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "168609695624928"
+  },
+  "target": {
+    "entityTypeId": "57839148725181"
+  }
+}

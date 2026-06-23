@@ -1,0 +1,32 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "4307447c-8948-4479-a29e-bb9ae3cea807",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "claim_number",
+        "targetPropertyId": "8486479678287187434"
+      },
+      {
+        "sourceColumnName": "indicator_id",
+        "targetPropertyId": "8486479703121335921"
+      },
+      {
+        "sourceColumnName": "indicator_type",
+        "targetPropertyId": "8486479655995782494"
+      },
+      {
+        "sourceColumnName": "weight",
+        "targetPropertyId": "8486479631833550121"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "fraud_indicator",
+      "sourceSchema": null
+    }
+  }
+}

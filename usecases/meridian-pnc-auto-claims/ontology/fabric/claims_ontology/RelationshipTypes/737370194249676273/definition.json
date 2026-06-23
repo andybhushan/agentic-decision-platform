@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "737370194249676273",
+  "name": "total_loss_evaluation_has_claim",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "206491837735111"
+  },
+  "target": {
+    "entityTypeId": "140535896199627"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "3edb72d3-51c1-4012-89ed-d4aeb61fa263",
+  "dataBindingTable": {
+    "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+    "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+    "sourceTableName": "damage_part",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "part_id",
+      "targetPropertyId": "8486480207713856710"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "damage_id",
+      "targetPropertyId": "8486480389450740357"
+    }
+  ]
+}

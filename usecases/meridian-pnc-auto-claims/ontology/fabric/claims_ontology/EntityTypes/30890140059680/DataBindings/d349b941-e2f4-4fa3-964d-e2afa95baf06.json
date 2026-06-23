@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "d349b941-e2f4-4fa3-964d-e2afa95baf06",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "effective_first_term",
+        "targetPropertyId": "8486482543164465976"
+      },
+      {
+        "sourceColumnName": "issued_state",
+        "targetPropertyId": "8486482587419405962"
+      },
+      {
+        "sourceColumnName": "named_insured_person_id",
+        "targetPropertyId": "8486482563696417318"
+      },
+      {
+        "sourceColumnName": "policy_number",
+        "targetPropertyId": "8486482632809044585"
+      },
+      {
+        "sourceColumnName": "producer_code",
+        "targetPropertyId": "8486482609261493450"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "26e07f51-7085-4ccb-aeb2-89231b462f92",
+      "itemId": "4bee2408-b5c5-4b75-9263-2f28f618c3b9",
+      "sourceTableName": "policy",
+      "sourceSchema": null
+    }
+  }
+}
