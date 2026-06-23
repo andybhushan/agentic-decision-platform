@@ -2,6 +2,12 @@
 
 **LIVE** on Fabric workspace **`adp-v1`** (lakehouse `adp`, capacity `offeringsfabric001`, DT sub).
 
+## Deployed items (final)
+Two complementary realizations are live (both built from `data/fabric-gold-generator/`):
+1. **Fabric IQ Ontology** `claims_ontology` (item type **Ontology**) + auto-generated **GraphModel** `claims_ontology_graph_*` — the real Fabric IQ graph-ontology: 23 EntityTypes + RelationshipTypes + DataBindings to the `adp` lakehouse; **RefreshGraph Completed** (graph materialized). Built by `build-fabric-iq-ontology.mjs`. This is what `fabric_iq_agentic_retrieval` / a Data Agent grounds on.
+2. **Semantic model** `claims_semantic` (Direct Lake .bim) — Power BI model with the gate-rule DAX measures + glossary + PII OLS (below). Built by `build_ontology.mjs`.
+> Note: the 23 gold tables are valid Managed Delta (confirmed via the tables API); if the Lakehouse Explorer shows them under "Unidentified", just **refresh** the lakehouse — it's a metadata-sync display lag, not a data problem.
+
 ## What's deployed
 **`claims_ontology`** — a Direct Lake **semantic model** (the 23-entity domain ontology/graph), built by `data/fabric-gold-generator/build_ontology.mjs`:
 
