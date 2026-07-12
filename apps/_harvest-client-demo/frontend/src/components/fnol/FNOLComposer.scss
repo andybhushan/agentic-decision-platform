@@ -1,0 +1,81 @@
+.fnol-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  // Always 1rem bottom + extra for home bar on phones
+  padding: 0.625rem 0.75rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  background: #111111;
+  border-top: 1px solid #1f1f1f;
+  flex-shrink: 0;
+}
+
+.fnol-composer__row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  .cds--text-input-wrapper {
+    flex: 1;
+  }
+
+  // Round the input
+  .cds--text-input {
+    border-radius: 1.5rem !important;
+    background: #1c1c1c !important;
+    border: 1px solid #2d2d2d !important;
+    padding: 0.5rem 1rem !important;
+    height: 2.5rem !important;
+    font-size: 0.9375rem;
+
+    &:focus {
+      border-color: #0f62fe !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    &::placeholder { color: #4a4a4a; }
+  }
+
+  // Circular icon buttons
+  .cds--btn--ghost,
+  .cds--btn--primary {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    min-height: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cds--btn--primary {
+    background: #0f62fe;
+    &:hover { background: #0353e9; }
+    &:disabled { background: #2d2d2d; }
+  }
+}
+
+.fnol-composer__error {
+  font-size: 0.75rem;
+  color: #ff8389;
+  margin: 0 0.5rem;
+}
+
+.fnol-composer__hint {
+  font-size: 0.6875rem;
+  color: #525252;
+  margin: 0;
+  text-align: center;
+
+  &--recording {
+    color: #ff8389;
+    animation: pulse 1s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}

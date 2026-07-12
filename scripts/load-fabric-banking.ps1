@@ -13,8 +13,9 @@
 
 [CmdletBinding()]
 param(
-  [string]$WorkspaceId = '2da1224a-5142-4752-aebf-844736b503e6',
-  [string]$LakehouseId = 'c210bb9f-3225-43cb-b15c-05e2e7e9c0da',
+  # adp-v1 workspace / adp lakehouse (verified + loaded live 2026-07-12)
+  [string]$WorkspaceId = '12b39202-bbf7-4985-8eb1-541b3cde0071',
+  [string]$LakehouseId = '7ad533bb-706e-4528-b9d4-f6cd86cbf5dd',
   [string]$CorpusPath  = (Join-Path $PSScriptRoot '..\usecases\banking-loan-origination\data\borrowers-30.json')
 )
 

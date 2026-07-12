@@ -116,6 +116,7 @@ public sealed class DecisionIngestService : IAsyncDisposable
             emittedAt = evt.EmittedAt,
             ingestedAt = DateTimeOffset.UtcNow,
             citedSources = evt.CitedSources,
+            citedSourcesFull = evt.CitedSourcesFull,
             ontologyBindings = evt.OntologyBindings,
             regulatoryBasis = evt.RegulatoryBasis,
         };

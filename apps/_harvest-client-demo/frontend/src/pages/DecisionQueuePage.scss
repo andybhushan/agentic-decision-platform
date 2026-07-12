@@ -1,0 +1,1066 @@
+@use '@carbon/react/scss/spacing' as *;
+@use '@carbon/react/scss/breakpoint' as *;
+@use '../styles/design-tokens' as *;
+
+.decision-queue-page__layout {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 48px);
+  overflow: hidden;
+  background: $page-bg;
+}
+
+.decision-queue-page {
+  flex: 1;
+  padding: $spacing-05;
+  position: relative;
+  overflow-y: auto;
+
+  // Carbon Grid sets margin: auto centering. Override so the queue fills
+  // all available width up to the steward gutter.
+  margin-inline: 0;
+  max-width: none;
+  width: 100%;
+
+  [class*='cds--col'] {
+    padding-inline: 0;
+  }
+
+  // Reserve right-hand space while the Digital Steward is docked open so the
+  // queue cards never slide underneath it.
+  body.steward-docked & {
+    @include breakpoint(lg) {
+      padding-right: calc(340px + #{$spacing-07});
+    }
+  }
+
+  &__header {
+    margin-bottom: $spacing-05;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 12rem);
+  }
+
+  &__header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__description {
+    margin-top: $spacing-02;
+    color: $text-secondary;
+    font-size: 0.875rem;
+  }
+
+  // AI Brief Container - Separate from cards
+  &__ai-brief-container {
+    margin-bottom: $spacing-05;
+    background: $card-bg;
+    border-radius: 4px;
+    padding: $spacing-05;
+    border-left: 4px solid #0f62fe;
+  }
+
+  // Priority Section - Now just for cards
+  &__priority-section {
+    margin-bottom: $spacing-07;
+  }
+
+  &__section-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-03;
+  }
+
+  &__ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-02;
+    margin-bottom: $spacing-03;
+  }
+
+  &__ai-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #0f62fe;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  &__ai-badge-text {
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  &__next-claim-title {
+    margin: 0 0 $spacing-02 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    color: #78a9ff;
+  }
+
+  &__priority-description {
+    color: $text-primary;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: $spacing-02;
+  }
+
+  &__priority-why {
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-bottom: $spacing-03;
+  }
+
+  &__priority-bullets {
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+
+    p {
+      margin: $spacing-02 0;
+    }
+  }
+
+  &__priority-subheading {
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    margin: 0 0 $spacing-03 0;
+  }
+
+  &__priority-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-05;
+    margin-top: $spacing-05;
+
+    @include breakpoint-down(lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__priority-card {
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    border: 2px solid transparent;
+    padding: $spacing-05;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    &--selected {
+      border-color: #4589ff;
+      background: rgba(69, 137, 255, 0.08);
+      box-shadow: 0 0 0 1px rgba(69, 137, 255, 0.3);
+    }
+
+    &--highlighted {
+      border-color: #0f62fe;
+      background: linear-gradient(135deg, rgba(15, 98, 254, 0.05) 0%, rgba(15, 98, 254, 0.02) 100%);
+      box-shadow: 0 2px 8px rgba(15, 98, 254, 0.2);
+
+      &:hover {
+        border-color: #4589ff;
+        background: linear-gradient(135deg, rgba(15, 98, 254, 0.1) 0%, rgba(15, 98, 254, 0.05) 100%);
+        box-shadow: 0 4px 16px rgba(15, 98, 254, 0.35);
+      }
+    }
+  }
+
+  &__card-flag {
+    display: flex;
+    align-items: center;
+    min-height: 22px;
+    margin-bottom: $spacing-03;
+  }
+
+  &__next-pill {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    background: rgba(69, 137, 255, 0.14);
+    border: 1px solid rgba(69, 137, 255, 0.35);
+    color: #a6c8ff;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 3px 10px 3px 8px;
+
+    svg {
+      fill: #a6c8ff;
+      flex-shrink: 0;
+    }
+  }
+
+  &__priority-indicator {
+    position: absolute;
+    top: $spacing-03;
+    right: $spacing-03;
+  }
+
+  &__priority-icon {
+    background: #0f62fe;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #0353e9;
+    }
+  }
+
+  &__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-03;
+  }
+
+  &__card-id-row {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-03;
+  }
+
+  &__card-id {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+
+  &__card-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-03;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: $spacing-02 0 $spacing-03 0;
+    color: $text-primary;
+  }
+
+  &__insured {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  &__insured-name {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__card-description {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    line-height: 1.4;
+    margin-bottom: $spacing-03;
+    min-height: 40px;
+  }
+
+  &__card-why {
+    font-size: 0.75rem;
+    color: #a6c8ff;
+    line-height: 1.4;
+    margin: 0 0 $spacing-05 0;
+  }
+
+  &__card-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-04;
+    margin-bottom: $spacing-05;
+    padding: $spacing-04 0;
+    border-top: 1px solid $card-border;
+    border-bottom: 1px solid $card-border;
+  }
+
+  &__card-metric {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+  }
+
+  &__card-metric-label {
+    font-size: 0.6875rem;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+
+  &__card-metric-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  // --- 2x2 metric grid (card metrics only) ---
+  &__metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-03;
+    margin: $spacing-04 0 $spacing-05 0;
+  }
+
+  &__metric-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: $spacing-04;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid $card-border;
+    border-radius: 6px;
+  }
+
+  &__metric-value {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: $text-primary;
+
+    &--gap {
+      color: $esc-text;
+    }
+  }
+
+  &__metric-label {
+    font-size: 0.6875rem;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+
+  &__confidence-segments {
+    display: flex;
+    gap: 3px;
+    margin-top: $spacing-03;
+  }
+
+  &__confidence-segment {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.12);
+    transition: background 0.3s ease;
+
+    &--on { background: $accent-teal; }
+    &--high { background: $accent-green; }
+    &--medium { background: $accent-blue; }
+    &--low { background: $esc-text; }
+  }
+
+  &__card-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-03;
+    margin-bottom: $spacing-05;
+    padding-top: $spacing-04;
+    border-top: 1px solid $card-border;
+  }
+
+  &__card-raisedby {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: $text-secondary;
+    margin-left: auto;
+
+    svg { fill: $text-secondary; flex-shrink: 0; }
+  }
+
+  // Composite urgency badge (priority + tier + confidence gap + queue age),
+  // shown on both priority cards and the queue table so claims within the
+  // same nominal Priority tag can still be told apart at a glance.
+  &__priority-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    svg { flex-shrink: 0; }
+
+    &--critical {
+      color: $accent-red;
+      background: rgba(250, 77, 86, 0.14);
+      border: 1px solid rgba(250, 77, 86, 0.35);
+      svg { fill: $accent-red; }
+    }
+
+    &--elevated {
+      color: $esc-text;
+      background: $esc-bg;
+      border: 1px solid $esc-border;
+      svg { fill: $esc-text; }
+    }
+
+    &--standard {
+      color: $accent-green;
+      background: rgba(66, 190, 101, 0.14);
+      border: 1px solid rgba(66, 190, 101, 0.35);
+      svg { fill: $accent-green; }
+    }
+
+    &--resolved {
+      color: $text-secondary;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid $card-border;
+    }
+
+    &--sm {
+      font-size: 0.6875rem;
+      padding: 1px 6px;
+    }
+  }
+
+  &__card-button {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  &__card-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: $spacing-03;
+  }
+
+  &__card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $accent-blue;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: #a6c8ff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    &:hover .decision-queue-page__card-link-arrow {
+      transform: translateX(3px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accent-blue;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  &__card-link-arrow {
+    fill: currentColor;
+    transition: transform 0.15s ease;
+  }
+
+  // Adjuster profile strip inside priority cards
+  &__adjuster-strip {
+    margin-top: $spacing-04;
+    padding-top: $spacing-04;
+    border-top: 1px solid $card-border;
+  }
+
+  &__adjuster-strip-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-03;
+    margin-bottom: $spacing-03;
+  }
+
+  &__adjuster-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  &__adjuster-name-block {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  &__adjuster-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__adjuster-team {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__adjuster-match-reason {
+    font-size: 0.8125rem;
+    color: #78a9ff;
+    margin: 0 0 $spacing-03 0;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  &__adjuster-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-02 $spacing-04;
+    margin-bottom: $spacing-03;
+    font-size: 0.75rem;
+    color: $text-secondary;
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  &__adjuster-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-02;
+    margin-bottom: $spacing-03;
+  }
+
+  &__adjuster-workload {
+    font-size: 0.75rem;
+    color: $text-secondary;
+
+    span {
+      display: block;
+      margin-bottom: $spacing-02;
+    }
+  }
+
+  &__delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: #ff8389;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: rgba(250, 77, 86, 0.15);
+      color: #ffb3b8;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &--table {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+    }
+  }
+
+  // Table Section
+  &__table-section {
+    margin-top: $spacing-07;
+    margin-bottom: $spacing-05;
+  }
+
+  &__table-heading {
+    font-size: 1.25rem;
+    margin-bottom: $spacing-05;
+  }
+
+  &__batch-bar {
+    display: flex;
+    align-items: center;
+    gap: $spacing-04;
+    padding: $spacing-04 $spacing-05;
+    margin-bottom: $spacing-05;
+    background: rgba(36, 161, 72, 0.12);
+    border: 1px solid #24a148;
+    border-radius: 4px;
+  }
+
+  &__batch-bar-count {
+    font-weight: 600;
+    color: #24a148;
+  }
+
+  &__batch-toast {
+    margin-bottom: $spacing-05;
+  }
+
+  &__table-container {
+    margin-top: $spacing-05;
+
+    // Only the "Current Status" column (7th, after select/id/insured/type/
+    // workingOn/stage) should wrap. Every other column stays single-line so
+    // the table reads as a clean grid instead of a ragged one.
+    table th,
+    table td {
+      white-space: nowrap;
+    }
+
+    table th:nth-child(7),
+    table td:nth-child(7) {
+      white-space: normal;
+      min-width: 220px;
+    }
+  }
+
+  &__pagination {
+    border-top: 1px solid #393939;
+    margin-bottom: $spacing-07;
+  }
+
+  &__row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: rgba(69, 137, 255, 0.08);
+
+      td {
+        color: #f4f4f4;
+      }
+    }
+
+    &--selected {
+      background-color: rgba(69, 137, 255, 0.12) !important;
+
+      td {
+        color: #f4f4f4;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #4589ff;
+      }
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-09;
+    text-align: center;
+    background: $card-bg;
+    border-radius: 4px;
+    margin-top: $spacing-05;
+
+    p {
+      margin: $spacing-05 0;
+      color: $text-secondary;
+    }
+  }
+
+  // Chat Bubble
+  &__chat-bubble {
+    position: fixed;
+    bottom: $spacing-07;
+    right: $spacing-07;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #0f62fe;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 1000;
+
+    &:hover {
+      background: #0353e9;
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  @include breakpoint-down(md) {
+    padding: $spacing-03;
+
+    &__priority-subheading {
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    margin: 0 0 $spacing-03 0;
+  }
+
+  &__priority-cards {
+      grid-template-columns: 1fr;
+    }
+
+    &__chat-bubble {
+      bottom: $spacing-05;
+      right: $spacing-05;
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  // Live Operations Dashboard
+  &__live-ops {
+    margin-bottom: $spacing-06;
+    background: $card-bg;
+    border-radius: 4px;
+    border: 1px solid $card-border;
+  }
+
+  &__live-ops-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: $spacing-05;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+  }
+
+  &__live-ops-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__live-ops-status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-03;
+  }
+
+  &__live-ops-icon {
+    color: #24a148;
+  }
+
+  &__live-ops-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    color: $text-primary;
+  }
+
+  &__live-ops-time {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    margin-left: $spacing-03;
+  }
+
+  &__live-ops-content {
+    padding: $spacing-05;
+    padding-top: 0;
+  }
+
+  &__ops-tile {
+    height: 100%;
+    padding: $spacing-05;
+  }
+
+  &__ops-tile-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    color: $text-secondary;
+    margin-bottom: $spacing-02;
+  }
+
+  &__ops-tile-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-03;
+  }
+
+  &__ops-tile-description {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    line-height: 1.4;
+    margin-bottom: $spacing-05;
+  }
+
+  &__ops-metrics {
+    display: flex;
+    gap: $spacing-05;
+    margin-bottom: $spacing-05;
+    padding-bottom: $spacing-05;
+    border-bottom: 1px solid $card-border;
+  }
+
+  &__ops-metric {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+  }
+
+  &__ops-metric-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__ops-metric-label {
+    font-size: 0.75rem;
+    color: $text-secondary;
+  }
+
+  &__ops-latest {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-03;
+  }
+
+  &__ops-latest-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    color: $text-secondary;
+  }
+
+  &__ops-latest-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__ops-latest-description {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  &__ops-progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+  }
+
+  &__ops-progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-03;
+  }
+
+  &__ops-progress-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-03;
+    font-size: 0.75rem;
+  }
+
+  &__ops-progress-label {
+    font-weight: 600;
+    color: $text-secondary;
+    min-width: 50px;
+  }
+
+  &__ops-progress-metric {
+    color: $text-primary;
+  }
+
+  &__ops-progress-impact {
+    font-weight: 600;
+    color: #24a148;
+  }
+
+  &__ops-progress-vs {
+    color: $text-secondary;
+  }
+
+  &__ops-grid {
+    margin-top: $spacing-05;
+  }
+
+  &__ops-small-tile {
+    height: 100%;
+    padding: $spacing-05;
+  }
+
+  &__ops-small-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-03;
+  }
+
+  &__ops-small-description {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    line-height: 1.4;
+    margin-bottom: $spacing-04;
+  }
+
+  &__ops-small-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: $spacing-04;
+  }
+
+  &__ops-small-metric {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+  }
+
+  &__ops-small-label {
+    font-size: 0.6875rem;
+    color: $text-secondary;
+    line-height: 1.3;
+  }
+
+  &__ops-small-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+
+    &--positive {
+      color: #24a148;
+    }
+
+    &--negative {
+      color: #da1e28;
+    }
+  }
+
+  &__ops-summary {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: $spacing-05;
+    margin-top: $spacing-05;
+    background: #1d2130;
+    border-radius: 4px;
+    border-top: 1px solid $card-border;
+  }
+
+  &__business-impact-tile {
+    margin-top: $spacing-05;
+  }
+
+  &__business-impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: $spacing-05;
+  }
+
+  &__business-impact-metric {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+  }
+
+  &__business-impact-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__business-impact-label {
+    font-size: 0.8125rem;
+    color: $text-primary;
+  }
+
+  &__business-impact-note {
+    font-size: 0.6875rem;
+    color: $text-secondary;
+  }
+
+  &__ops-summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-02;
+  }
+
+  &__ops-summary-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    color: $text-secondary;
+  }
+
+  &__ops-summary-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+// Made with Bob
+

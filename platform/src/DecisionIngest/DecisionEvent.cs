@@ -33,9 +33,11 @@ public sealed record DecisionEvent(
     [property: JsonPropertyName("slos")]            IReadOnlyList<SloSnapshot> Slos,
     [property: JsonPropertyName("emittedAt")]       DateTimeOffset EmittedAt,
     // v1.1: flat doc-id list of fragments cited on this step (e.g. ["PAC-COV-001", "PAC-REG-001"]).
-    // Flat strings keep the Cosmos / Event Hubs wire payload small; full citation objects live on
-    // the trace itself.
+    // Kept for wire compatibility with existing rows and consumers.
     [property: JsonPropertyName("citedSources")]    IReadOnlyList<string>? CitedSources = null,
+    // v1.2: structured citations (source system + title + relevance) so the read-side can
+    // reconstruct full evidence without loss. FoundryIQ / FabricIQ / WorkIQ attribution lives here.
+    [property: JsonPropertyName("citedSourcesFull")] IReadOnlyList<CitationSnapshot>? CitedSourcesFull = null,
     // v1.1: distinct ontology entity IDs touched by this step.
     [property: JsonPropertyName("ontologyBindings")] IReadOnlyList<string>? OntologyBindings = null,
     // v1.1: distinct regulatory paragraph IDs this step grounded against. Closes the per-paragraph
@@ -48,3 +50,11 @@ public sealed record SloSnapshot(
     [property: JsonPropertyName("metric")] string Metric,
     [property: JsonPropertyName("target")] string Target,
     [property: JsonPropertyName("window")] string Window);
+
+// v1.2: a citation as it travels through the journal. SourceId is the context system that
+// produced the fragment (FoundryIQ knowledge, FabricIQ semantic layer, WorkIQ collaboration).
+public sealed record CitationSnapshot(
+    [property: JsonPropertyName("sourceId")] string SourceId,
+    [property: JsonPropertyName("docId")]    string DocId,
+    [property: JsonPropertyName("title")]    string Title,
+    [property: JsonPropertyName("score")]    double Score);

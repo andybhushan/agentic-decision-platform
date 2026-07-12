@@ -1,0 +1,27 @@
+// ─── Shared design tokens ─────────────────────────────────────────────────────
+// Single source of truth for the dark-canvas card language used across
+// the Agent Catalog, Workforce, and Member detail pages.
+
+$page-bg:          #0f1117;
+$card-bg:          #181c28;
+$card-border:      rgba(255, 255, 255, 0.08);
+$card-border-sel:  #4589ff;
+$card-radius:      8px;
+
+$role-color:       #6f6f6f;
+$text-primary:     #f4f4f4;
+$text-secondary:   #a8b3c0;
+
+$pill-bg:          rgba(255, 255, 255, 0.06);
+$pill-border:      rgba(255, 255, 255, 0.12);
+$pill-text:        #a8b3c0;
+
+$esc-bg:           rgba(214, 158, 46, 0.12);
+$esc-border:       rgba(214, 158, 46, 0.35);
+$esc-text:         #e8b730;
+
+$accent-teal:      #3ddbd9;
+$accent-purple:    #8a3ffc;
+$accent-blue:      #4589ff;
+$accent-green:     #42be65;
+$accent-red:       #fa4d56;

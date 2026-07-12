@@ -1,0 +1,56 @@
+.fnol-status-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.375rem 0.875rem;
+  background: #111111;
+  border-bottom: 1px solid #1a1a1a;
+  flex-shrink: 0;
+
+  &--escalated {
+    padding: 0.5rem 0.875rem;
+    align-items: flex-start;
+  }
+}
+
+.fnol-status-strip__text {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+}
+
+.fnol-status-strip__counter {
+  color: #6f6f6f;
+  font-variant-numeric: tabular-nums;
+}
+
+.fnol-status-strip__sep {
+  color: #3d3d3d;
+}
+
+.fnol-status-strip__phase {
+  color: #78a9ff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.fnol-status-strip__done {
+  color: #24a148;
+  font-weight: 600;
+  font-size: 0.6875rem;
+}
+
+.fnol-status-strip__bar {
+  height: 2px;
+  background: #1f1f1f;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.fnol-status-strip__fill {
+  height: 100%;
+  background: #0f62fe;
+  border-radius: 1px;
+  transition: width 0.4s ease;
+}

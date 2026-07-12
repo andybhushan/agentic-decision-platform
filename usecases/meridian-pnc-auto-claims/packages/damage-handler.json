@@ -8,24 +8,41 @@
     "schemaVersion": "v1",
     "signedBy": "anand-track-stub",
     "registeredIn": "agent-365://adp-v1",
-    "compiledAt": "2026-05-27T00:00:00Z"
+    "compiledAt": "2026-05-27T00:00:00Z",
+    "stage": "Damage & Estimation",
+    "stageOrder": 2
   },
   "digitalWorker": {
     "id": "dw.damage-handler",
     "name": "Damage Handler",
     "description": "Owns damage assessment for triaged P&C auto claims: categorization, repair-cost estimation, total-loss screening, and shop routing. Picks up where FNOL Handler hands off.",
     "entraAgentId": null,
-    "stateStore": { "kind": "in-memory-stub", "containerName": "dw-damage-handler-state", "partitionKey": "/subjectId" },
+    "stateStore": {
+      "kind": "in-memory-stub",
+      "containerName": "dw-damage-handler-state",
+      "partitionKey": "/subjectId"
+    },
     "schemaBinding": {
       "primaryEntity": {
         "factTable": "fact_claims",
         "factSubjectKey": "claim_number",
         "factForeignKey": "policyholder_id",
         "factDateColumn": "incident_date",
-        "factDescColumns": ["incident_type", "severity_hint", "state", "channel"],
+        "factDescColumns": [
+          "incident_type",
+          "severity_hint",
+          "state",
+          "channel"
+        ],
         "dimTable": "dim_policyholder",
         "dimKeyColumn": "policyholder_id",
-        "dimDisplayColumns": ["first_name", "last_name", "policy_number", "state", "city"],
+        "dimDisplayColumns": [
+          "first_name",
+          "last_name",
+          "policy_number",
+          "state",
+          "city"
+        ],
         "entitySemantics": "acl:Claim"
       },
       "secondaryEntity": {
@@ -33,13 +50,24 @@
         "factSubjectKey": "claim_number",
         "factForeignKey": "vin",
         "factDateColumn": "incident_date",
-        "factDescColumns": ["incident_type", "severity_hint", "state"],
+        "factDescColumns": [
+          "incident_type",
+          "severity_hint",
+          "state"
+        ],
         "dimTable": "dim_vehicle",
         "dimKeyColumn": "vin",
-        "dimDisplayColumns": ["year", "make", "model"],
+        "dimDisplayColumns": [
+          "year",
+          "make",
+          "model"
+        ],
         "entitySemantics": "acl:Vehicle"
       },
-      "similarityFilters": ["incident_type", "state"]
+      "similarityFilters": [
+        "incident_type",
+        "state"
+      ]
     },
     "capabilities": [
       "damage-intake",
@@ -54,9 +82,24 @@
       "agent.shop-routing"
     ],
     "slos": [
-      { "metric": "categorization_latency_p90_minutes", "target": 5,    "comparator": "<=", "window": "P30D" },
-      { "metric": "estimate_band_drift_pct",           "target": 0.20, "comparator": "<=", "window": "P30D" },
-      { "metric": "shop_routing_acceptance_rate",      "target": 0.85, "comparator": ">=", "window": "P30D" }
+      {
+        "metric": "categorization_latency_p90_minutes",
+        "target": 5,
+        "comparator": "<=",
+        "window": "P30D"
+      },
+      {
+        "metric": "estimate_band_drift_pct",
+        "target": 0.2,
+        "comparator": "<=",
+        "window": "P30D"
+      },
+      {
+        "metric": "shop_routing_acceptance_rate",
+        "target": 0.85,
+        "comparator": ">=",
+        "window": "P30D"
+      }
     ],
     "orchestration": {
       "strategy": "hybrid",
@@ -64,7 +107,9 @@
       "boundedReasoningZones": [
         {
           "zoneId": "zone.categorize-reasoning",
-          "allowedAgents": ["agent.damage-categorize"],
+          "allowedAgents": [
+            "agent.damage-categorize"
+          ],
           "maxSteps": 3,
           "returnPoint": "step.repair-estimation"
         }
@@ -106,9 +151,20 @@
       "kind": "prompt-agent",
       "capability": "damage-intake",
       "systemPrompt": "You are the Damage Intake Agent. Pull together the claim record, vehicle metadata, FNOL triage outputs, and any attached damage report (descriptions, photo count, shop preliminary estimate if present). Produce a structured DamageReport object with: incidentType, photoCount, narrativeSummary, partsAffected (list), drivability, attachedShopEstimate (nullable). State confidence per field. Flag missing data explicitly. Do not categorize damage at this step — that is the next agent's job.",
-      "skillRefs": ["skill.damage-intake-parsing", "skill.parts-tagging"],
-      "ontologyBinding": ["Claim", "Vehicle", "DamageReport"],
-      "confidenceCalibration": { "lowThreshold": 0.4, "highThreshold": 0.85, "divergenceDetection": false },
+      "skillRefs": [
+        "skill.damage-intake-parsing",
+        "skill.parts-tagging"
+      ],
+      "ontologyBinding": [
+        "Claim",
+        "Vehicle",
+        "DamageReport"
+      ],
+      "confidenceCalibration": {
+        "lowThreshold": 0.4,
+        "highThreshold": 0.85,
+        "divergenceDetection": false
+      },
       "foundryModel": "gpt-4o",
       "deploymentTarget": "foundry-agent-service"
     },
@@ -117,9 +173,20 @@
       "kind": "workflow-agent",
       "capability": "damage-categorization",
       "systemPrompt": "You are the Damage Categorization Agent. Read the DamageReport, the vehicle from dim_vehicle, and the prior similar-claims pattern from Fabric IQ. Assign one of: cosmetic, functional, structural, total-loss-suspect. Apply [[PAC-DAMAGE-001]] and the total-loss rules in [[PAC-TOTAL-LOSS-001]]. Cite the specific evidence. If the narrative and photo count disagree by more than one tier, flag low confidence and route to HITL.",
-      "skillRefs": ["skill.damage-categorize", "skill.total-loss-screen"],
-      "ontologyBinding": ["DamageReport", "Vehicle", "DamageCategory"],
-      "confidenceCalibration": { "lowThreshold": 0.6, "highThreshold": 0.88, "divergenceDetection": true },
+      "skillRefs": [
+        "skill.damage-categorize",
+        "skill.total-loss-screen"
+      ],
+      "ontologyBinding": [
+        "DamageReport",
+        "Vehicle",
+        "DamageCategory"
+      ],
+      "confidenceCalibration": {
+        "lowThreshold": 0.6,
+        "highThreshold": 0.88,
+        "divergenceDetection": true
+      },
       "foundryModel": "gpt-4o",
       "deploymentTarget": "foundry-agent-service"
     },
@@ -128,9 +195,20 @@
       "kind": "workflow-agent",
       "capability": "repair-estimation",
       "systemPrompt": "You are the Repair Estimate Agent. Given the damage category, vehicle class (derive from make/model/year), and policyholder state, produce an estimateLow / estimateHigh dollar band per [[PAC-DAMAGE-002]]. Apply the state labor-rate multiplier to the upper bound. Use the Fabric IQ similar-claims population to calibrate confidence — if fewer than 3 prior claims match, drop confidence. If the high end of your estimate crosses 75% of ACV, escalate to total-loss-suspect even if the category was 'structural'.",
-      "skillRefs": ["skill.repair-band-lookup", "skill.acv-threshold-check"],
-      "ontologyBinding": ["DamageCategory", "Vehicle", "RepairEstimate"],
-      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.9, "divergenceDetection": true },
+      "skillRefs": [
+        "skill.repair-band-lookup",
+        "skill.acv-threshold-check"
+      ],
+      "ontologyBinding": [
+        "DamageCategory",
+        "Vehicle",
+        "RepairEstimate"
+      ],
+      "confidenceCalibration": {
+        "lowThreshold": 0.55,
+        "highThreshold": 0.9,
+        "divergenceDetection": true
+      },
       "foundryModel": "gpt-4o",
       "deploymentTarget": "foundry-agent-service"
     },
@@ -139,40 +217,173 @@
       "kind": "workflow-agent",
       "capability": "shop-routing",
       "systemPrompt": "You are the Shop Routing Agent. Given the damage category, vehicle make, policyholder state, and the network-shop directory, pick one shop per [[PAC-SHOP-001]]. Structural damage must route Tier-1 only. Premium/EV makes restrict to OEM-certified Tier-1. Prefer in-state shops with lowest current load. Emit shopId, shopTier, routingReason, estimatedStartDate. If only a Tier-3 path is available, or if the lowest-load shop is over 75% capacity, route to HITL with status=needs-human-review.",
-      "skillRefs": ["skill.shop-match", "skill.shop-capacity-balance"],
-      "ontologyBinding": ["DamageCategory", "Vehicle", "RepairShop", "ShopAssignment"],
-      "confidenceCalibration": { "lowThreshold": 0.55, "highThreshold": 0.9, "divergenceDetection": false },
+      "skillRefs": [
+        "skill.shop-match",
+        "skill.shop-capacity-balance"
+      ],
+      "ontologyBinding": [
+        "DamageCategory",
+        "Vehicle",
+        "RepairShop",
+        "ShopAssignment"
+      ],
+      "confidenceCalibration": {
+        "lowThreshold": 0.55,
+        "highThreshold": 0.9,
+        "divergenceDetection": false
+      },
       "foundryModel": "gpt-4o",
       "deploymentTarget": "foundry-agent-service"
     }
   ],
   "skills": [
-    { "id": "skill.damage-intake-parsing",   "name": "Damage Intake Parsing",        "skillFile": "skills/damage-intake-parsing/SKILL.md",   "domain": "insurance/auto/damage" },
-    { "id": "skill.parts-tagging",            "name": "Affected-Parts Tagging",       "skillFile": "skills/parts-tagging/SKILL.md",           "domain": "insurance/auto/damage" },
-    { "id": "skill.damage-categorize",        "name": "Damage Categorization",        "skillFile": "skills/damage-categorize/SKILL.md",       "domain": "insurance/auto/damage" },
-    { "id": "skill.total-loss-screen",        "name": "Total-Loss Screening",         "skillFile": "skills/total-loss-screen/SKILL.md",       "domain": "insurance/auto/damage" },
-    { "id": "skill.repair-band-lookup",       "name": "Repair Cost Band Lookup",      "skillFile": "skills/repair-band-lookup/SKILL.md",      "domain": "insurance/auto/damage" },
-    { "id": "skill.acv-threshold-check",      "name": "ACV Threshold Check",          "skillFile": "skills/acv-threshold-check/SKILL.md",     "domain": "insurance/auto/damage" },
-    { "id": "skill.shop-match",               "name": "Shop Match (Category + Make)", "skillFile": "skills/shop-match/SKILL.md",              "domain": "insurance/auto/damage" },
-    { "id": "skill.shop-capacity-balance",    "name": "Shop Capacity Balance",        "skillFile": "skills/shop-capacity-balance/SKILL.md",   "domain": "insurance/auto/damage" }
+    {
+      "id": "skill.damage-intake-parsing",
+      "name": "Damage Intake Parsing",
+      "skillFile": "skills/damage-intake-parsing/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.parts-tagging",
+      "name": "Affected-Parts Tagging",
+      "skillFile": "skills/parts-tagging/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.damage-categorize",
+      "name": "Damage Categorization",
+      "skillFile": "skills/damage-categorize/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.total-loss-screen",
+      "name": "Total-Loss Screening",
+      "skillFile": "skills/total-loss-screen/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.repair-band-lookup",
+      "name": "Repair Cost Band Lookup",
+      "skillFile": "skills/repair-band-lookup/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.acv-threshold-check",
+      "name": "ACV Threshold Check",
+      "skillFile": "skills/acv-threshold-check/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.shop-match",
+      "name": "Shop Match (Category + Make)",
+      "skillFile": "skills/shop-match/SKILL.md",
+      "domain": "insurance/auto/damage"
+    },
+    {
+      "id": "skill.shop-capacity-balance",
+      "name": "Shop Capacity Balance",
+      "skillFile": "skills/shop-capacity-balance/SKILL.md",
+      "domain": "insurance/auto/damage"
+    }
   ],
   "tools": [
-    { "id": "tool.claim-store",      "name": "Claim Store",            "mcpEndpoint": "mcp://localhost/claim-store",      "auth": { "kind": "entra-managed-identity" }, "backendComponent": "cosmos-db" },
-    { "id": "tool.vehicle-lookup",   "name": "Vehicle Lookup",         "mcpEndpoint": "mcp://localhost/vehicle-lookup",   "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
-    { "id": "tool.policy-store",     "name": "Policy Store",           "mcpEndpoint": "mcp://localhost/policy-store",     "auth": { "kind": "api-key-stub" },           "backendComponent": "duck-creek-stub" },
-    { "id": "tool.decision-journal", "name": "Decision Journal (RTI)", "mcpEndpoint": "mcp://localhost/decision-journal", "auth": { "kind": "entra-managed-identity" }, "backendComponent": "fabric-bronze" }
+    {
+      "id": "tool.claim-store",
+      "name": "Claim Store",
+      "mcpEndpoint": "mcp://localhost/claim-store",
+      "auth": {
+        "kind": "entra-managed-identity"
+      },
+      "backendComponent": "cosmos-db"
+    },
+    {
+      "id": "tool.vehicle-lookup",
+      "name": "Vehicle Lookup",
+      "mcpEndpoint": "mcp://localhost/vehicle-lookup",
+      "auth": {
+        "kind": "api-key-stub"
+      },
+      "backendComponent": "duck-creek-stub"
+    },
+    {
+      "id": "tool.policy-store",
+      "name": "Policy Store",
+      "mcpEndpoint": "mcp://localhost/policy-store",
+      "auth": {
+        "kind": "api-key-stub"
+      },
+      "backendComponent": "duck-creek-stub"
+    },
+    {
+      "id": "tool.decision-journal",
+      "name": "Decision Journal (RTI)",
+      "mcpEndpoint": "mcp://localhost/decision-journal",
+      "auth": {
+        "kind": "entra-managed-identity"
+      },
+      "backendComponent": "fabric-bronze"
+    }
   ],
   "contextBindings": [
-    { "intent": "assess_damage",   "dimensions": ["entity", "historical", "procedural"], "latencyTier": "warm",
-      "sourceBindings": { "FabricIQ": ["similar-claims", "severity-distribution-by-state"], "WorkIQ": ["damage-photo-thread"] } },
-    { "intent": "estimate_repair", "dimensions": ["entity", "historical", "procedural"], "latencyTier": "warm",
-      "sourceBindings": { "FabricIQ": ["vehicle-history", "incident-type-mix-by-state"], "WorkIQ": ["shop-collab-history"] } },
-    { "intent": "route_shop",      "dimensions": ["entity", "procedural", "collaboration"], "latencyTier": "warm",
-      "sourceBindings": { "FabricIQ": ["policyholder-history"], "WorkIQ": ["shop-relationship-signal"] } }
+    {
+      "intent": "assess_damage",
+      "dimensions": [
+        "entity",
+        "historical",
+        "procedural"
+      ],
+      "latencyTier": "warm",
+      "sourceBindings": {
+        "FabricIQ": [
+          "similar-claims",
+          "severity-distribution-by-state"
+        ],
+        "WorkIQ": [
+          "damage-photo-thread"
+        ]
+      }
+    },
+    {
+      "intent": "estimate_repair",
+      "dimensions": [
+        "entity",
+        "historical",
+        "procedural"
+      ],
+      "latencyTier": "warm",
+      "sourceBindings": {
+        "FabricIQ": [
+          "vehicle-history",
+          "incident-type-mix-by-state"
+        ],
+        "WorkIQ": [
+          "shop-collab-history"
+        ]
+      }
+    },
+    {
+      "intent": "route_shop",
+      "dimensions": [
+        "entity",
+        "procedural",
+        "collaboration"
+      ],
+      "latencyTier": "warm",
+      "sourceBindings": {
+        "FabricIQ": [
+          "policyholder-history"
+        ],
+        "WorkIQ": [
+          "shop-relationship-signal"
+        ]
+      }
+    }
   ],
   "decisionJournal": {
     "eventHubTopic": "adp-v1-decisions",
-    "provenanceTagging": { "defaultOrigin": "DERIVED" },
+    "provenanceTagging": {
+      "defaultOrigin": "DERIVED"
+    },
     "rtiTable": "adp.rti.decisions",
     "bronzeTable": "adp.bronze.decisions"
   }

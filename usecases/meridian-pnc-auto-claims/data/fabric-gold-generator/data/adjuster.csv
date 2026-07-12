@@ -1,0 +1,11 @@
+adjuster_id,display_name,queue_id,authority_level,licensed_states,specialty
+ADJ-0001,Grace Davis,Q-05,4,CA,Casualty
+ADJ-0002,Omar Wong,Q-04,2,CA,SIU
+ADJ-0003,James Silva,Q-03,3,CA,Litigation
+ADJ-0004,Lucia Alvarez,Q-01,3,CA,SIU
+ADJ-0005,Liam Davis,Q-02,1,CA,Litigation
+ADJ-0006,Nina Nguyen,Q-05,5,CA,Litigation
+ADJ-0007,Derek Chen,Q-05,3,CA,Material
+ADJ-0008,Maria Khan,Q-02,2,CA,SIU
+ADJ-0009,Marcus Park,Q-04,2,CA,Casualty
+ADJ-0010,Carlos Hassan,Q-03,1,CA,SIU

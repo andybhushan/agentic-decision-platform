@@ -1,0 +1,1595 @@
+[
+  {
+    "id": "CLM-2024-001",
+    "claimantName": "Sarah Johnson",
+    "claimantEmail": "sarah.johnson@email.com",
+    "claimantPhone": "+1-555-0123",
+    "incidentType": "Auto",
+    "incidentDate": "2024-05-28",
+    "incidentTime": "14:30",
+    "incidentLocation": "Interstate 95, Exit 42, Baltimore, MD",
+    "partiesInvolved": [
+      { "name": "Sarah Johnson", "role": "Claimant Driver" },
+      { "name": "Michael Chen", "role": "Other Driver" },
+      { "name": "Officer Rodriguez", "role": "Police Officer" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "MD-2024-5892",
+    "immediateNeeds": ["Towing", "Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "I was stopped at a red light when the vehicle behind me failed to stop and rear-ended my car. The impact was moderate, causing damage to my rear bumper and trunk. The other driver admitted fault at the scene.",
+    "intakeChannel": "Web Portal",
+    "policyRef": "POL-AUTO-2024-8472",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2024-8472",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.2: Collision coverage applies when insured vehicle is struck by another vehicle",
+        "Section 6.1: Rental car reimbursement up to $50/day for 30 days",
+        "Section 7.3: Towing and roadside assistance covered up to $150 per incident"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Awaiting final coverage confirmation before proceeding to damage assessment",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Coverage DW completed policy review and confirmed applicability",
+    "timeInQueue": "2 hours",
+    "priority": "high",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Coverage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2024-05-28T14:30:00Z",
+        "description": "Claimant vehicle rear-ended at stoplight by insured party Michael Chen",
+        "status": "Confirmed",
+        "source": "Police Report #MD-2024-5892"
+      },
+      {
+        "timestamp": "2024-05-28T14:35:00Z",
+        "description": "Other driver admitted fault at scene, no dispute on liability",
+        "status": "Confirmed",
+        "source": "Police Report #MD-2024-5892"
+      },
+      {
+        "timestamp": "2024-05-28T14:45:00Z",
+        "description": "Vehicle towed to approved repair facility - Baltimore Auto Body",
+        "status": "Confirmed",
+        "source": "Towing Receipt #TOW-5892"
+      },
+      {
+        "timestamp": "2024-05-28T16:00:00Z",
+        "description": "Claimant submitted FNOL via web portal with photos",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2024-05-28T17:15:00Z",
+        "description": "Coverage DW verified policy active and collision coverage in force",
+        "status": "Confirmed",
+        "source": "Coverage DW Analysis"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-001-001",
+        "type": "Police Report",
+        "description": "Official accident report with diagram and witness statements",
+        "source": "Baltimore Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2024-05-28T16:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-001-002",
+        "type": "Photographs",
+        "description": "4 photos showing rear-end damage to claimant vehicle",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2024-05-28T16:05:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-001-003",
+        "type": "Towing Receipt",
+        "description": "Receipt from Baltimore Towing Services",
+        "source": "Baltimore Towing Services",
+        "provenance": "Third Party",
+        "dateReceived": "2024-05-28T16:30:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-001-004",
+        "type": "Policy Document",
+        "description": "Active auto insurance policy with collision coverage",
+        "source": "Policy Management System",
+        "provenance": "Public Record",
+        "dateReceived": "2024-05-28T17:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Coverage",
+      "description": "Approve claim for coverage verification and proceed to damage assessment phase",
+      "confidence": "high",
+      "rationale": "Clear liability established through police report. Policy coverage confirmed active with no exclusions. All required evidence present and verified. No anomalies detected.",
+      "estimatedImpact": "Standard processing timeline, estimated settlement $4,500-$6,000 based on typical rear-end collision repairs",
+      "agentId": "agent_coverage_001",
+      "agentName": "Coverage Verification DW",
+      "claimantMessage": "Your claim has been approved for coverage. We will now proceed with damage assessment. A rental car has been authorized and you should receive confirmation within 2 hours.",
+      "financialImpact": {
+        "estimatedAmount": 5250,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 4500, "description": "Estimated rear-end collision repair" },
+          { "category": "Rental Car", "amount": 600, "description": "12 days at $50/day" },
+          { "category": "Towing", "amount": 150, "description": "Initial towing to repair facility" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2024-05-28T16:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL intake completed via web portal"
+      },
+      {
+        "timestamp": "2024-05-28T17:15:00Z",
+        "userId": "agent_coverage_001",
+        "action": "Coverage Analysis",
+        "outcome": "Coverage confirmed, no exclusions apply"
+      }
+    ],
+    "createdAt": "2024-05-28T16:00:00Z",
+    "updatedAt": "2024-05-28T17:15:00Z"
+  },
+  {
+    "id": "CLM-2024-002",
+    "claimantName": "Robert Martinez",
+    "claimantEmail": "r.martinez@email.com",
+    "claimantPhone": "+1-555-0456",
+    "incidentType": "Auto",
+    "incidentDate": "2024-05-26",
+    "incidentTime": "09:15",
+    "incidentLocation": "Parking lot, 1250 Commerce Street, Dallas, TX",
+    "partiesInvolved": [
+      { "name": "Robert Martinez", "role": "Claimant Driver" },
+      { "name": "Unknown", "role": "Other Driver" },
+      { "name": "Jane Wilson", "role": "Witness" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "TX-2024-3341",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Phone",
+    "incidentDescription": "I parked my car in the lot and went into the office. When I returned 2 hours later, I found significant damage to the driver's side door and fender. No note was left. A witness saw a white SUV backing out quickly around 10:30 AM.",
+    "intakeChannel": "Phone",
+    "policyRef": "POL-AUTO-2024-6183",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2024-6183",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.3: Uninsured motorist coverage applies when at-fault party cannot be identified",
+        "Section 4.4: Collision coverage requires deductible payment of $500",
+        "Section 5.2: Hit-and-run incidents require police report within 24 hours"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": [
+        "Witness statement timing conflicts with claimant's stated timeline",
+        "Damage pattern suggests possible backing collision but witness describes forward motion"
+      ]
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Anomaly Review",
+    "blockerReason": "Timeline inconsistencies and conflicting witness statement require human review before proceeding",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "Anomaly DW flagged discrepancies in incident timeline and damage pattern",
+    "timeInQueue": "18 hours",
+    "priority": "high",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Anomaly Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2024-05-26T09:15:00Z",
+        "description": "Claimant parked vehicle in office parking lot",
+        "status": "Confirmed",
+        "source": "Claimant Statement"
+      },
+      {
+        "timestamp": "2024-05-26T10:30:00Z",
+        "description": "Witness observed white SUV backing out quickly near claimant's vehicle",
+        "status": "Disputed",
+        "source": "Witness Statement - Jane Wilson"
+      },
+      {
+        "timestamp": "2024-05-26T11:15:00Z",
+        "description": "Claimant returned to vehicle and discovered damage",
+        "status": "Confirmed",
+        "source": "Claimant Statement"
+      },
+      {
+        "timestamp": "2024-05-26T11:30:00Z",
+        "description": "Police report filed for hit-and-run incident",
+        "status": "Confirmed",
+        "source": "Police Report #TX-2024-3341"
+      },
+      {
+        "timestamp": "2024-05-26T14:00:00Z",
+        "description": "Claimant submitted FNOL via phone with customer service",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2024-05-27T09:00:00Z",
+        "description": "Damage assessment suggests impact from vehicle in motion, not backing",
+        "status": "Inferred",
+        "source": "Damage DW Analysis"
+      }
+    ],
+    "anomalySignals": [
+      {
+        "id": "AN-002-001",
+        "type": "Timeline Inconsistency",
+        "description": "Witness states incident occurred at 10:30 AM, but claimant was in office from 9:15-11:15 AM",
+        "severity": "medium",
+        "evidenceSource": "Witness Statement vs Claimant Statement",
+        "explanation": "The witness timeline places the incident 45 minutes before the claimant discovered the damage. This is consistent with a hit-and-run scenario, but the 2-hour window creates uncertainty about when damage actually occurred."
+      },
+      {
+        "id": "AN-002-002",
+        "type": "Damage Pattern Mismatch",
+        "description": "Damage pattern suggests forward-moving collision, but witness describes backing vehicle",
+        "severity": "medium",
+        "evidenceSource": "Damage Assessment vs Witness Statement",
+        "explanation": "The damage to the driver's side door and fender shows impact characteristics consistent with a forward-moving vehicle, not a backing collision. This conflicts with the witness description of an SUV backing out."
+      },
+      {
+        "id": "AN-002-003",
+        "type": "Missing Evidence",
+        "description": "No parking lot surveillance footage available",
+        "severity": "low",
+        "evidenceSource": "Evidence Inventory",
+        "explanation": "The parking lot does not have security cameras. This limits our ability to verify the witness account or identify the at-fault vehicle."
+      }
+    ],
+    "evidenceItems": [
+      {
+        "id": "EV-002-001",
+        "type": "Police Report",
+        "description": "Hit-and-run report filed within required timeframe",
+        "source": "Dallas Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2024-05-26T14:30:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-002-002",
+        "type": "Photographs",
+        "description": "6 photos showing driver's side damage",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2024-05-26T14:45:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-002-003",
+        "type": "Witness Statement",
+        "description": "Written statement from Jane Wilson describing white SUV",
+        "source": "Witness Jane Wilson",
+        "provenance": "Third Party",
+        "dateReceived": "2024-05-26T16:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-002-004",
+        "type": "Damage Assessment",
+        "description": "Professional assessment of damage pattern and estimated repair cost",
+        "source": "Damage DW Analysis",
+        "provenance": "Agent Inferred",
+        "dateReceived": "2024-05-27T09:00:00Z",
+        "status": "pending"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Request Additional Evidence",
+      "description": "Request claimant to provide office building entry/exit records to verify timeline, and seek additional witnesses",
+      "confidence": "medium",
+      "rationale": "While coverage applies for hit-and-run under uninsured motorist provisions, the timeline and damage pattern inconsistencies require resolution before proceeding. Additional evidence could clarify the incident sequence.",
+      "estimatedImpact": "Processing delayed 3-5 business days pending additional evidence. Estimated settlement $3,200-$4,500 if evidence supports claim.",
+      "agentId": "agent_anomaly_001",
+      "agentName": "Anomaly Detection DW",
+      "claimantMessage": "We are reviewing your claim and need some additional information to proceed. Please provide any records showing when you entered and exited the office building, and let us know if there are any other witnesses we should contact.",
+      "financialImpact": {
+        "estimatedAmount": 3850,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 3200, "description": "Driver's side door and fender repair" },
+          { "category": "Deductible", "amount": -500, "description": "Policy deductible (claimant responsibility)" },
+          { "category": "Rental Car", "amount": 400, "description": "8 days at $50/day" },
+          { "category": "Investigation", "amount": 250, "description": "Additional evidence gathering" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2024-05-26T14:00:00Z",
+        "userId": "csr_dallas_042",
+        "action": "Claim Created",
+        "outcome": "FNOL intake completed via phone"
+      },
+      {
+        "timestamp": "2024-05-27T09:30:00Z",
+        "userId": "agent_anomaly_001",
+        "action": "Anomaly Detection",
+        "outcome": "Timeline and damage pattern inconsistencies flagged for review"
+      }
+    ],
+    "createdAt": "2024-05-26T14:00:00Z",
+    "updatedAt": "2024-05-27T09:30:00Z"
+  },
+  {
+    "id": "CLM-2024-003",
+    "claimantName": "Patricia O'Connor",
+    "claimantEmail": "p.oconnor@email.com",
+    "claimantPhone": "+1-555-0789",
+    "incidentType": "Auto",
+    "incidentDate": "2024-05-24",
+    "incidentTime": "18:45",
+    "incidentLocation": "Intersection of Main St and Oak Ave, Portland, OR",
+    "partiesInvolved": [
+      { "name": "Patricia O'Connor", "role": "Claimant Driver" },
+      { "name": "David Thompson", "role": "Other Driver" },
+      { "name": "Emily Rodriguez", "role": "Passenger in Claimant Vehicle" },
+      { "name": "Officer James Park", "role": "Police Officer" }
+    ],
+    "injuryIndicated": true,
+    "policeReportRef": "OR-2024-7721",
+    "immediateNeeds": ["Medical", "Towing", "Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "I was proceeding through the intersection on a green light when the other vehicle ran a red light and struck the passenger side of my car. My passenger sustained injuries and was transported to the hospital. The other driver claims their light was yellow.",
+    "intakeChannel": "Mobile App",
+    "policyRef": "POL-AUTO-2024-4429",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2024-4429",
+      "coverageType": "Comprehensive Auto Insurance with Medical",
+      "relevantClauses": [
+        "Section 4.2: Collision coverage applies when insured vehicle is struck by another vehicle",
+        "Section 8.1: Medical payments coverage up to $10,000 per person",
+        "Section 8.2: Personal injury protection covers medical expenses regardless of fault",
+        "Section 9.4: Disputed liability cases require investigation before settlement approval",
+        "Section 10.1: Settlements exceeding $15,000 require senior adjuster approval"
+      ],
+      "coverageApplicability": "ambiguous",
+      "ambiguityIndicators": [
+        "Disputed liability - conflicting accounts of traffic signal status",
+        "Medical claim amount may exceed policy limits depending on injury severity",
+        "Potential subrogation against at-fault party if liability is established"
+      ]
+    },
+    "claimStage": "evaluation",
+    "pendingDecisionType": "Settlement Approval",
+    "blockerReason": "High-value claim with disputed liability and injury component requires senior adjuster approval before settlement",
+    "confidenceLevel": "low",
+    "lastAgentAction": "Medical DW completed initial injury assessment, estimated treatment cost $12,000-$18,000",
+    "timeInQueue": "3 days",
+    "priority": "urgent",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Medical Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2024-05-24T18:45:00Z",
+        "description": "Collision occurred at Main St and Oak Ave intersection",
+        "status": "Confirmed",
+        "source": "Police Report #OR-2024-7721"
+      },
+      {
+        "timestamp": "2024-05-24T18:45:00Z",
+        "description": "Claimant states she had green light, other driver ran red light",
+        "status": "Disputed",
+        "source": "Claimant Statement"
+      },
+      {
+        "timestamp": "2024-05-24T18:45:00Z",
+        "description": "Other driver claims light was yellow when entering intersection",
+        "status": "Disputed",
+        "source": "Other Driver Statement"
+      },
+      {
+        "timestamp": "2024-05-24T18:50:00Z",
+        "description": "Passenger Emily Rodriguez transported to Portland General Hospital with neck and back pain",
+        "status": "Confirmed",
+        "source": "Emergency Services Report"
+      },
+      {
+        "timestamp": "2024-05-24T19:30:00Z",
+        "description": "Both vehicles towed from scene due to significant damage",
+        "status": "Confirmed",
+        "source": "Police Report #OR-2024-7721"
+      },
+      {
+        "timestamp": "2024-05-24T21:00:00Z",
+        "description": "Claimant submitted FNOL via mobile app from hospital",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2024-05-25T10:00:00Z",
+        "description": "Medical DW reviewed emergency room records, passenger diagnosed with whiplash and soft tissue injuries",
+        "status": "Confirmed",
+        "source": "Medical DW Analysis"
+      },
+      {
+        "timestamp": "2024-05-27T14:00:00Z",
+        "description": "Traffic camera footage requested from city, pending receipt",
+        "status": "Pending",
+        "source": "Investigation Request"
+      }
+    ],
+    "anomalySignals": [
+      {
+        "id": "AN-003-001",
+        "type": "Liability Dispute",
+        "description": "Conflicting accounts of traffic signal status at time of collision",
+        "severity": "high",
+        "evidenceSource": "Claimant Statement vs Other Driver Statement",
+        "explanation": "The claimant and other driver provide contradictory accounts of the traffic signal. Without independent verification (traffic camera or witness), liability cannot be definitively established. This significantly impacts settlement authority and subrogation potential."
+      },
+      {
+        "id": "AN-003-002",
+        "type": "High Medical Exposure",
+        "description": "Estimated medical costs may exceed policy limits",
+        "severity": "high",
+        "evidenceSource": "Medical DW Analysis",
+        "explanation": "Initial medical assessment suggests treatment costs between $12,000-$18,000. If costs exceed the $10,000 per-person medical payments limit, additional coverage analysis and settlement strategy will be required."
+      },
+      {
+        "id": "AN-003-003",
+        "type": "Settlement Authority Threshold",
+        "description": "Total claim value likely to exceed $15,000 requiring senior approval",
+        "severity": "medium",
+        "evidenceSource": "Financial Impact Analysis",
+        "explanation": "Combined vehicle damage ($8,000-$10,000) and medical costs ($12,000-$18,000) will likely exceed the $15,000 threshold requiring senior adjuster approval per policy Section 10.1."
+      }
+    ],
+    "evidenceItems": [
+      {
+        "id": "EV-003-001",
+        "type": "Police Report",
+        "description": "Detailed accident report with diagram and both driver statements",
+        "source": "Portland Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2024-05-25T08:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-003-002",
+        "type": "Medical Records",
+        "description": "Emergency room records for passenger Emily Rodriguez",
+        "source": "Portland General Hospital",
+        "provenance": "Third Party",
+        "dateReceived": "2024-05-25T10:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-003-003",
+        "type": "Photographs",
+        "description": "8 photos showing passenger-side impact damage",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2024-05-24T21:15:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-003-004",
+        "type": "Damage Assessment",
+        "description": "Professional vehicle damage assessment and repair estimate",
+        "source": "Damage DW Analysis",
+        "provenance": "Agent Inferred",
+        "dateReceived": "2024-05-25T14:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-003-005",
+        "type": "Traffic Camera Footage",
+        "description": "Intersection camera footage (requested, pending receipt)",
+        "source": "Portland Traffic Management",
+        "provenance": "Public Record",
+        "dateReceived": "2024-05-27T14:00:00Z",
+        "status": "pending"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Escalate to Senior Adjuster",
+      "description": "Escalate claim for senior adjuster review and settlement approval due to disputed liability, injury component, and high financial exposure",
+      "confidence": "low",
+      "rationale": "This claim presents multiple complexity factors requiring senior expertise: (1) Disputed liability with no independent verification yet available, (2) Medical injury component with costs potentially exceeding policy limits, (3) Total exposure likely exceeding $15,000 settlement authority threshold, (4) Potential subrogation opportunity if liability is established against other driver. Recommend awaiting traffic camera footage before final settlement decision.",
+      "estimatedImpact": "Settlement decision delayed pending senior review and traffic camera evidence. Estimated total exposure $20,000-$28,000 depending on liability determination and final medical costs.",
+      "agentId": "agent_settlement_001",
+      "agentName": "Settlement Analysis DW",
+      "claimantMessage": "We are carefully reviewing your claim and the injuries sustained by your passenger. A senior claims specialist will be in contact within 24 hours to discuss next steps. We have requested traffic camera footage to help establish the facts of the accident.",
+      "financialImpact": {
+        "estimatedAmount": 24000,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 9000, "description": "Passenger-side collision repair" },
+          { "category": "Medical Expenses", "amount": 15000, "description": "Estimated treatment costs for passenger injuries" },
+          { "category": "Rental Car", "amount": 1000, "description": "20 days at $50/day" },
+          { "category": "Towing", "amount": 150, "description": "Initial towing from accident scene" },
+          { "category": "Investigation", "amount": 500, "description": "Traffic camera footage and additional evidence gathering" },
+          { "category": "Deductible", "amount": -500, "description": "Policy deductible (claimant responsibility)" },
+          { "category": "Medical Limit Excess", "amount": -5000, "description": "Amount exceeding $10K medical payments limit" }
+        ]
+      }
+    },
+    "relatedClaims": [
+      {
+        "claimId": "CLM-2023-8842",
+        "matchScore": 0.65,
+        "matchReason": "Same claimant, similar intersection collision 8 months ago",
+        "claimantName": "Patricia O'Connor",
+        "incidentDate": "2023-09-15"
+      }
+    ],
+    "auditTrail": [
+      {
+        "timestamp": "2024-05-24T21:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL intake completed via mobile app"
+      },
+      {
+        "timestamp": "2024-05-25T10:30:00Z",
+        "userId": "agent_medical_001",
+        "action": "Medical Assessment",
+        "outcome": "Passenger injuries assessed, estimated treatment cost $12,000-$18,000"
+      },
+      {
+        "timestamp": "2024-05-27T14:00:00Z",
+        "userId": "agent_settlement_001",
+        "action": "Settlement Analysis",
+        "outcome": "Escalation recommended due to disputed liability and high exposure"
+      }
+    ],
+    "createdAt": "2024-05-24T21:00:00Z",
+    "updatedAt": "2024-05-27T14:00:00Z"
+  },
+  {
+    "id": "CLM-2026-004821",
+    "claimantName": "Margaret Ellison",
+    "claimantEmail": "m.ellison@email.com",
+    "claimantPhone": "+1-555-2026",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-30",
+    "incidentTime": "08:15",
+    "incidentLocation": "Highway 101, San Francisco, CA",
+    "partiesInvolved": [
+      { "name": "Margaret Ellison", "role": "Claimant Driver" },
+      { "name": "Priya Patel", "role": "Other Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "CA-2026-9821",
+    "immediateNeeds": ["Rental", "Towing"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Multi-vehicle collision during morning commute. Vehicle sustained significant front-end damage requiring towing.",
+    "intakeChannel": "Web Portal",
+    "policyRef": "POL-AUTO-2026-1847",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-1847",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.2: Collision coverage with $500 deductible",
+        "Section 6.1: Rental reimbursement up to $50/day",
+        "Section 7.3: Towing covered up to $150"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Repair quotes received - awaiting liability reconciliation and pending authorization",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Repair quotes analyzed - Shop A vs Shop B variance requires decision",
+    "timeInQueue": "12 minutes",
+    "priority": "urgent",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Repair Authorization Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-30T08:15:00Z",
+        "description": "Multi-vehicle collision on Highway 101 during morning commute",
+        "status": "Confirmed",
+        "source": "Police Report #CA-2026-9821"
+      },
+      {
+        "timestamp": "2026-05-30T08:20:00Z",
+        "description": "Vehicle sustained significant front-end damage, airbags deployed",
+        "status": "Confirmed",
+        "source": "Police Report #CA-2026-9821"
+      },
+      {
+        "timestamp": "2026-05-30T08:45:00Z",
+        "description": "Vehicle towed to approved repair facility - Bay Area Auto Body",
+        "status": "Confirmed",
+        "source": "Towing Receipt"
+      },
+      {
+        "timestamp": "2026-05-30T09:00:00Z",
+        "description": "Claimant submitted FNOL via web portal",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2026-05-30T11:30:00Z",
+        "description": "Two repair quotes received - Shop A: $5,100, Shop B: $5,000",
+        "status": "Confirmed",
+        "source": "Repair Facilities"
+      },
+      {
+        "timestamp": "2026-05-30T14:00:00Z",
+        "description": "Coverage DW verified policy active and collision coverage in force",
+        "status": "Confirmed",
+        "source": "Coverage DW Analysis"
+      },
+      {
+        "timestamp": "2026-05-30T14:15:00Z",
+        "description": "Repair Authorization DW analyzing quote variance - $100 difference requires decision",
+        "status": "Pending",
+        "source": "Repair Authorization DW"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-004-001",
+        "type": "Police Report",
+        "description": "Multi-vehicle accident report",
+        "source": "San Francisco Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-30T10:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-004-002",
+        "type": "Repair Quotes",
+        "description": "Two repair estimates received",
+        "source": "Approved repair facilities",
+        "provenance": "Third Party",
+        "dateReceived": "2026-05-30T14:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Authorize Repairs",
+      "description": "Validate Shop A vs Shop B quote variance and authorize repairs",
+      "confidence": "high",
+      "rationale": "Clear liability with repair quotes received. $100 variance between shops requires decision.",
+      "estimatedImpact": "Standard timeline, estimated $5,100 settlement",
+      "agentId": "agent_repair_001",
+      "agentName": "Repair Authorization DW",
+      "claimantMessage": "Repair quotes received. Authorization pending.",
+      "financialImpact": {
+        "estimatedAmount": 5100,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 4500, "description": "Front-end collision repair" },
+          { "category": "Rental Car", "amount": 600, "description": "12 days at $50/day" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-30T09:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL intake completed"
+      }
+    ],
+    "createdAt": "2026-05-30T09:00:00Z",
+    "updatedAt": "2026-05-30T14:30:00Z"
+  },
+  {
+    "id": "CLM-2026-004798",
+    "claimantName": "James Thornton",
+    "claimantEmail": "j.thornton@email.com",
+    "claimantPhone": "+1-555-4798",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-29",
+    "incidentTime": "16:45",
+    "incidentLocation": "Downtown Seattle, WA",
+    "partiesInvolved": [
+      { "name": "James Thornton", "role": "Claimant Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "WA-2026-7798",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Phone",
+    "incidentDescription": "Vehicle damage from falling debris during storm. Windshield and hood damaged.",
+    "intakeChannel": "Phone",
+    "policyRef": "POL-AUTO-2026-3421",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-3421",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 5.1: Comprehensive coverage for weather-related damage",
+        "Section 5.2: Glass damage covered with $0 deductible"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Damage assessment complete - awaiting repair estimate validation",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "Damage assessment shows $9,400 repair estimate needs review",
+    "timeInQueue": "6 minutes",
+    "priority": "high",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Damage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-29T16:45:00Z",
+        "description": "Severe storm with high winds caused debris to fall on vehicle",
+        "status": "Confirmed",
+        "source": "Weather Report & Photos"
+      },
+      {
+        "timestamp": "2026-05-29T16:50:00Z",
+        "description": "Windshield cracked and hood dented from falling tree branch",
+        "status": "Confirmed",
+        "source": "Claimant Statement & Photos"
+      },
+      {
+        "timestamp": "2026-05-29T17:00:00Z",
+        "description": "Claimant submitted FNOL via phone with photos of damage",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2026-05-29T18:30:00Z",
+        "description": "Weather service confirmed severe storm event in downtown Seattle area",
+        "status": "Confirmed",
+        "source": "National Weather Service"
+      },
+      {
+        "timestamp": "2026-05-30T09:00:00Z",
+        "description": "Damage DW assessed photos - estimated $9,400 for windshield and hood repair",
+        "status": "Confirmed",
+        "source": "Damage DW Analysis"
+      },
+      {
+        "timestamp": "2026-05-30T09:15:00Z",
+        "description": "Policy DW verified comprehensive coverage active with $0 glass deductible",
+        "status": "Confirmed",
+        "source": "Policy DW Analysis"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-005-001",
+        "type": "Photographs",
+        "description": "Damage photos showing windshield and hood",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-29T17:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Estimate",
+      "description": "Review and approve $9,400 repair estimate",
+      "confidence": "medium",
+      "rationale": "Comprehensive coverage applies. Estimate requires validation.",
+      "estimatedImpact": "Estimated $9,400 settlement",
+      "agentId": "agent_damage_001",
+      "agentName": "Damage Review DW",
+      "claimantMessage": "Repair estimate under review.",
+      "financialImpact": {
+        "estimatedAmount": 9400,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 9200, "description": "Storm damage repair" },
+          { "category": "Rental Car", "amount": 200, "description": "4 days at $50/day" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-29T17:00:00Z",
+        "userId": "csr_seattle_012",
+        "action": "Claim Created",
+        "outcome": "FNOL intake via phone"
+      }
+    ],
+    "createdAt": "2026-05-29T17:00:00Z",
+    "updatedAt": "2026-05-30T09:00:00Z"
+  },
+  {
+    "id": "CLM-2026-004710",
+    "claimantName": "David Osei",
+    "claimantEmail": "d.osei@email.com",
+    "claimantPhone": "+1-555-4710",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-28",
+    "incidentTime": "11:30",
+    "incidentLocation": "Interstate 85, Atlanta, GA",
+    "partiesInvolved": [
+      { "name": "David Osei", "role": "Claimant Driver" },
+      { "name": "Vehicle 2", "role": "Other Driver" },
+      { "name": "Vehicle 3", "role": "Other Driver" },
+      { "name": "Vehicle 4", "role": "Other Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "GA-2026-4710",
+    "immediateNeeds": ["Towing", "Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Four-vehicle collision on interstate. Complex liability determination required.",
+    "intakeChannel": "Mobile App",
+    "policyRef": "POL-AUTO-2026-8821",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-8821",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.2: Collision coverage applies",
+        "Section 4.5: Multi-vehicle incidents require liability analysis"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": [
+        "Complex multi-vehicle liability split required"
+      ]
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Settlement Approval",
+    "blockerReason": "Multi-vehicle liability split requires human review for 4-way collision",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Liability analysis complete - recommend 25/25/25/25 split pending confirmation",
+    "timeInQueue": "15 minutes",
+    "priority": "normal",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Liability Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-28T11:30:00Z",
+        "description": "Four-vehicle collision on I-85 during heavy traffic",
+        "status": "Confirmed",
+        "source": "Police Report #GA-2026-4710"
+      },
+      {
+        "timestamp": "2026-05-28T11:35:00Z",
+        "description": "Chain reaction collision - Vehicle 1 braked suddenly, causing multi-vehicle pileup",
+        "status": "Confirmed",
+        "source": "Police Report #GA-2026-4710"
+      },
+      {
+        "timestamp": "2026-05-28T11:45:00Z",
+        "description": "All four vehicles sustained damage, no injuries reported",
+        "status": "Confirmed",
+        "source": "Police Report #GA-2026-4710"
+      },
+      {
+        "timestamp": "2026-05-28T12:00:00Z",
+        "description": "Claimant submitted FNOL via mobile app from scene",
+        "status": "Confirmed",
+        "source": "System Record"
+      },
+      {
+        "timestamp": "2026-05-28T14:00:00Z",
+        "description": "Police report received with detailed diagram of collision sequence",
+        "status": "Confirmed",
+        "source": "Atlanta Police Department"
+      },
+      {
+        "timestamp": "2026-05-30T10:00:00Z",
+        "description": "Liability DW analyzed police report - recommending equal 25% liability split among all four vehicles",
+        "status": "Inferred",
+        "source": "Liability Analysis DW"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-006-001",
+        "type": "Police Report",
+        "description": "Multi-vehicle accident report with diagram",
+        "source": "Atlanta Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-28T14:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Liability Split",
+      "description": "Confirm 25% liability share in 4-vehicle collision",
+      "confidence": "high",
+      "rationale": "Equal liability distribution recommended based on police report analysis.",
+      "estimatedImpact": "Estimated $11,200 total exposure",
+      "agentId": "agent_liability_001",
+      "agentName": "Liability Analysis DW",
+      "claimantMessage": "Liability analysis complete. Settlement pending approval.",
+      "financialImpact": {
+        "estimatedAmount": 11200,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 10000, "description": "Collision repair" },
+          { "category": "Rental Car", "amount": 1200, "description": "24 days at $50/day" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-28T12:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL via mobile app"
+      }
+    ],
+    "createdAt": "2026-05-28T12:00:00Z",
+    "updatedAt": "2026-05-30T10:00:00Z"
+  },
+  {
+    "id": "CLM-2026-004655",
+    "claimantName": "Robert Haines",
+    "claimantEmail": "r.haines@email.com",
+    "claimantPhone": "+1-555-4655",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-27",
+    "incidentTime": "14:20",
+    "incidentLocation": "Boston, MA",
+    "partiesInvolved": [
+      { "name": "Robert Haines", "role": "Claimant Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "MA-2026-4655",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Third-party motor claim. Vehicle damage from collision.",
+    "intakeChannel": "Web Portal",
+    "policyRef": "POL-AUTO-2026-5521",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-5521",
+      "coverageType": "Third Party Motor",
+      "relevantClauses": [
+        "Section 3.1: Third party liability coverage"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Core evidence captured - variance checks running",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "FNOL intake captured - vehicle and loss details verified",
+    "timeInQueue": "24 minutes",
+    "priority": "normal",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Damage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-27T14:20:00Z",
+        "description": "Vehicle collision in Boston",
+        "status": "Confirmed",
+        "source": "Police Report #MA-2026-4655"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-007-001",
+        "type": "Police Report",
+        "description": "Accident report",
+        "source": "Boston Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-27T15:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-007-002",
+        "type": "Vehicle Details",
+        "description": "Vehicle and loss details verified",
+        "source": "System Verification",
+        "provenance": "Agent Inferred",
+        "dateReceived": "2026-05-27T15:30:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Continue Investigation",
+      "description": "Complete variance checks and proceed to damage assessment",
+      "confidence": "medium",
+      "rationale": "Initial evidence captured. Standard processing can continue.",
+      "estimatedImpact": "Standard timeline",
+      "agentId": "agent_intake_001",
+      "agentName": "Intake Processing DW",
+      "claimantMessage": "Claim received and under review.",
+      "financialImpact": {
+        "estimatedAmount": 3200,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 3200, "description": "Estimated repair cost" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-27T14:45:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL intake completed"
+      }
+    ],
+    "createdAt": "2026-05-27T14:45:00Z",
+    "updatedAt": "2026-05-30T09:30:00Z"
+  },
+  {
+    "id": "CLM-2026-004819",
+    "claimantName": "Sophia Okonkwo",
+    "claimantEmail": "s.okonkwo@email.com",
+    "claimantPhone": "+1-555-4819",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-26",
+    "incidentTime": "15:30",
+    "incidentLocation": "Houston, TX",
+    "partiesInvolved": [
+      { "name": "Sophia Okonkwo", "role": "Claimant Driver" },
+      { "name": "Unknown", "role": "Other Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "TX-2026-4819",
+    "immediateNeeds": ["Rental", "Towing"],
+    "preferredContactChannel": "Phone",
+    "incidentDescription": "Parking lot collision with unidentified vehicle. Rear bumper damage.",
+    "intakeChannel": "Phone",
+    "policyRef": "POL-AUTO-2026-7821",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-7821",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.3: Uninsured motorist coverage applies",
+        "Section 4.4: $500 deductible for collision"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Hit-and-run claim - police report verification in progress",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "Police report filed - awaiting damage assessment",
+    "timeInQueue": "28 minutes",
+    "priority": "high",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Damage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-26T15:30:00Z",
+        "description": "Hit-and-run collision in parking lot",
+        "status": "Confirmed",
+        "source": "Police Report #TX-2026-4819"
+      },
+      {
+        "timestamp": "2026-05-26T16:00:00Z",
+        "description": "Claimant submitted FNOL via phone",
+        "status": "Confirmed",
+        "source": "System Record"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-008-001",
+        "type": "Police Report",
+        "description": "Hit-and-run report",
+        "source": "Houston Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-26T16:30:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-008-002",
+        "type": "Photographs",
+        "description": "Rear bumper damage photos",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-26T16:45:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Coverage",
+      "description": "Approve under uninsured motorist coverage pending damage assessment",
+      "confidence": "medium",
+      "rationale": "Police report filed within required timeframe. Coverage applies.",
+      "estimatedImpact": "Standard processing timeline",
+      "agentId": "agent_coverage_003",
+      "agentName": "Coverage Verification DW",
+      "claimantMessage": "Claim approved for processing. Damage assessment in progress.",
+      "financialImpact": {
+        "estimatedAmount": 2800,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 2500, "description": "Rear bumper repair" },
+          { "category": "Deductible", "amount": -500, "description": "Policy deductible" },
+          { "category": "Rental Car", "amount": 400, "description": "8 days at $50/day" },
+          { "category": "Towing", "amount": 150, "description": "Initial towing" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-26T16:00:00Z",
+        "userId": "csr_houston_005",
+        "action": "Claim Created",
+        "outcome": "FNOL via phone"
+      }
+    ],
+    "createdAt": "2026-05-26T16:00:00Z",
+    "updatedAt": "2026-05-30T09:45:00Z"
+  },
+  {
+    "id": "CLM-2026-004892",
+    "claimantName": "Emily Chen",
+    "claimantEmail": "e.chen@email.com",
+    "claimantPhone": "+1-555-4892",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-30",
+    "incidentTime": "19:30",
+    "incidentLocation": "Denver, CO",
+    "partiesInvolved": [
+      { "name": "Emily Chen", "role": "Claimant Driver" },
+      { "name": "Unknown", "role": "Other Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "CO-2026-4892",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Hit and run in parking lot. Side mirror and door damage.",
+    "intakeChannel": "Mobile App",
+    "policyRef": "POL-AUTO-2026-9821",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-9821",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 4.3: Uninsured motorist coverage",
+        "Section 4.4: $500 deductible applies"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Hit and run claim - police report verification in progress",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "Police report filed - awaiting verification",
+    "timeInQueue": "3 hours",
+    "priority": "normal",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Coverage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-30T19:30:00Z",
+        "description": "Hit and run in parking lot",
+        "status": "Confirmed",
+        "source": "Claimant Statement"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-009-001",
+        "type": "Photographs",
+        "description": "Damage photos",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-30T20:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Coverage",
+      "description": "Approve under uninsured motorist coverage",
+      "confidence": "medium",
+      "rationale": "Police report filed within required timeframe. Coverage applies.",
+      "estimatedImpact": "Standard processing",
+      "agentId": "agent_coverage_002",
+      "agentName": "Coverage Verification DW",
+      "claimantMessage": "Claim approved for processing.",
+      "financialImpact": {
+        "estimatedAmount": 1800,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 1800, "description": "Door and mirror repair" },
+          { "category": "Deductible", "amount": -500, "description": "Policy deductible" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-30T20:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL via mobile app"
+      }
+    ],
+    "createdAt": "2026-05-30T20:00:00Z",
+    "updatedAt": "2026-05-30T22:30:00Z"
+  },
+  {
+    "id": "CLM-2026-004901",
+    "claimantName": "Michael Torres",
+    "claimantEmail": "m.torres@email.com",
+    "claimantPhone": "+1-555-4901",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-29",
+    "incidentTime": "12:45",
+    "incidentLocation": "Phoenix, AZ",
+    "partiesInvolved": [
+      { "name": "Michael Torres", "role": "Claimant Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "",
+    "immediateNeeds": ["Glass Repair"],
+    "preferredContactChannel": "SMS",
+    "incidentDescription": "Windshield crack from road debris. Requires replacement.",
+    "intakeChannel": "Web Portal",
+    "policyRef": "POL-AUTO-2026-4521",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-4521",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 5.2: Glass damage covered with $0 deductible"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Glass replacement quote received - awaiting approval",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Glass vendor quote validated at $450",
+    "timeInQueue": "45 minutes",
+    "priority": "low",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Policy Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-29T12:45:00Z",
+        "description": "Windshield damaged by road debris",
+        "status": "Confirmed",
+        "source": "Claimant Statement"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-010-001",
+        "type": "Photographs",
+        "description": "Windshield crack photos",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-29T13:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-010-002",
+        "type": "Repair Quote",
+        "description": "Glass replacement quote",
+        "source": "Approved glass vendor",
+        "provenance": "Third Party",
+        "dateReceived": "2026-05-29T14:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Repair",
+      "description": "Approve windshield replacement at $450",
+      "confidence": "high",
+      "rationale": "Standard glass claim with verified quote. No deductible applies.",
+      "estimatedImpact": "Fast-track processing",
+      "agentId": "agent_glass_001",
+      "agentName": "Glass Claims DW",
+      "claimantMessage": "Windshield replacement approved.",
+      "financialImpact": {
+        "estimatedAmount": 450,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Glass Replacement", "amount": 450, "description": "Windshield replacement" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-29T13:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL via web portal"
+      }
+    ],
+    "createdAt": "2026-05-29T13:00:00Z",
+    "updatedAt": "2026-05-30T08:15:00Z"
+  },
+  {
+    "id": "CLM-2026-004915",
+    "claimantName": "Lisa Anderson",
+    "claimantEmail": "l.anderson@email.com",
+    "claimantPhone": "+1-555-4915",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-28",
+    "incidentTime": "17:20",
+    "incidentLocation": "Miami, FL",
+    "partiesInvolved": [
+      { "name": "Lisa Anderson", "role": "Claimant Driver" },
+      { "name": "Carlos Rodriguez", "role": "Other Driver" }
+    ],
+    "injuryIndicated": true,
+    "policeReportRef": "FL-2026-4915",
+    "immediateNeeds": ["Medical", "Towing", "Rental"],
+    "preferredContactChannel": "Phone",
+    "incidentDescription": "T-bone collision at intersection. Driver sustained minor injuries.",
+    "intakeChannel": "Phone",
+    "policyRef": "POL-AUTO-2026-7821",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-7821",
+      "coverageType": "Comprehensive Auto Insurance with Medical",
+      "relevantClauses": [
+        "Section 4.2: Collision coverage applies",
+        "Section 8.1: Medical payments up to $10,000"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Settlement Approval",
+    "blockerReason": "Injury claim with medical component requires review",
+    "confidenceLevel": "medium",
+    "lastAgentAction": "Medical records requested - initial ER visit documented",
+    "timeInQueue": "1 day",
+    "priority": "high",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Liability Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-28T17:20:00Z",
+        "description": "T-bone collision at intersection",
+        "status": "Confirmed",
+        "source": "Police Report #FL-2026-4915"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-011-001",
+        "type": "Police Report",
+        "description": "Intersection collision report",
+        "source": "Miami Police Department",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-28T18:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-011-002",
+        "type": "Medical Records",
+        "description": "ER visit documentation",
+        "source": "Miami General Hospital",
+        "provenance": "Third Party",
+        "dateReceived": "2026-05-29T10:00:00Z",
+        "status": "pending"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Continue Medical Review",
+      "description": "Await complete medical records before settlement determination",
+      "confidence": "medium",
+      "rationale": "Injury component requires full medical documentation.",
+      "estimatedImpact": "Processing delayed pending medical records",
+      "agentId": "agent_medical_002",
+      "agentName": "Medical Claims DW",
+      "claimantMessage": "Medical records under review.",
+      "financialImpact": {
+        "estimatedAmount": 8500,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Vehicle Repair", "amount": 6000, "description": "Collision repair" },
+          { "category": "Medical Expenses", "amount": 2500, "description": "ER visit and treatment" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-28T18:30:00Z",
+        "userId": "csr_miami_008",
+        "action": "Claim Created",
+        "outcome": "FNOL via phone"
+      }
+    ],
+    "createdAt": "2026-05-28T18:30:00Z",
+    "updatedAt": "2026-05-29T14:00:00Z"
+  },
+  {
+    "id": "CLM-2026-004928",
+    "claimantName": "Kevin Park",
+    "claimantEmail": "k.park@email.com",
+    "claimantPhone": "+1-555-4928",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-30",
+    "incidentTime": "07:45",
+    "incidentLocation": "Portland, OR",
+    "partiesInvolved": [
+      { "name": "Kevin Park", "role": "Claimant Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Vandalism damage to vehicle overnight. Keyed paint and slashed tire.",
+    "intakeChannel": "Mobile App",
+    "policyRef": "POL-AUTO-2026-3321",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-3321",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 5.3: Vandalism coverage with $250 deductible"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Vandalism claim - damage assessment in progress",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Photos reviewed - vandalism confirmed",
+    "timeInQueue": "2 hours",
+    "priority": "normal",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Coverage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-30T07:45:00Z",
+        "description": "Vehicle vandalism discovered",
+        "status": "Confirmed",
+        "source": "Claimant Statement & Photos"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-012-001",
+        "type": "Photographs",
+        "description": "Vandalism damage photos",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-30T08:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Coverage",
+      "description": "Approve vandalism claim for paint and tire repair",
+      "confidence": "high",
+      "rationale": "Clear vandalism evidence. Coverage applies with deductible.",
+      "estimatedImpact": "Standard processing",
+      "agentId": "agent_vandalism_001",
+      "agentName": "Vandalism Claims DW",
+      "claimantMessage": "Vandalism claim approved for processing.",
+      "financialImpact": {
+        "estimatedAmount": 1950,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Paint Repair", "amount": 1500, "description": "Paint restoration" },
+          { "category": "Tire Replacement", "amount": 200, "description": "New tire" },
+          { "category": "Deductible", "amount": -250, "description": "Policy deductible" },
+          { "category": "Rental Car", "amount": 500, "description": "10 days at $50/day" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-30T08:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL via mobile app"
+      }
+    ],
+    "createdAt": "2026-05-30T08:00:00Z",
+    "updatedAt": "2026-05-30T10:00:00Z"
+  },
+  {
+    "id": "CLM-2026-004935",
+    "claimantName": "Amanda Foster",
+    "claimantEmail": "a.foster@email.com",
+    "claimantPhone": "+1-555-4935",
+    "incidentType": "Auto",
+    "incidentDate": "2026-05-27",
+    "incidentTime": "21:15",
+    "incidentLocation": "Las Vegas, NV",
+    "partiesInvolved": [
+      { "name": "Amanda Foster", "role": "Claimant Driver" }
+    ],
+    "injuryIndicated": false,
+    "policeReportRef": "",
+    "immediateNeeds": ["Rental"],
+    "preferredContactChannel": "Email",
+    "incidentDescription": "Hail damage to vehicle during severe storm. Multiple dents on hood and roof.",
+    "intakeChannel": "Web Portal",
+    "policyRef": "POL-AUTO-2026-6621",
+    "policyContext": {
+      "policyNumber": "POL-AUTO-2026-6621",
+      "coverageType": "Comprehensive Auto Insurance",
+      "relevantClauses": [
+        "Section 5.1: Weather-related damage covered",
+        "Section 5.4: Hail damage with $100 deductible"
+      ],
+      "coverageApplicability": "covered",
+      "ambiguityIndicators": []
+    },
+    "claimStage": "investigation",
+    "pendingDecisionType": "Coverage Verification",
+    "blockerReason": "Hail damage assessment complete - repair estimate pending approval",
+    "confidenceLevel": "high",
+    "lastAgentAction": "Damage assessment shows $3,800 repair estimate",
+    "timeInQueue": "6 hours",
+    "priority": "normal",
+    "owner": "PRIYA PATEL",
+    "workingOn": "Damage Agent",
+    "narrativeSynthesis": [
+      {
+        "timestamp": "2026-05-27T21:15:00Z",
+        "description": "Hail damage during severe storm",
+        "status": "Confirmed",
+        "source": "Weather Report & Photos"
+      }
+    ],
+    "anomalySignals": [],
+    "evidenceItems": [
+      {
+        "id": "EV-013-001",
+        "type": "Photographs",
+        "description": "Hail damage photos",
+        "source": "Claimant mobile upload",
+        "provenance": "Claimant Provided",
+        "dateReceived": "2026-05-27T22:00:00Z",
+        "status": "verified"
+      },
+      {
+        "id": "EV-013-002",
+        "type": "Weather Report",
+        "description": "Severe storm and hail confirmation",
+        "source": "National Weather Service",
+        "provenance": "Public Record",
+        "dateReceived": "2026-05-28T09:00:00Z",
+        "status": "verified"
+      }
+    ],
+    "recommendedAction": {
+      "actionType": "Approve Repair",
+      "description": "Approve $3,800 hail damage repair estimate",
+      "confidence": "high",
+      "rationale": "Weather event confirmed. Standard hail damage repair.",
+      "estimatedImpact": "Standard processing",
+      "agentId": "agent_weather_001",
+      "agentName": "Weather Claims DW",
+      "claimantMessage": "Hail damage claim approved.",
+      "financialImpact": {
+        "estimatedAmount": 4100,
+        "currency": "USD",
+        "breakdown": [
+          { "category": "Hail Damage Repair", "amount": 3800, "description": "Paintless dent removal" },
+          { "category": "Deductible", "amount": -100, "description": "Policy deductible" },
+          { "category": "Rental Car", "amount": 400, "description": "8 days at $50/day" }
+        ]
+      }
+    },
+    "auditTrail": [
+      {
+        "timestamp": "2026-05-27T22:00:00Z",
+        "userId": "system",
+        "action": "Claim Created",
+        "outcome": "FNOL via web portal"
+      }
+    ],
+    "createdAt": "2026-05-27T22:00:00Z",
+    "updatedAt": "2026-05-28T14:00:00Z"
+  }
+]

@@ -6,7 +6,9 @@
   <ItemGroup>
     <PackageVersion Include="JsonSchema.Net" Version="7.0.4" />
     <PackageVersion Include="Azure.AI.OpenAI" Version="2.1.0" />
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.22.2" />
     <PackageVersion Include="Azure.AI.Agents.Persistent" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.Agents.AI.OpenAI" Version="1.13.0" />
     <PackageVersion Include="Azure.Search.Documents" Version="11.6.0" />
     <PackageVersion Include="Azure.Messaging.EventHubs" Version="5.11.5" />
     <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.46.1" />

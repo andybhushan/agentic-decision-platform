@@ -20,7 +20,9 @@
         "schemaVersion": { "const": "v1" },
         "signedBy": { "type": "string" },
         "registeredIn": { "type": "string", "description": "Agent 365 registry slug; null until registration", "examples": ["agent-365://adp-v1"] },
-        "compiledAt": { "type": "string", "format": "date-time" }
+        "compiledAt": { "type": "string", "format": "date-time" },
+        "stage": { "type": "string", "description": "Optional lifecycle stage this worker decides within its use case (display name). The use case declares its own process; the platform and console stay agnostic.", "examples": ["Intake & Routing", "Damage & Estimation"] },
+        "stageOrder": { "type": "integer", "minimum": 1, "description": "1-based position of this worker's stage in the use case lifecycle" }
       }
     },
     "digitalWorker": {

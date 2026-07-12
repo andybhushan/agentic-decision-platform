@@ -1,0 +1,34 @@
+{
+  "name": "adp-console",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "ADP Console: the product-grade demo surface for the Agentic Decision Platform (Meridian P&C auto claims first).",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@carbon/charts": "^1.27.16",
+    "@carbon/charts-react": "^1.27.16",
+    "@carbon/icons-react": "^11.81.0",
+    "@carbon/pictograms-react": "^11.105.0",
+    "@carbon/react": "^1.80.0",
+    "@fluentui/react-icons": "^2.0.333",
+    "@ibm/plex": "^6.4.1",
+    "@microsoft/signalr": "^8.0.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "playwright": "^1.49.1",
+    "sass": "^1.83.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

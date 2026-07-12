@@ -140,6 +140,9 @@ public sealed class StepRunner(
             Slos: sloSnapshots,
             EmittedAt: DateTimeOffset.UtcNow,
             CitedSources: citedSources?.Select(c => c.DocId).ToList(),
+            CitedSourcesFull: citedSources?
+                .Select(c => new CitationSnapshot(c.SourceId, c.DocId, c.Title, Math.Round(c.Score, 3)))
+                .ToList(),
             OntologyBindings: ontologyBindings,
             RegulatoryBasis: regulatoryBasis);
 

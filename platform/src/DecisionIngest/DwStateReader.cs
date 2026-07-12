@@ -42,9 +42,10 @@ public sealed class DwStateReader : IDisposable
         return rows;
     }
 
-    // Track 6: aggregate outcomes across runs in a recent window. Used by the operator console's
-    // "Today's outcomes" panel + the docs portal's live status section.
-    public async Task<OutcomesAggregate> AggregateAsync(TimeSpan window, CancellationToken cancellationToken = default)
+    // Cross-partition list of all step rows in a recent window. Feeds the decision-queue
+    // read-side (latest trace per subject) and the outcomes aggregate. Fine at v0 scale
+    // (a run is a handful of rows); v1 swaps this for a server-side GROUP BY.
+    public async Task<IReadOnlyList<DwStateRow>> ListRecentAsync(TimeSpan window, CancellationToken cancellationToken = default)
     {
         var since = DateTimeOffset.UtcNow.Subtract(window);
         var query = new QueryDefinition(
@@ -58,6 +59,23 @@ public sealed class DwStateReader : IDisposable
             var page = await iterator.ReadNextAsync(cancellationToken);
             rows.AddRange(page);
         }
+        return rows;
+    }
+
+    // Track 6: aggregate outcomes across runs in a recent window. Used by the operator console's
+    // "Today's outcomes" panel + the docs portal's live status section.
+    public async Task<OutcomesAggregate> AggregateAsync(
+        TimeSpan window,
+        IReadOnlySet<string>? packageFilter = null,
+        CancellationToken cancellationToken = default)
+    {
+        // Operator-action journal rows (agentId "human.*") are judgments, not agent steps:
+        // they stay on the trace but out of step metrics. An optional package filter scopes
+        // the aggregate to one use case's workers (the console's use-case lens).
+        var rows = (await ListRecentAsync(window, cancellationToken))
+            .Where(r => !(r.AgentId?.StartsWith("human.", StringComparison.Ordinal) ?? false))
+            .Where(r => packageFilter is null || (r.PackageId is not null && packageFilter.Contains(r.PackageId)))
+            .ToList();
 
         // Per-subject roll-up: identify completed claim runs vs HITL-paused.
         var distinctSubjects = rows.Select(r => r.SubjectId).Where(s => !string.IsNullOrEmpty(s)).Distinct(StringComparer.Ordinal).Count();
@@ -130,7 +148,8 @@ public sealed record DwStateRow(
     DateTimeOffset? EmittedAt,
     DateTimeOffset? IngestedAt,
     // v1.1: ontology + regulatory + cited-source flat lists round-tripped through Cosmos.
-    // Match the flat shape on DecisionEvent — full citation objects live on the trace itself.
     IReadOnlyList<string>? CitedSources = null,
     IReadOnlyList<string>? OntologyBindings = null,
-    IReadOnlyList<string>? RegulatoryBasis = null);
+    IReadOnlyList<string>? RegulatoryBasis = null,
+    // v1.2: structured citations (source system + title + relevance); null on pre-v1.2 rows.
+    IReadOnlyList<CitationSnapshot>? CitedSourcesFull = null);

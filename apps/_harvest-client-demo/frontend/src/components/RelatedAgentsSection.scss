@@ -1,0 +1,55 @@
+.related-agents-section {
+  margin: 1rem 0;
+
+  .relationships-content {
+    padding: 1rem 0;
+
+    .relationship-group {
+      margin-bottom: 2rem;
+
+      &:last-child { margin-bottom: 0; }
+
+      .group-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+
+        svg { color: var(--cds-icon-primary); }
+        h4  { margin: 0; font-size: 1rem; font-weight: 600; color: var(--cds-text-primary); }
+      }
+
+      .group-description {
+        margin: 0.5rem 0 1rem;
+        color: var(--cds-text-secondary);
+        font-size: 0.875rem;
+      }
+
+      // AgentCard already provides its own .agent-cards-grid — use that
+      .agent-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+
+      .empty-message {
+        color: var(--cds-text-secondary);
+        font-style: italic;
+        margin: 0;
+      }
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    svg { color: var(--cds-icon-secondary); margin-bottom: 1rem; }
+    p   { margin: 0.5rem 0; color: var(--cds-text-secondary); }
+    .helper-text { font-size: 0.875rem; color: var(--cds-text-tertiary); }
+  }
+}

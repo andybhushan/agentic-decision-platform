@@ -18,7 +18,8 @@ public sealed class GetAggregateOutcomes(DwStateReader reader)
         CancellationToken cancellationToken)
     {
         var window = ParseWindow(req.Url.Query) ?? TimeSpan.FromHours(24);
-        var agg = await reader.AggregateAsync(window, cancellationToken);
+        var packages = ParsePackages(req.Url.Query);
+        var agg = await reader.AggregateAsync(window, packages, cancellationToken);
         var resp = req.CreateResponse(HttpStatusCode.OK);
         resp.Headers.Add("Access-Control-Allow-Origin", "*");
         resp.Headers.Add("Content-Type", "application/json; charset=utf-8");
@@ -27,6 +28,17 @@ public sealed class GetAggregateOutcomes(DwStateReader reader)
         var json = JsonSerializer.Serialize(agg, CamelCase);
         await resp.WriteStringAsync(json, cancellationToken);
         return resp;
+    }
+
+    // ?packages=fnol-handler,damage-handler scopes the aggregate (the console's use-case lens).
+    private static HashSet<string>? ParsePackages(string query)
+    {
+        var qd = System.Web.HttpUtility.ParseQueryString(query);
+        var raw = qd["packages"];
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+        var set = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToHashSet(StringComparer.Ordinal);
+        return set.Count == 0 ? null : set;
     }
 
     private static TimeSpan? ParseWindow(string query)

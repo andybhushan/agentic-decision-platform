@@ -1,0 +1,1042 @@
+@use '@carbon/react/scss/spacing' as *;
+@use '@carbon/react/scss/theme' as *;
+@use '@carbon/react/scss/type' as *;
+@use '@carbon/react/scss/breakpoint' as *;
+
+// --- Evidence Intelligence ----------------------------------------------------
+
+.evidence-intel {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  padding: $spacing-05 0;
+  min-height: 0;
+
+  &__notice {
+    margin: $spacing-03 0 $spacing-05 0;
+    max-inline-size: 100%;
+  }
+
+  // -- Left rail --------------------------------------------------------------
+  &__rail {
+    border-right: 1px solid $border-subtle;
+    padding-right: $spacing-05;
+    overflow-y: auto;
+  }
+
+  &__rail-title {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+    margin-bottom: $spacing-04;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-04;
+  }
+
+  &__item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+    border-left: 3px solid transparent;
+    transition: border-color 70ms ease;
+
+    &.evidence-intel__item--active,
+    &.cds--tile--is-selected {
+      border-left-color: $border-interactive;
+    }
+
+    .cds--tile__checkmark { display: none; }
+  }
+
+  &__item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-03;
+  }
+
+  &__item-type {
+    @include type-style('body-compact-01');
+    font-weight: 600;
+  }
+
+  &__item-source {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+  }
+
+  &__item-id {
+    @include type-style('label-01');
+    color: $text-helper;
+  }
+
+  // -- Detail area (right of rail) --------------------------------------------
+  &__detail {
+    min-width: 0;
+    padding-left: $spacing-06;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  // 1. Header panel -----------------------------------------------------------
+  &__header-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-06;
+    padding-bottom: $spacing-05;
+    border-bottom: 1px solid $border-subtle;
+    margin-bottom: $spacing-05;
+  }
+
+  &__header-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $spacing-02;
+    flex-shrink: 0;
+
+    // Make the primary Ask AI button stand out
+    .cds--btn--primary { align-self: stretch; }
+  }
+
+  &__eyebrow {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+  }
+
+  &__title {
+    @include type-style('heading-03');
+    margin: $spacing-02 0;
+  }
+
+  &__summary {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    margin-bottom: $spacing-04;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-03;
+  }
+
+  // 2. Media panel ------------------------------------------------------------
+  &__media-panel {
+    width: 100%;
+    margin-bottom: $spacing-05;
+    background: $layer-02;
+    border: 1px solid $border-subtle;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__media {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+  }
+
+  &__media-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+  }
+
+  &__media-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-03;
+    padding: $spacing-07;
+    color: $text-secondary;
+    @include type-style('body-compact-01');
+  }
+
+  &__media-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-07 $spacing-05;
+    text-align: center;
+    width: 100%;
+
+    &-icon {
+      font-size: 2.5rem;
+      margin-bottom: $spacing-03;
+      opacity: 0.35;
+    }
+
+    p {
+      @include type-style('body-compact-01');
+      color: $text-secondary;
+      margin: 0;
+    }
+
+    &-sub {
+      @include type-style('label-01');
+      color: $text-helper;
+      margin-top: $spacing-02 !important;
+    }
+  }
+
+  &__media-text {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: $spacing-05;
+    background-color: $layer-02;
+
+    &-body {
+      @include type-style('code-01');
+      color: $text-primary;
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+  }
+
+  &__marker-anchor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  &__marker {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    border: 2px solid $layer-01;
+    cursor: pointer;
+    padding: 0;
+
+    &--minor   { background: $support-info;    box-shadow: 0 0 0 3px rgba($support-info, 0.28); }
+    &--moderate{ background: $support-warning; box-shadow: 0 0 0 3px rgba($support-warning, 0.28); }
+    &--severe  { background: $support-error;   box-shadow: 0 0 0 3px rgba($support-error, 0.28); }
+
+    &:hover, &:focus-visible { transform: scale(1.12); }
+  }
+
+  // 3. Tabs -------------------------------------------------------------------
+  &__tabs {
+    flex: 1;
+
+    .cds--tab-content { padding: 0; }
+  }
+
+  &__tab-panel {
+    &:not([hidden]) {
+      padding: $spacing-05 0;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-05;
+    }
+  }
+
+  &__tab-empty {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    padding: $spacing-05 0;
+  }
+
+  // -- Shared tile / block styles ---------------------------------------------
+  &__insight-tile {
+    background: $layer-02;
+  }
+
+  &__agent-tile {
+    background: $layer-02;
+  }
+
+  &__agent-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-03;
+    margin-bottom: $spacing-03;
+    svg { fill: $link-primary; }
+  }
+
+  &__agent-title {
+    @include type-style('heading-compact-01');
+    flex: 1;
+  }
+
+  &__agent-icon { flex-shrink: 0; }
+
+  &__agent-summary {
+    @include type-style('body-long-01');
+    margin-bottom: $spacing-03;
+  }
+
+  &__review-bullets {
+    margin-top: $spacing-03;
+    .cds--list__item { @include type-style('body-long-01'); }
+  }
+
+  &__review-loading {
+    display: flex;
+    justify-content: center;
+    padding: $spacing-04 0;
+  }
+
+  &__block-title {
+    @include type-style('heading-compact-01');
+    display: flex;
+    align-items: center;
+    gap: $spacing-02;
+    margin-bottom: $spacing-04;
+    color: $text-primary;
+  }
+
+  &__block-subtitle {
+    @include type-style('heading-compact-01');
+    display: flex;
+    align-items: center;
+    gap: $spacing-02;
+    margin: $spacing-04 0 $spacing-02 0;
+    color: $text-primary;
+  }
+
+  &__block-body {
+    @include type-style('body-long-01');
+    color: $text-primary;
+  }
+
+  &__warn-icon {
+    fill: $support-warning;
+    flex-shrink: 0;
+  }
+
+  &__artifact-amount {
+    @include type-style('heading-03');
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  // -- Line-items table -------------------------------------------------------
+  &__lineitems {
+    margin-bottom: $spacing-05;
+  }
+
+  &__lineitems-table {
+    width: 100%;
+    border-collapse: collapse;
+    @include type-style('body-compact-01');
+
+    th {
+      text-align: left;
+      @include type-style('label-01');
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: $text-secondary;
+      padding: $spacing-02 $spacing-03;
+      border-bottom: 1px solid $border-subtle;
+    }
+
+    td {
+      padding: $spacing-03;
+      border-bottom: 1px solid $border-subtle;
+    }
+  }
+
+  &__num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__lineitems-note {
+    @include type-style('label-01');
+    color: $text-helper;
+    font-style: italic;
+    margin-top: $spacing-03;
+  }
+
+  // -- Status tile ------------------------------------------------------------
+  &__status-tile {
+    background: $layer-02;
+    border-left: 3px solid $support-warning;
+
+    .evidence-intel__chips { margin: $spacing-03 0 $spacing-05 0; }
+  }
+
+  &__support-tile,
+  &__concern-tile {
+    background: $layer-03;
+    margin-top: $spacing-05;
+    .cds--list__item { @include type-style('body-long-01'); }
+  }
+
+  // -- Metadata ---------------------------------------------------------------
+  &__metadata-list {
+    margin: 0;
+    .cds--structured-list-td { @include type-style('body-compact-01'); }
+  }
+
+  &__metadata-label {
+    @include type-style('label-01');
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    width: 30%;
+  }
+
+  &__metadata-value {
+    @include type-style('body-compact-01');
+    color: $text-primary;
+  }
+
+  // -- Lineage / trust --------------------------------------------------------
+  &__lineage { background: $layer-02; }
+
+  &__trust {
+    border-top: 1px solid $border-subtle;
+    padding-top: $spacing-04;
+    margin-top: $spacing-04;
+  }
+
+  &__trust-label {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+  }
+
+  &__trust p {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    line-height: 1.5;
+    margin-top: $spacing-02;
+  }
+}
+
+// --- Evidence Intelligence modal ----------------------------------------------
+.evidence-modal {
+  .cds--modal-container {
+    inline-size: 96vw;
+    max-inline-size: 1440px;
+    block-size: 90vh;
+    max-block-size: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Make the modal body fill remaining height and scroll internally
+  .cds--modal-content {
+    flex: 1;
+    overflow-y: auto;
+    min-block-size: 0;
+  }
+
+  .cds--popover-container,
+  .cds--popover,
+  .cds--tooltip,
+  .cds--definition-tooltip {
+    z-index: 9000;
+  }
+
+  .cds--grid { padding: 0; }
+  .evidence-intel__detail { margin: 0; }
+
+  // Tab panels: fixed min-height so short-content tabs don't collapse the modal
+  .evidence-intel__tab-panel:not([hidden]) {
+    min-block-size: 300px;
+  }
+}
+
+
+// ─── Evidence Intelligence ("Trace the truth") ──────────────────────────────
+
+.evidence-intel {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: $spacing-05;
+  padding: $spacing-05 0;
+
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-05;
+  }
+
+  &__centre {
+    min-width: 0;
+  }
+
+  &__notice {
+    margin: $spacing-03 0 $spacing-05 0;
+    max-inline-size: 100%;
+  }
+
+  // ── Left rail ──────────────────────────────────────────────────────────
+  &__rail {
+    border-right: 1px solid $border-subtle;
+    padding-right: $spacing-05;
+  }
+
+  &__rail-title {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+    margin-bottom: $spacing-04;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+  }
+
+  // SelectableTile override: left-border accent on selected state
+  &__item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-02;
+    border-left: 3px solid transparent;
+    transition: border-color 70ms ease;
+
+    // Carbon SelectableTile selected state
+    &.evidence-intel__item--active,
+    &.cds--tile--is-selected {
+      border-left-color: $border-interactive;
+    }
+
+    // Hide the checkbox marker — this is a single-select list, not multi-select
+    .cds--tile__checkmark {
+      display: none;
+    }
+  }
+
+  &__item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-03;
+  }
+
+  &__item-type {
+    @include type-style('body-compact-01');
+    font-weight: 600;
+  }
+
+  &__item-source {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+  }
+
+  &__item-id {
+    @include type-style('label-01');
+    color: $text-helper;
+  }
+
+  // ── Detail header ──────────────────────────────────────────────────────
+  &__detail {
+    min-width: 0;
+    padding: 0 $spacing-05;
+  }
+
+  &__detail-header {
+    margin-bottom: $spacing-06;
+  }
+
+  &__eyebrow {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+  }
+
+  &__title {
+    @include type-style('heading-03');
+    margin: $spacing-02 0;
+  }
+
+  &__summary {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    margin-bottom: $spacing-04;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-03;
+  }
+
+  // ── Media ──────────────────────────────────────────────────────────────
+  &__media {
+    position: relative;
+    overflow: visible;
+    border: 1px solid $border-subtle;
+    background: $layer-02;
+    min-height: 240px;
+    z-index: 1;
+    margin-bottom: $spacing-05;
+  }
+
+  &__media-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  &__media-empty {
+    border: 1px dashed $border-subtle;
+    padding: $spacing-05;
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    background: $layer-02;
+    margin-bottom: $spacing-05;
+  }
+
+  &__marker-anchor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  &__marker {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    border: 2px solid $layer-01;
+    box-shadow: 0 0 0 3px rgba($support-info, 0.28);
+    cursor: pointer;
+    padding: 0;
+
+    &--minor  { background: $support-info;    box-shadow: 0 0 0 3px rgba($support-info, 0.28); }
+    &--moderate{ background: $support-warning; box-shadow: 0 0 0 3px rgba($support-warning, 0.28); }
+    &--severe  { background: $support-error;   box-shadow: 0 0 0 3px rgba($support-error, 0.28); }
+
+    &:hover,
+    &:focus-visible { transform: scale(1.12); }
+  }
+
+  // ── Artifact head ──────────────────────────────────────────────────────
+  &__artifact-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-04;
+    border-bottom: 1px solid $border-subtle;
+    padding-bottom: $spacing-04;
+    margin-bottom: $spacing-05;
+  }
+
+  &__artifact-vendor {
+    @include type-style('heading-compact-02');
+  }
+
+  &__artifact-sub {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    margin-top: $spacing-02;
+  }
+
+  &__artifact-amount {
+    @include type-style('heading-03');
+    white-space: nowrap;
+  }
+
+  // ── AI Agent review tile ───────────────────────────────────────────────
+  &__agent-tile {
+    background: $layer-02;
+    margin-bottom: $spacing-05;
+  }
+
+  // ── Digital Steward evidence chain assessment card (full-width, above grid)
+  &__steward-summary {
+    background: $layer-02;
+    border-left: 3px solid $link-primary;
+    margin-bottom: $spacing-05;
+  }
+
+  &__steward-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-06;
+    margin-top: $spacing-04;
+  }
+
+  &__steward-left,
+  &__steward-right {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-03;
+  }
+
+  &__steward-right {
+    border-left: 1px solid $border-subtle;
+    padding-left: $spacing-05;
+  }
+
+  &__steward-intro {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    margin: $spacing-03 0 $spacing-04;
+    line-height: 1.5;
+
+    &--muted { font-style: italic; }
+  }
+
+  &__steward-section-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-02;
+    @include type-style('label-01');
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-helper;
+    margin-bottom: $spacing-03;
+
+    svg { fill: $support-warning; }
+  }
+
+  &__steward-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-03;
+  }
+
+  &__steward-step {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-03;
+  }
+
+  &__steward-step-num {
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    background: $link-primary;
+    color: #fff;
+    @include type-style('label-01');
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.125rem;
+  }
+
+  &__steward-step-text {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    line-height: 1.4;
+  }
+
+  &__steward-gaps {
+    margin: 0;
+    .cds--list__item {
+      @include type-style('body-compact-01');
+      color: $text-secondary;
+    }
+  }
+
+  &__steward-loading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-04;
+    padding: $spacing-03 0;
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+  }
+
+  &__steward-bold {
+    color: $text-primary;
+    font-weight: 600;
+  }
+
+  &__steward-stage-tag {
+    margin-left: auto;
+    margin-right: $spacing-03;
+  }
+
+  &__item-warning {
+    display: flex;
+    align-items: center;
+    gap: $spacing-02;
+    margin-top: $spacing-02;
+    @include type-style('label-01');
+
+    &--pending  { color: $support-warning; svg { fill: $support-warning; } }
+    &--disputed { color: $support-error;   svg { fill: $support-error; } }
+  }
+
+  &__agent-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-03;
+    margin-bottom: $spacing-03;
+
+    svg { fill: $link-primary; }
+  }
+
+  &__agent-title {
+    @include type-style('heading-compact-01');
+    flex: 1;
+  }
+
+  &__agent-icon {
+    flex-shrink: 0;
+  }
+
+  &__agent-summary {
+    @include type-style('body-long-01');
+    margin-bottom: $spacing-03;
+  }
+
+  &__review-bullets {
+    margin-top: $spacing-03;
+
+    .cds--list__item {
+      @include type-style('body-long-01');
+    }
+  }
+
+  &__review-loading {
+    display: flex;
+    justify-content: center;
+    padding: $spacing-04 0;
+  }
+
+  // ── Line-items table ───────────────────────────────────────────────────
+  &__lineitems {
+    margin-bottom: $spacing-05;
+  }
+
+  &__repair-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-03;
+    margin-bottom: $spacing-03;
+  }
+
+  &__lineitems-table {
+    width: 100%;
+    border-collapse: collapse;
+    @include type-style('body-compact-01');
+
+    th {
+      text-align: left;
+      @include type-style('label-01');
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: $text-secondary;
+      padding: $spacing-02 $spacing-03;
+      border-bottom: 1px solid $border-subtle;
+    }
+
+    td {
+      padding: $spacing-03;
+      border-bottom: 1px solid $border-subtle;
+    }
+  }
+
+  &__num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__lineitems-note {
+    @include type-style('label-01');
+    color: $text-helper;
+    font-style: italic;
+    margin-top: $spacing-03;
+  }
+
+  // ── Metadata structured list ───────────────────────────────────────────
+  &__metadata-list {
+    margin: $spacing-05 0;
+
+    .cds--structured-list-td {
+      @include type-style('body-compact-01');
+    }
+  }
+
+  &__metadata-label {
+    @include type-style('label-01');
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    width: 30%;
+  }
+
+  &__metadata-value {
+    @include type-style('body-compact-01');
+    color: $text-primary;
+  }
+
+  // ── Right reasoning column ─────────────────────────────────────────────
+  &__reasoning {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-07;
+    padding: 0 $spacing-05;
+  }
+
+  &__insight-tile {
+    background: $layer-02;
+  }
+
+  &__block-title {
+    @include type-style('heading-compact-01');
+    display: flex;
+    align-items: center;
+    gap: $spacing-02;
+    margin-bottom: $spacing-04;
+    color: $text-primary;
+  }
+
+  &__block-subtitle {
+    @include type-style('heading-compact-01');
+    margin: $spacing-04 0 $spacing-02 0;
+    color: $text-primary;
+  }
+
+  &__block-body {
+    @include type-style('body-long-01');
+    color: $text-primary;
+  }
+
+  // ── Accordion for lower-priority sections ──────────────────────────────
+  &__accordion {
+    margin: 0;
+  }
+
+  &__accordion-title {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-02;
+  }
+
+  &__warn-icon {
+    fill: $support-warning;
+    flex-shrink: 0;
+  }
+
+  // ── Recorded evidence status tile ──────────────────────────────────────
+  &__status-tile {
+    background: $layer-02;
+    border-left: 3px solid $support-warning;
+
+    .evidence-intel__chips {
+      margin: $spacing-03 0 $spacing-05 0;
+    }
+  }
+
+  &__support-tile,
+  &__concern-tile {
+    background: $layer-03;
+    margin-top: $spacing-05;
+
+    .cds--list__item {
+      @include type-style('body-long-01');
+    }
+  }
+
+  // ── Source lineage tile ────────────────────────────────────────────────
+  &__lineage {
+    background: $layer-02;
+  }
+
+  &__trust {
+    border-top: 1px solid $border-subtle;
+    padding-top: $spacing-04;
+    margin-top: $spacing-04;
+  }
+
+  &__trust-label {
+    @include type-style('label-01');
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+  }
+
+  &__trust p {
+    @include type-style('body-compact-01');
+    color: $text-secondary;
+    line-height: 1.5;
+    margin-top: $spacing-02;
+  }
+
+  // ── Actions footer ─────────────────────────────────────────────────────
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-03;
+    margin-top: $spacing-06;
+    padding-top: $spacing-05;
+    border-top: 1px solid $border-subtle;
+  }
+
+  @include breakpoint-down(lg) {
+    &__rail {
+      border-right: none;
+      border-bottom: 1px solid $border-subtle;
+      padding-right: 0;
+      padding-bottom: $spacing-05;
+    }
+  }
+
+  @include breakpoint-down(md) {
+    &__detail,
+    &__reasoning {
+      padding: $spacing-05 0 0 0;
+    }
+  }
+}
+
+// ─── Evidence Intelligence modal ────────────────────────────────────────────
+.evidence-modal {
+  .cds--modal-container {
+    inline-size: 96vw;
+    max-inline-size: 1440px;
+  }
+
+  .cds--popover-container,
+  .cds--popover,
+  .cds--tooltip,
+  .cds--definition-tooltip {
+    z-index: 9000;
+  }
+
+  // Full-width grid inside modal removes the default Carbon max-width margin
+  .cds--grid {
+    padding: 0;
+  }
+
+  .evidence-intel__detail {
+    margin: 0;
+  }
+}

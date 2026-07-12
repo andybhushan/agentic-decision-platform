@@ -1,0 +1,16 @@
+{
+  "resourceGroup": "rg-",
+  "appService": "app-",
+  "appServicePlan": "asp-",
+  "containerRegistry": "cr",
+  "containerAppsEnvironment": "cae-",
+  "containerApp": "ca-",
+  "staticWebApp": "stapp-",
+  "cosmosAccount": "cosmos-",
+  "storageAccount": "st",
+  "keyVault": "kv-",
+  "applicationInsights": "appi-",
+  "logAnalytics": "log-",
+  "managedIdentity": "id-",
+  "aiServices": "ai-"
+}

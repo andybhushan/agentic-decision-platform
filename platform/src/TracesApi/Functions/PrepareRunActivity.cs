@@ -1,4 +1,5 @@
 using Microsoft.Azure.Functions.Worker;
+using Adp.DecisionIngest;
 using Adp.Orchestration;
 using Adp.PackageModel;
 
@@ -10,9 +11,12 @@ public static class PrepareRunActivity
 {
     private const string ResourcesRoot = "Resources";
 
+    private static readonly Lazy<IntakeStore> IntakeStoreLazy = new(IntakeStore.FromEnvironment);
+
     // Per-industry corpus convention: Resources/usecases/{industryFolder}/{corpusFile}
     // Keeps the platform generic — adding an industry is one new entry, not a new switch arm.
-    private static readonly Dictionary<string, string> CorpusByIndustry = new(StringComparer.OrdinalIgnoreCase)
+    // Internal: GetDecisions reuses this map to enumerate the queue's subjects.
+    internal static readonly Dictionary<string, string> CorpusByIndustry = new(StringComparer.OrdinalIgnoreCase)
     {
         ["insurance"] = "usecases/meridian-pnc-auto-claims/claims-25.json",
         ["banking"]   = "usecases/banking-loan-origination/applications-runtime.json",
@@ -38,8 +42,19 @@ public static class PrepareRunActivity
         var corpusPath = Path.Combine(baseDir, ResourcesRoot, corpusRelPath);
         if (!File.Exists(corpusPath)) throw new FileNotFoundException($"Bundled corpus for industry '{industry}' missing at {corpusPath}");
 
-        var claimJson = PlanExecutor.LoadClaim(corpusPath, input.SubjectId, pkg.DigitalWorker.CorpusBinding)
-                        ?? throw new InvalidDataException($"Subject '{input.SubjectId}' not found in corpus");
+        // Corpus first; runtime intake submissions (Cosmos) second, so a subject that
+        // entered through POST /api/intake is just as runnable as a bundled one.
+        string? claimJson;
+        try
+        {
+            claimJson = PlanExecutor.LoadClaim(corpusPath, input.SubjectId, pkg.DigitalWorker.CorpusBinding);
+        }
+        catch (InvalidDataException)
+        {
+            claimJson = IntakeStoreLazy.Value.GetAsync(input.SubjectId).GetAwaiter().GetResult()?.RecordJson;
+        }
+        if (claimJson is null)
+            throw new InvalidDataException($"Subject '{input.SubjectId}' not found in corpus or intake store");
 
         var traceId = $"trc-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds():x}";
 

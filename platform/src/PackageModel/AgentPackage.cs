@@ -19,7 +19,11 @@ public sealed record PackageMetadata(
     [property: JsonPropertyName("schemaVersion")] string SchemaVersion,
     [property: JsonPropertyName("signedBy")]      string? SignedBy = null,
     [property: JsonPropertyName("registeredIn")]  string? RegisteredIn = null,
-    [property: JsonPropertyName("compiledAt")]    DateTimeOffset? CompiledAt = null);
+    [property: JsonPropertyName("compiledAt")]    DateTimeOffset? CompiledAt = null,
+    // Optional lifecycle declaration: the use case names the stage this worker decides
+    // and its 1-based order in the process. Platform + console stay use-case-agnostic.
+    [property: JsonPropertyName("stage")]         string? Stage = null,
+    [property: JsonPropertyName("stageOrder")]    int? StageOrder = null);
 
 public sealed record DigitalWorker(
     [property: JsonPropertyName("id")]             string Id,

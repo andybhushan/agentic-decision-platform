@@ -1,0 +1,10 @@
+indicator_id,claim_number,indicator_type,weight
+457d29bb-846c-4bb1-79ec-d8d0f4acd8ab,CA-2026-1000008,StagedAccidentPattern,0.48
+500fd4b5-b434-43c2-1e39-bf126a568e6e,CA-2026-1000012,PriorLossHistory,0.37
+52e16707-df53-4d72-0120-7709bb7771cc,CA-2026-1000046,StagedAccidentPattern,0.44
+268ca2ec-e487-4c4b-4657-b8ff3f852842,CA-2026-1000048,PriorLossHistory,0.3
+8c74017e-51e6-4889-60a1-12f57b19bc95,CA-2026-1000056,InconsistentStatement,0.26
+78dd1023-9622-4504-bb5c-a7a4db36ef4e,CA-2026-1000066,InconsistentStatement,0.4
+7c397ee1-22b9-4ce8-322a-d557fae36443,CA-2026-1000069,StagedAccidentPattern,0.45
+9b034d5d-c3d1-42b7-6397-8c39e6560ec8,CA-2026-1000089,StagedAccidentPattern,0.35
+6d366ab7-0245-45c3-7fce-584390fe78e3,CA-2026-1000098,PriorLossHistory,0.36

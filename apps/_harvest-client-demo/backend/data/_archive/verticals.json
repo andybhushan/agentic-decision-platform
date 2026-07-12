@@ -1,0 +1,71 @@
+[
+  {
+    "id": "claims",
+    "name": "Claims Processing",
+    "description": "Insurance claims processing and adjudication workflows with automated intake, fraud detection, and settlement calculation",
+    "icon": "DocumentAttachment",
+    "color": "#0f62fe",
+    "agentCount": 4,
+    "workflowCount": 1,
+    "features": [
+      "Automated claim intake and validation",
+      "Real-time fraud detection",
+      "Policy coverage verification",
+      "Automated settlement calculation",
+      "Multi-channel customer communication",
+      "Regulatory compliance tracking"
+    ],
+    "complianceRequirements": [
+      "SOX (Sarbanes-Oxley Act)",
+      "GDPR (General Data Protection Regulation)",
+      "State Insurance Regulations",
+      "NAIC Model Laws"
+    ]
+  },
+  {
+    "id": "healthcare",
+    "name": "Healthcare Services",
+    "description": "Medical service coordination and patient care workflows with HIPAA compliance and care quality optimization",
+    "icon": "Health",
+    "color": "#24a148",
+    "agentCount": 3,
+    "workflowCount": 1,
+    "features": [
+      "Patient intake and registration",
+      "Medical record analysis",
+      "Treatment plan coordination",
+      "Insurance verification and authorization",
+      "Care team communication",
+      "Quality metrics tracking"
+    ],
+    "complianceRequirements": [
+      "HIPAA (Health Insurance Portability and Accountability Act)",
+      "HITECH (Health Information Technology for Economic and Clinical Health)",
+      "FDA Regulations",
+      "CMS Guidelines"
+    ]
+  },
+  {
+    "id": "customer-service",
+    "name": "Customer Service",
+    "description": "Customer support and service request management with intelligent routing and quality assurance",
+    "icon": "UserMultiple",
+    "color": "#8a3ffc",
+    "agentCount": 3,
+    "workflowCount": 1,
+    "features": [
+      "Intelligent ticket routing",
+      "Real-time sentiment analysis",
+      "Knowledge base integration",
+      "Automated escalation management",
+      "Quality assurance monitoring",
+      "Customer satisfaction tracking"
+    ],
+    "complianceRequirements": [
+      "GDPR (General Data Protection Regulation)",
+      "CCPA (California Consumer Privacy Act)",
+      "PCI DSS (Payment Card Industry Data Security Standard)",
+      "SOC 2 Type II"
+    ]
+  }
+]

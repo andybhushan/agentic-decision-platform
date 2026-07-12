@@ -1,0 +1,50 @@
+.master-claims-page {
+  padding: 1rem 0;
+}
+
+.master-claims-page__filters {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.master-claims-page__table-wrap {
+  overflow-x: auto;
+}
+
+.master-claims-page__claimant {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.master-claims-page__summary {
+  margin-bottom: 0.75rem;
+  color: #c6c6c6;
+}
+
+.master-claims-page__loading {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+}
+
+.master-claims-page__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.master-claims-page__actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+@media (max-width: 1056px) {
+  .master-claims-page__filters {
+    grid-template-columns: 1fr;
+  }
+}
+

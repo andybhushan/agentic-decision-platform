@@ -50,13 +50,13 @@ public sealed class GetTrace(DwStateReader reader, ILogger<GetTrace> logger)
             DurationMs: r.DurationMs ?? 0,
             HitlGateId: r.HitlGateId,
             ToolCalls: null,
-            // v1.1: reconstruct structured citations from the flat docId list stored on the row.
-            // SourceId, title and score don't survive Cosmos round-trip in v1.1 (DwStateRow holds
-            // only docIds); the console renders the docId in the citation chip, with the cheap
-            // fallback "v1.1" sourceId tag for now. v1.2 widens DwStateRow to carry full citations.
-            CitedSources: r.CitedSources is { Count: > 0 } cs
-                ? cs.Select(docId => new CitedSource("FoundryIQ", docId, docId, 0.0)).ToList()
-                : null,
+            // v1.2: structured citations round-trip Cosmos in full (source system + title + score).
+            // Pre-v1.2 rows only carried flat docIds; fall back to docId-shaped citations for those.
+            CitedSources: r.CitedSourcesFull is { Count: > 0 } full
+                ? full.Select(c => new CitedSource(c.SourceId, c.DocId, c.Title, c.Score)).ToList()
+                : r.CitedSources is { Count: > 0 } cs
+                    ? cs.Select(docId => new CitedSource("FoundryIQ", docId, docId, 0.0)).ToList()
+                    : null,
             OntologyBindings: r.OntologyBindings,
             RegulatoryBasis: r.RegulatoryBasis)).ToList();
 

@@ -62,11 +62,22 @@ IContextSource workIqSource = string.Equals(
         "graph", StringComparison.OrdinalIgnoreCase)
     ? new MicrosoftGraphWorkIqSource()
     : new WorkIqSource();
-builder.Services.AddSingleton<IContextRouter>(sp => new ContextRouter([
-    AzureSearchFoundryIQSource.FromEnvironment(sp.GetRequiredService<EmbeddingService>()),
-    sp.GetRequiredService<IContextSource>(),                     // FabricIQ (SQL-backed or Fabric Lakehouse)
-    workIqSource,                                                // synthetic by default; Graph if WORKIQ_BACKEND=graph
-]));
+// Wave 3: the workspace's published Fabric Data Agent joins the federation when
+// FABRIC_DATA_AGENT_URL is set. Degrades to empty fragments until the agent is published.
+var dataAgentSource = FabricDataAgentSource.FromEnvironment();
+builder.Services.AddSingleton<IContextRouter>(sp => new ContextRouter(
+    dataAgentSource is null
+        ? [
+            AzureSearchFoundryIQSource.FromEnvironment(sp.GetRequiredService<EmbeddingService>()),
+            sp.GetRequiredService<IContextSource>(),             // FabricIQ (SQL-backed or Fabric Lakehouse)
+            workIqSource,                                        // synthetic by default; Graph if WORKIQ_BACKEND=graph
+        ]
+        : [
+            AzureSearchFoundryIQSource.FromEnvironment(sp.GetRequiredService<EmbeddingService>()),
+            sp.GetRequiredService<IContextSource>(),
+            dataAgentSource,                                     // Fabric IQ Data Agent (NL over ontology+semantic model)
+            workIqSource,
+        ]));
 // Track 4: industry-aware tool registry composes per-usecase tool kits at runtime.
 // New use cases add a Tools.csproj under usecases/<x>/tools/ and a single line below.
 builder.Services.AddSingleton<IToolRegistry>(_ => new IndustryAwareToolRegistry(
@@ -80,6 +91,17 @@ builder.Services.AddSingleton(_ => new StepRunner(
 
 // Write-side sinks
 builder.Services.AddSingleton(_ => DwStateWriter.FromEnvironment());
+
+// Runtime subject intake (POST /api/intake, GET /api/records, queue merge)
+builder.Services.AddSingleton(_ => IntakeStore.FromEnvironment());
+
+// Evidence: blob-backed photo store + GPT-4o vision at intake (vision optional).
+builder.Services.AddSingleton(_ => EvidenceStore.FromEnvironment());
+builder.Services.AddSingleton(_ => new Lazy<EvidenceVision?>(() =>
+{
+    try { return EvidenceVision.FromEnvironment(); }
+    catch { return null; }
+}));
 
 // SignalR sink requires async init — wrap in a Lazy<Task<>>.
 builder.Services.AddSingleton(_ => new Lazy<Task<SignalRStepSink?>>(async () =>

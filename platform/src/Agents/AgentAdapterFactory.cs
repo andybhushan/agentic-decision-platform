@@ -1,7 +1,8 @@
 namespace Adp.Agents;
 
 // Picks the right IAgentAdapter from environment:
-//   AGENT_BACKEND=foundry (or unset + FOUNDRY_PROJECT_ENDPOINT present) → FoundryAdapter (v1 default, Persistent Agents SDK)
+//   AGENT_BACKEND=foundry (or unset + FOUNDRY_PROJECT_ENDPOINT present) → FoundryAdapter (Foundry Agent Service, Entra RBAC)
+//   AGENT_BACKEND=agent-framework → AgentFrameworkAdapter (Microsoft Agent Framework in-process, key auth)
 //   AGENT_BACKEND=legacy (or FOUNDRY_PROJECT_ENDPOINT absent + AZURE_OPENAI_* present) → LegacyOpenAIAdapter (chat-completions)
 //   neither → throw
 //
@@ -17,6 +18,7 @@ public static class AgentAdapterFactory
 
         if (backend == "foundry") return FoundryAdapter.FromEnvironment();
         if (backend == "legacy")  return LegacyOpenAIAdapter.FromEnvironment();
+        if (backend is "agent-framework" or "agentframework") return AgentFrameworkAdapter.FromEnvironment();
 
         // Auto-pick: prefer Foundry if endpoint set; fall back to legacy AOAI if creds present.
         if (!string.IsNullOrEmpty(foundryEndpoint)) return FoundryAdapter.FromEnvironment();

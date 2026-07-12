@@ -1,0 +1,323 @@
+@use '@carbon/react/scss/spacing' as *;
+@use '@carbon/react/scss/theme' as *;
+@use '@carbon/react/scss/type' as *;
+@use '@carbon/react/scss/breakpoint' as *;
+@use './EvidenceIntelligence.scss';
+
+.claim-docket {
+  &__section {
+    padding: $spacing-05 0;
+  }
+
+  &__section-title {
+    margin: $spacing-07 0 $spacing-05 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+
+    &:first-child {
+      margin-top: $spacing-05;
+    }
+  }
+
+  &__evidence {
+    padding: $spacing-05 0;
+  }
+
+  &__muted {
+    color: $text-secondary;
+    font-size: 0.875rem;
+    padding: $spacing-03 0;
+  }
+
+  &__eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-secondary;
+  }
+
+  // Incident spine
+  &__spine {
+    background: $layer-01;
+    border: 1px solid $border-subtle;
+    border-left: 3px solid $border-interactive;
+    padding: $spacing-05;
+    margin-top: $spacing-05;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+  }
+
+  &__spine-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-05;
+    flex-wrap: wrap;
+  }
+
+  &__spine-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: $spacing-02;
+  }
+
+  &__spine-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-03;
+  }
+
+  // Facts grid (incident spine + key information)
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-05;
+    margin: 0;
+
+    > div {
+      min-width: 0;
+    }
+
+    dt {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: $text-secondary;
+    }
+
+    dd {
+      font-size: 0.875rem;
+      margin: $spacing-02 0 0 0;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    @include breakpoint-down(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__facts--keyinfo {
+    background: $layer-01;
+    border: 1px solid $border-subtle;
+    padding: $spacing-05;
+  }
+
+  &__facts-wide {
+    grid-column: 1 / -1;
+  }
+
+  &__chips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: $spacing-02;
+  }
+
+  &__desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: $text-primary;
+    border-top: 1px solid $border-subtle;
+    padding-top: $spacing-05;
+  }
+
+  // Parties involved
+  &__parties {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-03;
+
+    @include breakpoint-down(md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__party {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: $layer-01;
+    border: 1px solid $border-subtle;
+    padding: $spacing-04;
+  }
+
+  &__party-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  &__party-role {
+    font-size: 0.75rem;
+    color: $text-secondary;
+  }
+
+  // Timeline (claim history + event timeline)
+  &__timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__timeline-item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: $spacing-04;
+    padding-bottom: $spacing-05;
+    position: relative;
+
+    &:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 14px;
+      bottom: 0;
+      width: 1px;
+      background: $border-subtle;
+    }
+  }
+
+  &__timeline-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: $layer-01;
+    border: 2px solid $border-interactive;
+    margin-top: 3px;
+  }
+
+  &__timeline-body {
+    min-width: 0;
+  }
+
+  &__timeline-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-04;
+    flex-wrap: wrap;
+  }
+
+  &__timeline-action {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  &__timeline-time {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    white-space: nowrap;
+  }
+
+  &__timeline-outcome {
+    font-size: 0.8125rem;
+    color: $text-primary;
+    line-height: 1.45;
+    margin-top: $spacing-02;
+  }
+
+  &__timeline-rationale {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    line-height: 1.45;
+    margin-top: $spacing-02;
+    font-style: italic;
+  }
+
+  &__timeline-by {
+    display: inline-block;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-helper;
+    margin-top: $spacing-02;
+  }
+
+
+  &__evidence-hint {
+    font-size: 0.8125rem;
+    color: $text-secondary;
+    margin-bottom: $spacing-05;
+  }
+
+  &__policy-info {
+    margin-bottom: $spacing-07;
+
+    p {
+      margin-bottom: $spacing-03;
+    }
+  }
+
+  &__ambiguity-list {
+    margin-top: $spacing-05;
+    padding-left: $spacing-06;
+
+    li {
+      margin-bottom: $spacing-03;
+    }
+  }
+
+  &__consent-info {
+    margin: $spacing-05 0;
+
+    p {
+      margin-bottom: $spacing-03;
+    }
+  }
+
+  &__notes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+  }
+
+  &__note {
+    padding: $spacing-05;
+    background: $layer-01;
+    border-left: 3px solid $border-subtle;
+  }
+
+  &__note-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-03;
+    margin-bottom: $spacing-03;
+  }
+
+  &__note-author {
+    @include type-style('body-compact-01');
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__note-role {
+    @include type-style('label-01');
+    color: $text-secondary;
+  }
+
+  &__note-date {
+    @include type-style('label-01');
+    color: $text-helper;
+    margin-left: auto;
+  }
+
+  &__note-text {
+    @include type-style('body-compact-01');
+    color: $text-primary;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .cds--snippet {
+    margin-bottom: $spacing-03;
+  }
+}
+
+// Made with Bob

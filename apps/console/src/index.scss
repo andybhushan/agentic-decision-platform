@@ -1,0 +1,1883 @@
+@use "@carbon/react";
+
+// ADP console visual system (P3). Carbon v11 tokens everywhere; the content zone
+// flips white <-> g100 via ThemeContext while the header stays g100.
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background: var(--cds-background);
+}
+
+// The themed content wrapper owns the page background so dark mode covers the viewport.
+.adp-content-theme {
+  display: block;
+  min-height: 100vh;
+  background: var(--cds-background);
+  color: var(--cds-text-primary);
+}
+
+// Carbon's Header is position:fixed (3rem tall) but Content does not offset itself:
+// without this, whatever renders first (breadcrumbs) slides underneath the header.
+// ONE container system, mirroring the offering-demo-website rail exactly:
+// .container { max-width: 1440px; margin: 0 auto; padding: 0 32px } and NO framework
+// grid margins. Carbon's compiled CSS shows the grid container adds
+// padding-inline: var(--cds-grid-margin) + max-inline-size: 99rem, and EVERY column
+// adds margin-inline of half the gutter (1rem per side). Both are neutralized inside
+// .adp-page; inter-column spacing comes back as clean column-gap.
+.adp-content-theme .cds--content {
+  margin-block-start: 3rem;
+  padding: 0;
+  // Full-bleed sections use the 50vw margin trick; clip the sliver 100vw adds when a
+  // vertical scrollbar is present.
+  overflow-x: clip;
+}
+
+.adp-page {
+  max-width: 90rem; // 1440px, same as the offering website
+  margin-inline: auto;
+  padding: 0 2rem 2.5rem; // 32px rail padding, same as the offering website
+}
+
+// Applies to EVERY content zone (platform rail AND the member/bank portal rail).
+:is(.adp-page, .adp-member-page) .cds--css-grid {
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+  max-inline-size: none;
+  inline-size: 100%;
+  column-gap: 2rem;
+  row-gap: 1rem;
+}
+
+// Equal-height cards: a card that is the direct child of a grid column fills its row,
+// so every card in a row is the same size (spacing comes from the grid gaps instead
+// of per-card bottom margins).
+.cds--css-grid-column > :is(.adp-member-card, .adp-usecase-card, .adp-stat, .adp-chart-card) {
+  block-size: 100%;
+  margin-block-end: 0;
+}
+
+:is(.adp-page, .adp-member-page) .cds--css-grid-column {
+  margin-inline: 0 !important;
+}
+
+// Nested (sub)grids, including the "narrow" variant, hang tiles 1rem into the gutter by
+// Carbon design; we want card edges flush with the rail like the offering site's cards.
+:is(.adp-page, .adp-member-page) [class*="cds--subgrid"] {
+  margin-inline: 0 !important;
+}
+
+@media (max-width: 671px) {
+  .adp-page {
+    padding: 0 1rem 2rem;
+  }
+
+  .adp-page .cds--css-grid {
+    column-gap: 1rem;
+  }
+}
+
+// Route transitions: quick fade-rise, disabled for reduced-motion users.
+.adp-route-enter {
+  animation: adp-route-in 0.25s ease-out;
+}
+
+@keyframes adp-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adp-route-enter,
+  .adp-trace-step--live,
+  .adp-stat,
+  .adp-stack-chip,
+  .adp-usecase-card,
+  .adp-member-card,
+  .adp-worker-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+.adp-notification {
+  max-width: none;
+  margin-block-start: 1rem;
+}
+
+.adp-input-md {
+  min-width: 14rem;
+}
+
+.adp-endpoint--spaced {
+  margin-block-start: 0.75rem;
+}
+
+.adp-endpoint {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  word-break: break-all;
+}
+
+.adp-section-title {
+  margin-block: 1.5rem 0.75rem;
+}
+
+.adp-live-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--cds-border-interactive);
+  background: var(--cds-layer);
+  margin-block-end: 0.5rem;
+}
+
+.adp-live-step__label {
+  min-width: 12rem;
+  font-weight: 600;
+}
+
+.adp-live-step__agent {
+  min-width: 14rem;
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+}
+
+.adp-live-step__meta {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+}
+
+.adp-stat {
+  padding: 1.25rem;
+  border-block-start: 2px solid var(--cds-border-interactive);
+  transition: transform 0.15s ease-out;
+}
+
+// The modern stat badge: soft brand-tinted square with a 24px icon.
+.adp-stat__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--cds-link-primary) 12%, transparent);
+  color: var(--cds-link-primary);
+  margin-block-end: 0.875rem;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.adp-stat--alert .adp-stat__badge {
+  background: color-mix(in srgb, var(--cds-support-error) 12%, transparent);
+  color: var(--cds-support-error);
+}
+
+.adp-stat__value {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.adp-stat__label {
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.adp-stat__icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.adp-trace-step {
+  padding: 1rem;
+  background: var(--cds-layer);
+  margin-block-end: 0.5rem;
+}
+
+.adp-trace-step__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.adp-trace-step__output {
+  margin-block-start: 0.5rem;
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+  max-width: 70rem;
+}
+
+.adp-citations {
+  margin-block-start: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adp-run-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+// P1: Decision Queue + Decision Mode
+
+.adp-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 1.5rem 1rem;
+}
+
+.adp-page-head__sub {
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+  margin-block-start: 0.25rem;
+  max-width: 44rem;
+}
+
+.adp-page-head__tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-block-start: 0.5rem;
+}
+
+.adp-stat-row {
+  margin-block-end: 1.5rem;
+}
+
+.adp-stat--alert {
+  border-block-start-color: var(--cds-support-error);
+}
+
+.adp-stat--alert .adp-stat__value {
+  color: var(--cds-support-error);
+}
+
+.adp-queue__toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--cds-layer);
+
+  > :first-child {
+    flex: 1;
+  }
+}
+
+// Mobile: the queue table keeps its shape and scrolls sideways instead of crushing.
+.adp-queue {
+  overflow-x: auto;
+}
+
+.adp-queue table {
+  min-width: 56rem;
+}
+
+.adp-queue__row {
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: -2px;
+  }
+}
+
+.adp-queue__row--gate {
+  box-shadow: inset 3px 0 0 var(--cds-support-error);
+}
+
+.adp-queue__subject {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.adp-queue__dim {
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+}
+
+.adp-queue__aging {
+  margin-inline-start: 0.5rem;
+  color: var(--cds-support-error);
+  font-size: 0.75rem;
+}
+
+.adp-confidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.adp-confidence__bar {
+  display: inline-block;
+  width: 4rem;
+  height: 0.25rem;
+  background: var(--cds-border-subtle);
+  border-radius: 0.125rem;
+  overflow: hidden;
+
+  > span {
+    display: block;
+    height: 100%;
+  }
+
+  &--high > span { background: var(--cds-support-success); }
+  &--medium > span { background: var(--cds-support-warning); }
+  &--low > span { background: var(--cds-support-error); }
+}
+
+.adp-breadcrumb {
+  margin-block-start: 0.5rem;
+}
+
+.adp-run-launcher {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.adp-trace-step--live {
+  border-left: 3px solid var(--cds-border-interactive);
+  animation: adp-step-in 0.4s ease-out;
+}
+
+.adp-trace-step--gate {
+  border-left: 3px solid var(--cds-support-error);
+}
+
+.adp-trace-step--pending {
+  opacity: 0.6;
+}
+
+@keyframes adp-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adp-empty {
+  padding: 2rem;
+}
+
+.adp-gate-panel {
+  border-left: 3px solid var(--cds-support-error);
+  margin-block-end: 1rem;
+}
+
+.adp-gate-panel__title {
+  margin-block: 0.75rem 0.5rem;
+  font-size: 1rem;
+}
+
+.adp-gate-panel__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.adp-side-card {
+  margin-block-end: 1rem;
+}
+
+.adp-side-card__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-block-end: 0.5rem;
+}
+
+.adp-side-card__title--spaced {
+  margin-block-start: 0.75rem;
+}
+
+// P2: Outcomes Dashboard + governed action
+
+.adp-stat__note {
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+  margin-block-start: 0.25rem;
+  min-height: 1rem;
+}
+
+.adp-chart-card {
+  margin-block-end: 1rem;
+  min-height: 22rem;
+}
+
+// Operator judgment rows: purple is the reserved "human" identity across the console
+// (Carbon purple 60; not one of the status colors, distinct from step-state tags).
+.adp-trace-step--operator {
+  border-left: 3px solid #8a3ffc;
+}
+
+.adp-action-card {
+  border-left: 3px solid var(--cds-border-interactive);
+}
+
+.adp-action-card__lede {
+  margin-block-end: 0.5rem;
+}
+
+.adp-action-card__done {
+  margin-block-start: 0.5rem;
+}
+
+.adp-modal-lede {
+  margin-block-end: 1rem;
+}
+
+.adp-modal-preview {
+  background: var(--cds-layer);
+  padding: 0.75rem 1rem;
+  margin-block-end: 1rem;
+}
+
+.adp-modal-note {
+  margin-block-start: 1rem;
+}
+
+// P4: Platform view + narrator
+
+// Hero: gradient family shared with the offering website (light from #f4f4f4;
+// dark #0d0d0d -> #161616 -> blue-tinted end) with brand accent glows.
+.adp-hero {
+  position: relative;
+  padding: 2.5rem 2rem 2rem;
+  margin: 0 -1rem 1rem;
+  background:
+    radial-gradient(38rem 16rem at 88% -20%, rgba(15, 98, 254, 0.10), transparent 60%),
+    radial-gradient(30rem 14rem at 8% 120%, rgba(0, 157, 154, 0.08), transparent 60%),
+    linear-gradient(105deg, #f4f4f4 0%, #ffffff 55%, #edf4ff 100%);
+  border-block-end: 1px solid var(--cds-border-subtle);
+}
+
+[data-adp-theme="dark"] .adp-hero {
+  background:
+    radial-gradient(38rem 16rem at 88% -20%, rgba(69, 137, 255, 0.16), transparent 60%),
+    radial-gradient(30rem 14rem at 8% 120%, rgba(0, 157, 154, 0.12), transparent 60%),
+    linear-gradient(105deg, #0d0d0d 0%, #161616 55%, #0d1a2e 100%);
+}
+
+.adp-hero__title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-block-end: 1rem;
+  max-width: 48rem;
+}
+
+.adp-hero__sub {
+  color: var(--cds-text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 50rem;
+}
+
+// Full-bleed leadspace: the IBM illustration as the stage, copy over a directional scrim.
+// The image's left third is quiet grid, which is the text zone; the subject stays right.
+// The hero bleeds to the viewport, but its copy is padded back onto the content rail:
+// rail left edge from the viewport = max(2rem, 50vw - 45rem + 2rem) with the 90rem rail.
+.adp-hero--full {
+  margin-inline: calc(50% - 50vw);
+  min-height: 26rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 3.5rem max(2rem, calc(50vw - 43rem)) 3rem;
+}
+
+.adp-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 40%;
+}
+
+.adp-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    92deg,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(255, 255, 255, 0.92) 34%,
+    rgba(255, 255, 255, 0.55) 58%,
+    rgba(255, 255, 255, 0.08) 82%
+  );
+}
+
+[data-adp-theme="dark"] .adp-hero__scrim {
+  background:
+    linear-gradient(
+      92deg,
+      rgba(13, 13, 13, 0.97) 0%,
+      rgba(13, 13, 13, 0.92) 34%,
+      rgba(13, 13, 13, 0.66) 58%,
+      rgba(13, 13, 13, 0.38) 100%
+    );
+}
+
+.adp-hero--full .adp-hero__copy {
+  position: relative;
+  max-width: 40rem;
+}
+
+.adp-hero__kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0f62fe;
+  margin-block-end: 0.75rem;
+}
+
+[data-adp-theme="dark"] .adp-hero__kicker {
+  color: #78a9ff;
+}
+
+.adp-hero__ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-block-start: 1.5rem;
+}
+
+@media (max-width: 671px) {
+  .adp-hero--full {
+    min-height: 0;
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .adp-hero__scrim {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.9) 100%);
+  }
+
+  [data-adp-theme="dark"] .adp-hero__scrim {
+    background: linear-gradient(180deg, rgba(13, 13, 13, 0.96) 0%, rgba(13, 13, 13, 0.9) 100%);
+  }
+}
+
+.adp-usecase-card {
+  margin-block-end: 1rem;
+  border-block-start: 3px solid var(--usecase-accent, var(--cds-border-interactive));
+  min-height: 13rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  }
+
+  .adp-usecase-card__title {
+    color: var(--usecase-accent-text, inherit);
+  }
+}
+
+// Industry accents distinguish the two use cases at a glance: insurance rides Carbon
+// blue, banking rides Carbon purple (matching each card's industry tag).
+.adp-usecase-card--insurance {
+  --usecase-accent: #0f62fe; // Carbon blue-60
+  --usecase-accent-text: var(--cds-link-primary);
+  background: linear-gradient(180deg, rgba(15, 98, 254, 0.06), transparent 42%) var(--cds-layer);
+}
+
+.adp-usecase-card--banking {
+  --usecase-accent: #8a3ffc; // Carbon purple-60
+  --usecase-accent-text: #8a3ffc;
+  background: linear-gradient(180deg, rgba(138, 63, 252, 0.07), transparent 42%) var(--cds-layer);
+}
+
+[data-carbon-theme="g100"] .adp-usecase-card--banking,
+.cds--g100 .adp-usecase-card--banking {
+  --usecase-accent-text: #be95ff; // purple-40 for dark-surface contrast
+}
+
+// Shared card elevation on the other primary surfaces.
+.adp-member-card,
+.adp-worker-card,
+.adp-stat {
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.adp-usecase-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.adp-usecase-card__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.adp-usecase-card__workers {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.adp-usecase-card__actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.adp-pipeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1px;
+  background: var(--cds-border-subtle);
+  border: 1px solid var(--cds-border-subtle);
+}
+
+.adp-pipeline__step {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--cds-layer);
+}
+
+.adp-pipeline__num {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--cds-border-interactive);
+  color: var(--cds-text-on-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.adp-pipeline__name {
+  font-weight: 600;
+  margin-block-end: 0.25rem;
+}
+
+.adp-pipeline__text {
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.adp-stack-row {
+  margin-block-end: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+// Landing proof strip: live journal numbers as the credibility band.
+// Explicit tracks (no auto-fit): four equal cells, no dead space.
+.adp-proof {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--cds-border-subtle);
+  border: 1px solid var(--cds-border-subtle);
+  border-block-start: 2px solid #0f62fe;
+  margin-block: 1.5rem 0.5rem;
+}
+
+@media (max-width: 1055px) {
+  .adp-proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 671px) {
+  .adp-proof {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adp-proof__item {
+  background: var(--cds-layer);
+  padding: 1.25rem;
+
+  strong {
+    display: block;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  > span:not(.adp-stat__badge) {
+    color: var(--cds-text-secondary);
+    font-size: 0.8125rem;
+  }
+}
+
+.adp-proof__note {
+  grid-column: 1 / -1;
+  background: var(--cds-layer);
+  padding: 0.5rem 1rem;
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+// Global product footer (platform zone).
+.adp-footer {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  // Same content rail as .adp-page so footer text aligns with page content.
+  padding: 1.25rem max(2rem, calc(50vw - 43rem));
+  border-block-start: 1px solid var(--cds-border-subtle);
+  background: var(--cds-layer);
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 671px) {
+  .adp-footer {
+    padding-inline: 1rem;
+  }
+}
+
+.adp-footer__note {
+  margin-inline-start: auto;
+}
+
+// Dual-brand stack chips: official Microsoft product marks + Azure blue; IBM blue for IBM.
+.adp-stack-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  background: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
+  border-inline-start: 3px solid #0078d4;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.adp-stack-chip__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
+
+.adp-stack-chip--ibm {
+  border-inline-start-color: #0f62fe;
+}
+
+.adp-pipeline__icon {
+  vertical-align: -0.2em;
+  margin-inline-end: 0.25rem;
+  color: var(--cds-icon-secondary, var(--cds-text-secondary));
+}
+
+.adp-federation-row__mark {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
+
+.adp-federation-row__icon {
+  flex: none;
+  color: var(--cds-icon-secondary, var(--cds-text-secondary));
+}
+
+.adp-narrator {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 22rem;
+  max-width: calc(100vw - 3rem);
+  z-index: 8000;
+  background: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
+  border-block-start: 2px solid var(--cds-border-interactive);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+  animation: adp-route-in 0.25s ease-out;
+}
+
+.adp-narrator__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  > :last-child {
+    margin-inline-start: auto;
+  }
+}
+
+.adp-narrator__progress {
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+}
+
+.adp-narrator__title {
+  margin-block: 0.75rem 0.5rem;
+  font-size: 1rem;
+}
+
+.adp-narrator__text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--cds-text-secondary);
+}
+
+.adp-narrator__action {
+  font-size: 0.875rem;
+  margin-block-start: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--cds-layer-accent, var(--cds-background));
+  border-inline-start: 3px solid var(--cds-border-interactive);
+}
+
+.adp-narrator__nav {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adp-narrator {
+    animation: none !important;
+  }
+}
+
+// Lifecycle: the claim journey rail + chronology + queue progress
+
+.adp-lifecycle {
+  margin-block: 0.5rem 1.5rem;
+  // Carbon absolutely-positions each step's secondaryLabel below the step, so the
+  // container must reserve that space itself or the labels clip behind a scrollbar.
+  padding: 1rem 1rem 2.75rem;
+  background: var(--cds-layer);
+  border-block-start: 2px solid var(--cds-border-interactive);
+  overflow-x: auto;
+}
+
+.adp-journey-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.375rem;
+  font-size: 0.875rem;
+
+  & + & {
+    border-block-start: 1px solid var(--cds-border-subtle);
+  }
+}
+
+.adp-journey-row__dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--cds-support-success);
+
+  &--needs-review { background: var(--cds-support-error); }
+  &--failed { background: var(--cds-support-error); }
+}
+
+.adp-journey-row__stage {
+  font-weight: 600;
+}
+
+.adp-journey-row__time {
+  margin-inline-start: auto;
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+}
+
+.adp-journey-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.adp-journey-progress__segments {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.adp-journey-progress__seg {
+  width: 1rem;
+  height: 0.25rem;
+  border-radius: 0.125rem;
+  background: var(--cds-border-subtle);
+
+  &--done {
+    background: var(--cds-support-success);
+  }
+}
+
+// Member portal (the claims use-case view): Meridian-branded zone. Teal is the carrier
+// accent; layout is single-column and mobile-first.
+
+.adp-member-header {
+  border-block-end: 3px solid #009d9a;
+
+  .adp-member-header__who {
+    align-self: center;
+    color: #c6c6c6;
+    font-size: 0.75rem;
+    padding-inline: 0.75rem;
+  }
+}
+
+.adp-member-zone {
+  --member-accent: #009d9a;
+}
+
+// Northwind Bank (lending use-case view): same visual system, banking accent.
+.adp-bank-zone {
+  --member-accent: #8a3ffc;
+}
+
+.adp-member-header--bank {
+  border-block-end-color: #8a3ffc;
+}
+
+.adp-member-page {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: 0 1.5rem 2.5rem;
+}
+
+@media (max-width: 671px) {
+  .adp-member-page {
+    padding-inline: 1rem;
+  }
+}
+
+.adp-signin {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+// Brand wash behind the portal sign-ins: the carrier/bank accent as a soft glow.
+.adp-signin::before {
+  content: "";
+  position: fixed;
+  inset: 3rem 0 auto 0;
+  height: 24rem;
+  pointer-events: none;
+  background:
+    radial-gradient(36rem 18rem at 50% -30%, color-mix(in srgb, var(--member-accent) 14%, transparent), transparent 70%);
+  z-index: -1;
+}
+
+// Split leadspace on desktop: brand story left, account picker right.
+.adp-signin--split {
+  max-width: 66rem;
+  text-align: start;
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: 3rem;
+  align-items: start;
+
+  .adp-signin__brand {
+    padding-block-start: 2rem;
+  }
+
+  .adp-signin__panel {
+    margin-block-start: 0;
+  }
+
+  .adp-signin__foot {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 1055px) {
+  .adp-signin--split {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: 34rem;
+
+    .adp-signin__brand {
+      padding-block-start: 0;
+    }
+  }
+}
+
+.adp-signin__pictogram {
+  width: 4.5rem;
+  height: 4.5rem;
+  fill: var(--member-accent);
+  margin-block-end: 1rem;
+}
+
+.adp-signin__points {
+  list-style: none;
+  margin-block: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+
+    svg {
+      flex: none;
+      margin-block-start: 0.125rem;
+      fill: var(--member-accent);
+    }
+  }
+}
+
+.adp-signin__title {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-block-end: 0.75rem;
+}
+
+.adp-signin__sub {
+  color: var(--cds-text-secondary);
+  margin-block-end: 1rem;
+}
+
+.adp-signin__panel {
+  margin-block-start: 1.5rem;
+  text-align: start;
+  border-block-start: 3px solid var(--member-accent);
+}
+
+.adp-signin__panel-title {
+  margin-block-end: 0.25rem;
+}
+
+.adp-signin__search {
+  margin-block: 1rem;
+}
+
+.adp-signin__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.adp-persona {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  background: none;
+  border: none;
+  border-block-end: 1px solid var(--cds-border-subtle);
+  cursor: pointer;
+  text-align: start;
+  color: var(--cds-text-primary);
+  font: inherit;
+
+  &:hover {
+    background: var(--cds-layer-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cds-focus);
+  }
+}
+
+.adp-persona__avatar {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--member-accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.adp-persona__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.adp-persona__go {
+  margin-inline-start: auto;
+  color: var(--cds-text-secondary);
+}
+
+.adp-signin__foot {
+  margin-block-start: 1.5rem;
+}
+
+.adp-member-hero {
+  padding-block: 2rem 1rem;
+}
+
+.adp-member-hero__title {
+  font-size: 1.75rem;
+  font-weight: 300;
+}
+
+.adp-member-hero__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+  flex-wrap: wrap;
+}
+
+.adp-member-card {
+  margin-block-end: 1rem;
+  border-block-start: 3px solid var(--member-accent, var(--cds-border-interactive));
+  min-height: 11rem;
+}
+
+.adp-member-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-end: 0.75rem;
+
+  h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}
+
+.adp-member-card__big {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.adp-member-vehicle + .adp-member-vehicle {
+  margin-block-start: 0.75rem;
+  border-block-start: 1px solid var(--cds-border-subtle);
+  padding-block-start: 0.75rem;
+}
+
+.adp-member-card--claim {
+  min-height: 0;
+  cursor: pointer;
+}
+
+.adp-member-claim-link {
+  text-decoration: none;
+  color: inherit;
+
+  &:focus-visible {
+    outline: 2px solid var(--cds-focus);
+  }
+}
+
+.adp-member-claim-link__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--member-accent);
+  font-size: 0.875rem;
+  margin-block-start: 0.5rem;
+}
+
+.adp-member-breadcrumb {
+  margin-block: 1rem 0.5rem;
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+
+  a {
+    color: var(--member-accent);
+    text-decoration: none;
+  }
+
+  span {
+    margin-inline: 0.375rem;
+  }
+}
+
+.adp-report {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.adp-report__title {
+  margin-block-end: 0.25rem;
+}
+
+.adp-report__prefill {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  margin-block: 0.75rem;
+}
+
+.adp-report__steps {
+  margin-block: 1rem;
+}
+
+.adp-report__panel {
+  border-block-start: 3px solid var(--member-accent);
+}
+
+.adp-report__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adp-report__row {
+  display: flex;
+  gap: 1rem;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.adp-report__review {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0.5rem 1rem;
+
+  dt {
+    color: var(--cds-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  dd {
+    font-size: 0.875rem;
+  }
+}
+
+.adp-report__nav {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 1.5rem;
+}
+
+// Damage-photo picker: thumbnail grid + dashed add tile, matching Carbon field rhythm.
+.adp-report__photos {
+  .cds--form__helper-text {
+    margin-block-end: 0.75rem;
+  }
+}
+
+.adp-report__photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.75rem;
+
+  &--review {
+    margin-block-start: 1rem;
+  }
+}
+
+.adp-report__photo-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--cds-border-subtle);
+  background: var(--cds-layer);
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.adp-report__photo-remove {
+  position: absolute;
+  inset-block-start: 0.25rem;
+  inset-inline-end: 0.25rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  line-height: 0;
+
+  &:hover {
+    color: var(--cds-support-error);
+  }
+}
+
+// Decision Mode side card: submitted evidence thumbnails + intake vision assessment.
+.adp-evidence-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.5rem;
+  margin-block-end: 0.75rem;
+
+  .adp-report__photo-thumb {
+    display: block;
+  }
+}
+
+.adp-evidence-panel__assessment {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+// Member tracker: AI damage assessment card (photos + vision summary + estimate).
+.adp-member-evidence {
+  .adp-side-card__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg {
+      color: var(--member-accent, var(--cds-interactive));
+    }
+  }
+}
+
+.adp-member-evidence__photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.625rem;
+  margin-block-end: 1rem;
+
+  .adp-report__photo-thumb {
+    display: block;
+  }
+}
+
+.adp-member-evidence__estimate {
+  margin-block-start: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--cds-layer-accent, var(--cds-layer-02));
+  border-inline-start: 3px solid var(--member-accent, var(--cds-interactive));
+}
+
+.adp-member-evidence__amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-block-end: 0.375rem;
+
+  span {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--cds-text-secondary);
+    margin-inline-start: 0.5rem;
+  }
+}
+
+.adp-report__photo-add {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1.5px dashed var(--cds-border-strong);
+  border-radius: 0.5rem;
+  background: var(--cds-layer);
+  color: var(--cds-text-secondary);
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--member-accent, var(--cds-interactive));
+    color: var(--cds-text-primary);
+  }
+}
+
+.adp-report__success {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-block-start: 3px solid var(--member-accent);
+
+  h2 {
+    margin-block: 0.75rem 0.25rem;
+  }
+}
+
+.adp-report__success-icon {
+  color: var(--member-accent);
+}
+
+.adp-report__claimno {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-block-end: 0.75rem;
+}
+
+.adp-report__success .adp-member-hero__actions {
+  justify-content: center;
+}
+
+.adp-member-tracker {
+  margin-block-end: 1rem;
+}
+
+.adp-member-tracker__copy {
+  border-block-start: 1px solid var(--cds-border-subtle);
+  padding-block-start: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.adp-member-claims-head {
+  margin-block-start: 0.5rem;
+}
+
+// Evidence semantics on trace steps + the federation card
+
+.adp-trace-step__semantics {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-block-start: 0.375rem;
+}
+
+.adp-trace-step__entities {
+  display: inline-flex;
+  gap: 0.125rem;
+  flex-wrap: wrap;
+}
+
+.adp-trace-step__reg {
+  font-size: 0.75rem;
+  cursor: help;
+  text-decoration: underline dotted;
+}
+
+.adp-federation-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-start: 0.375rem;
+}
+
+.adp-federation-note {
+  margin-block-start: 0.375rem;
+  cursor: help;
+}
+
+// Decision Record: the print-ready audit artifact
+
+.adp-record {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding-block-end: 3rem;
+}
+
+.adp-record__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+
+.adp-record__head {
+  border-block-end: 3px solid var(--cds-border-interactive);
+  padding-block-end: 1rem;
+  margin-block-end: 1rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+}
+
+.adp-record__brand {
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.adp-record__subject {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-block: 0.25rem 0.5rem;
+}
+
+.adp-record__meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+}
+
+.adp-record__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1px;
+  background: var(--cds-border-subtle);
+  border: 1px solid var(--cds-border-subtle);
+  margin-block-end: 1.5rem;
+
+  > div {
+    background: var(--cds-layer);
+    padding: 0.75rem;
+    font-size: 0.875rem;
+
+    strong {
+      display: block;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.adp-record__stage {
+  margin-block-end: 1.5rem;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-block-end: 0.25rem;
+  }
+}
+
+.adp-record__stage-meta {
+  color: var(--cds-text-secondary);
+  font-size: 0.75rem;
+  margin-block-end: 0.75rem;
+}
+
+.adp-record__step {
+  border: 1px solid var(--cds-border-subtle);
+  border-inline-start: 3px solid var(--cds-border-interactive);
+  padding: 0.75rem 1rem;
+  margin-block-end: 0.5rem;
+  break-inside: avoid;
+}
+
+.adp-record__step--operator {
+  border-inline-start-color: #8a3ffc;
+}
+
+.adp-record__step-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+
+  strong {
+    color: var(--cds-text-primary);
+  }
+}
+
+.adp-record__gate {
+  color: var(--cds-support-error);
+  font-weight: 600;
+}
+
+.adp-record__output {
+  margin-block: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.adp-record__evidence {
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+
+  li::before {
+    content: "· ";
+  }
+}
+
+.adp-record__semantics {
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  margin-block-start: 0.25rem;
+}
+
+.adp-record__ns {
+  opacity: 0.7;
+}
+
+.adp-record__slos {
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+}
+
+.adp-record__foot {
+  border-block-start: 1px solid var(--cds-border-subtle);
+  padding-block-start: 1rem;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+}
+
+@media print {
+  .adp-no-print,
+  .cds--header,
+  .adp-narrator {
+    display: none !important;
+  }
+
+  .adp-content-theme {
+    background: #ffffff !important;
+  }
+
+  #main-content {
+    margin: 0;
+    padding: 0;
+  }
+
+  .adp-record {
+    max-width: none;
+  }
+}
+
+.adp-outcomes-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  > :first-child {
+    min-width: 14rem;
+  }
+}
+
+// Agents governance page
+
+.adp-worker-card {
+  margin-block-end: 1rem;
+  border-block-start: 2px solid var(--cds-border-interactive);
+}
+
+.adp-worker-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adp-worker-card__name {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.adp-worker-card__stats {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-block: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+
+  strong {
+    color: var(--cds-text-primary);
+  }
+}
+
+.adp-agent-rows {
+  border-block-start: 1px solid var(--cds-border-subtle);
+}
+
+.adp-agent-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-block: 0.5rem;
+  border-block-end: 1px solid var(--cds-border-subtle);
+  font-size: 0.875rem;
+}
+
+.adp-agent-row__id {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  min-width: 14rem;
+}
+
+.adp-agent-row__cap {
+  min-width: 10rem;
+}
+
+.adp-agent-row__ont {
+  font-size: 0.75rem;
+  cursor: help;
+}
+
+.adp-agent-row__stats {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.adp-worker-card__slos {
+  margin-block-start: 0.75rem;
+  font-size: 0.75rem;
+}
+
+// Outcomes: lifecycle progress bars + worker performance table.
+.adp-worker-perf {
+  margin-block-start: 1rem;
+}
+
+.adp-lifebar-sub {
+  margin-block-end: 0.75rem;
+}
+
+.adp-lifebar-group {
+  margin-block-end: 1rem;
+}
+
+.adp-lifebar-group__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-end: 0.5rem;
+}
+
+.adp-lifebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.adp-lifebar__label {
+  flex: none;
+  width: 11rem;
+  color: var(--cds-text-secondary);
+}
+
+.adp-lifebar__track {
+  flex: 1;
+  height: 0.5rem;
+  background: var(--cds-border-subtle);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.adp-lifebar__fill {
+  display: block;
+  height: 100%;
+  background: var(--cds-support-success);
+  border-radius: 0.25rem;
+}
+
+.adp-lifebar__count {
+  flex: none;
+  width: 3.5rem;
+  text-align: end;
+  color: var(--cds-text-secondary);
+}
+
+.adp-access {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cds-background);
+  padding: 1rem;
+}
+
+.adp-access__panel {
+  max-width: 26rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-block-start: 3px solid var(--cds-border-interactive);
+}
+
+@media (max-width: 671px) {
+  .adp-report__row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .adp-member-hero__title {
+    font-size: 1.375rem;
+  }
+
+  .adp-report__review {
+    grid-template-columns: 1fr;
+    gap: 0.125rem 0;
+
+    dt {
+      margin-block-start: 0.5rem;
+    }
+  }
+}

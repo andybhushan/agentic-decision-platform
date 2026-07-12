@@ -1,0 +1,20 @@
+.login-modal__content {
+  padding: 1rem 0;
+}
+
+.login-modal__subtitle {
+  margin-bottom: 1.5rem;
+  color: var(--cds-text-02);
+  font-size: 0.875rem;
+}
+
+.login-modal__error {
+  margin-bottom: 1.5rem;
+}
+
+.login-modal__hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--cds-text-03);
+  font-style: italic;
+}

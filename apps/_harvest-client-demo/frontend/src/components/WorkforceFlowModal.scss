@@ -1,0 +1,111 @@
+@use '@carbon/react/scss/spacing' as *;
+
+// Colour tokens shared with the Mermaid classDefs in workforceFlow.ts so the
+// legend swatches exactly match the rendered nodes.
+$flow-start: #f4f4f4;
+$flow-orchestrator: #8a3ffc;
+$flow-agent: #4589ff;
+$flow-human: #08bdba;
+$flow-rules: #33b1ff;
+$flow-system: #8d8d8d;
+$flow-channel: #42be65;
+
+.workforce-flow-modal {
+  .cds--modal-container {
+    width: 90vw;
+    max-width: 1200px;
+  }
+
+  .flow-outcome {
+    margin: 0 0 $spacing-05;
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary, #c6c6c6);
+
+    strong {
+      color: var(--cds-text-primary, #f4f4f4);
+    }
+  }
+
+  .flow-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-03 $spacing-05;
+    margin-bottom: $spacing-05;
+    padding-bottom: $spacing-05;
+    border-bottom: 1px solid var(--cds-border-subtle, #393939);
+  }
+
+  .flow-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-03;
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary, #c6c6c6);
+  }
+
+  .flow-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    background: var(--cds-layer-active, #525252);
+  }
+
+  .flow-kind-start .flow-legend-swatch {
+    background: #161616;
+    border: 1px solid $flow-start;
+  }
+  .flow-kind-orchestrator .flow-legend-swatch {
+    background: $flow-orchestrator;
+  }
+  .flow-kind-agent .flow-legend-swatch {
+    background: $flow-agent;
+  }
+  .flow-kind-human .flow-legend-swatch {
+    background: $flow-human;
+  }
+  .flow-kind-rules .flow-legend-swatch {
+    background: $flow-rules;
+  }
+  .flow-kind-system .flow-legend-swatch {
+    background: $flow-system;
+  }
+  .flow-kind-channel .flow-legend-swatch {
+    background: $flow-channel;
+  }
+
+  .flow-diagram-wrap {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+    max-height: 60vh;
+    overflow: auto;
+    background: var(--cds-layer, #262626);
+    border: 1px solid var(--cds-border-subtle, #393939);
+    padding: $spacing-05;
+  }
+
+  .flow-diagram {
+    display: flex;
+    justify-content: center;
+
+    svg {
+      max-width: none;
+      height: auto;
+    }
+  }
+
+  .flow-error {
+    margin: 0 0 $spacing-05;
+    font-size: 0.875rem;
+    color: var(--cds-text-error, #ff8389);
+  }
+
+  .flow-source-toggle {
+    margin-top: $spacing-05;
+  }
+
+  .flow-source {
+    margin-top: $spacing-03;
+  }
+}
