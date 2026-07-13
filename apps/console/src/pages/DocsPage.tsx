@@ -151,7 +151,7 @@ const ROADMAP = [
   ["Fabric write-back of intake", "Shipped", "scripts/sync-intake-to-fabric.ps1: universe + intake overlay; the Data Agent answers about subjects filed minutes ago"],
   ["Foundry Agent Service backend", "Shipped", "RBAC granted (Cognitive Services User); validated live 4/4 GROUNDED; now switchable per run vs Agent Framework (v22)"],
   ["Real Work IQ (Microsoft Graph)", "Synthetic today", "Tenant admin consent for Graph application permissions"],
-  ["Banking tables in the Data Agent", "Config", "Tick fact_loan_applications + dim_borrower in claims_data_agent sources and re-publish"],
+  ["Banking tables in the Data Agent", "Shipped", "fact_loan_applications + dim_borrower published; verified via SQL and the operator copilot (42 applications by purpose, runtime-filed rows included)"],
   ["Microsoft 365 Copilot surface", "Positioned", "Expose the operator copilot as a declarative agent (Copilot Studio / M365 Agents SDK) once tenant licensing + consent land"],
 ];
 

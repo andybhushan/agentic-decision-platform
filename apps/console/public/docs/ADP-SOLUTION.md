@@ -282,6 +282,7 @@ The response carries `toolsUsed`, rendered as source chips under each answer; su
 3. **Fabric Data Agent protocol**: every call needs `?api-version=2024-05-01-preview`, and the serving assistant must be minted via `POST /assistants {"model":"gpt-4o"}`; the artifact id is not an assistant id.
 4. **Cosmos writes**: the SDK's Newtonsoft default serializes C# records PascalCase, which drops `id`; write lowercase anonymous objects.
 5. **Screenshot verification before claiming a UI fix.** Carbon grid gutters (container padding, per-column `margin-inline`, nested subgrids) required empirical fixes verified by Playwright screenshots, not reasoning from source.
+6. **Re-publishing the Fabric Data Agent requires a backend restart.** `FabricDataAgentSource` mints and caches its serving assistant for the process lifetime, and that assistant snapshots the agent's published config; after any re-publish (e.g. adding tables), restart the `ca-tracesapi` revision so a fresh assistant picks up the new sources. Symptom otherwise: SQL "no candidates pass validation" on the newly added tables while a locally minted assistant works fine.
 
 ---
 
@@ -303,7 +304,7 @@ Still pending external action:
 |---|---|---|
 | Foundry Agent Service backend | SHIPPED 2026-07-13 | RBAC granted ("Cognitive Services User" on `aif-adp-v1`; the tenant lacks the newer "Azure AI User" role). Validated live on the first run: 4/4 steps GROUNDED, four persistent agents visible in the Foundry portal. Now switchable per run: `POST /api/runs` takes optional `backend` (agent-framework, foundry, legacy) with `AGENT_BACKEND` as default, and the console offers the choice in Decision Mode and the Lab |
 | Real Work IQ (Microsoft Graph) | Synthetic today | Tenant admin consent for Graph application permissions |
-| Banking tables in the Data Agent | Config only | Tick `fact_loan_applications` + `dim_borrower` in `claims_data_agent` sources and re-publish |
+| Banking tables in the Data Agent | SHIPPED 2026-07-13 | `fact_loan_applications` + `dim_borrower` ticked and re-published; verified end to end including the operator copilot (portfolio by purpose + runtime-filed application rows) |
 | Microsoft 365 Copilot surface | Positioned | The operator copilot's contract (POST /copilot) is the natural declarative-agent action; exposing it inside M365 Copilot via Copilot Studio or the M365 Agents SDK needs tenant licensing + admin consent (same approval channel as Work IQ) |
 
 ---
