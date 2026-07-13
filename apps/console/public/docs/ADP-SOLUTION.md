@@ -230,7 +230,40 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 
 ---
 
-## 7. Deployment and operations
+## 7. Conversational AI: the member assistant and the operator copilot
+
+Two chat surfaces, two entitlements, one honesty rule. (See `adp-conversational.svg`.)
+
+### 7.1 Member assistant (both branded portals)
+
+A floating dock in the Meridian member portal and the Northwind borrower portal. The browser sends only the conversation and the signed-in member's id to `POST /api/assist`; **all grounding is assembled server-side**, so cross-member data can never reach the client:
+
+- This member's records only (corpus + runtime intake), compacted: the incident or loan ask, vehicle, the photo/document `evidenceAssessment`, attached documents.
+- A stage-by-stage journey summary from the decision journal, with member-relevant outputs surfaced (repair estimates, loan decisions).
+- **Guardrail by construction**: fraud stages appear in the context only as "routine review" and their outputs are never included, so fraud detail cannot leak even under prompt injection. Off-account questions redirect to the care line.
+
+Runtime: gpt-4o via the direct Azure OpenAI REST API (the platform's rule for plain completions), JSON response format, temperature 0.3. Verified live: exact journal figures for estimates and photo assessments, a refused fraud probe, verbatim payslip figures on the banking side, and honest "queued" answers for unstarted claims.
+
+### 7.2 Operator copilot (platform console)
+
+The company-level question surface, available on every console page. `POST /api/copilot` runs a **real Microsoft Agent Framework agent** (ChatClientAgent on the same 1.13 runtime that powers the digital workers) with three governed AIFunction tools the model chooses between per question:
+
+| Tool | Grounds |
+|---|---|
+| `query_journal` | Operational state: open gates, latest stage per subject, runs per worker, average confidence |
+| `query_records` | Subject digests across both use cases with text filtering, including evidence assessments and documents |
+| `ask_fabric_data_agent` | Portfolio analytics delegated to the published Fabric IQ Data Agent (inline answers enforced) |
+
+The response carries `toolsUsed`, rendered as source chips under each answer; subject ids in replies deep-link into Decision Mode. The entitlement inverts here: the operations team is entitled to fraud detail. Verified live: gated subjects matching the queue's own KPIs, evidence lists with vision assessments, and real portfolio counts by incident type from the 1000-row semantic layer.
+
+### 7.3 Shared foundation
+
+- One structured response per turn: `{"reply", "followUps"}`, so contextual next-question chips cost zero extra calls.
+- SDK routing per the platform rule: raw REST for plain completions (assist, vision), Agent Framework for tool-calling agents (copilot, workers).
+- Graceful degradation: unavailable means an honest error, never a fabricated answer.
+- Positioned next: exposing the `/copilot` contract as a Microsoft 365 Copilot declarative agent (Copilot Studio / M365 Agents SDK) once tenant licensing and consent land.
+
+## 8. Deployment and operations
 
 ### 7.1 Deploy paths
 
@@ -252,7 +285,7 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 
 ---
 
-## 8. Roadmap
+## 9. Roadmap
 
 Shipped 2026-07-13 (each verified live end to end):
 

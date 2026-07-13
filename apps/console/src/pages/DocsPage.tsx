@@ -2,6 +2,7 @@ import { Button, Tag, Tile } from "@carbon/react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Chat,
   Document,
   Download,
   FlowData,
@@ -20,6 +21,7 @@ const TOC = [
   { id: "architecture", label: "Architecture" },
   { id: "flow", label: "Process flow" },
   { id: "grounding", label: "IQ federation" },
+  { id: "chat", label: "Conversational AI" },
   { id: "stack", label: "Technology stack" },
   { id: "api", label: "API surface" },
   { id: "governance", label: "Governance" },
@@ -67,6 +69,14 @@ const DIAGRAMS = [
     title: "Deployment topology: rg-adp-v1",
     blurb:
       "One SPA origin (Static Web Apps proxying /api), one backend Container App, and the state, event, and AI services around it, including the prepared Foundry Agent Service path. The deployment path with its exit-code gates runs along the bottom.",
+  },
+  {
+    src: "/docs/adp-conversational.svg",
+    id: "chat",
+    Icon: Chat,
+    title: "Conversational AI: two chat surfaces, two entitlements",
+    blurb:
+      "The member assistant lives in both branded portals and answers only from the signed-in member's own records, with fraud detail excluded from its context by construction. The operator copilot is a real Microsoft Agent Framework agent on the console with three governed tools: the decision journal, subject records, and the Fabric IQ Data Agent. Both return contextual follow-up questions in the same structured response.",
   },
 ];
 
@@ -280,6 +290,53 @@ export default function DocsPage() {
                       <td>{s.gives}</td>
                     </tr>
                   ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="chat" className="adp-docs__section">
+            <h3 className="adp-section-title">Conversational AI: the two chat surfaces</h3>
+            <DiagramCard d={DIAGRAMS[4]} />
+            <div className="adp-docs__table-wrap">
+              <table className="adp-docs__table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>Member assistant</th>
+                    <th>Operator copilot</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Where</td>
+                    <td>Both branded portals (/member, /bank)</td>
+                    <td>Platform console, every page</td>
+                  </tr>
+                  <tr>
+                    <td>Endpoint</td>
+                    <td className="adp-docs__mono">POST /api/assist</td>
+                    <td className="adp-docs__mono">POST /api/copilot</td>
+                  </tr>
+                  <tr>
+                    <td>Runtime</td>
+                    <td>gpt-4o via direct Azure OpenAI REST (JSON response format)</td>
+                    <td>Microsoft Agent Framework ChatClientAgent with 3 AIFunction tools</td>
+                  </tr>
+                  <tr>
+                    <td>Grounding</td>
+                    <td>Server-assembled: the signed-in member's own records + journey; nothing else reaches the browser</td>
+                    <td>Tool calls the model chooses: decision journal, subject records, Fabric IQ Data Agent</td>
+                  </tr>
+                  <tr>
+                    <td>Entitlement</td>
+                    <td>Fraud detail excluded from context by construction; off-account questions redirect</td>
+                    <td>Fraud detail allowed; answers cite subject ids and the tools used (source chips)</td>
+                  </tr>
+                  <tr>
+                    <td>Follow-ups</td>
+                    <td colSpan={2}>One structured response per turn ({"{"}reply, followUps{"}"}): contextual next questions as chips, zero extra calls</td>
+                  </tr>
                 </tbody>
               </table>
             </div>

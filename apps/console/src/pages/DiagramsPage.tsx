@@ -216,9 +216,27 @@ const DIAGRAMS: DiagramEntry[] = [
     src: "/docs/adp-data-semantic.svg",
   },
   {
-    id: "lifecycle-reference",
+    id: "conversational",
     group: "Platform internals",
     num: 12,
+    title: "Conversational AI: assistant + copilot",
+    blurb:
+      "The two chat surfaces side by side: the member assistant (both portals, member-scoped grounding assembled server-side, fraud excluded by construction) and the operator copilot (a real Agent Framework agent with journal, records, and Fabric Data Agent tools). Shared foundation: gpt-4o, one structured response with contextual follow-ups, graceful degradation.",
+    steps: [
+      "A member asks in their portal; the browser sends only the conversation and their member id.",
+      "POST /api/assist assembles that member's records + journey server-side and calls gpt-4o over REST.",
+      "Fraud stages enter the context only as 'routine review'; their outputs are never included.",
+      "An operator asks on the console; POST /api/copilot runs a Microsoft Agent Framework agent.",
+      "The agent picks tools per question: query_journal, query_records, or ask_fabric_data_agent.",
+      "Both return {reply, followUps}; the UI shows source chips (copilot) and next-question chips.",
+    ],
+    sysflow: "portal dock -> /assist (member-scoped REST) | console dock -> /copilot (AF agent -> {journal, records, Data Agent}) -> reply + followUps",
+    src: "/docs/adp-conversational.svg",
+  },
+  {
+    id: "lifecycle-reference",
+    group: "Platform internals",
+    num: 13,
     title: "Lifecycle reference: stages and workers",
     blurb:
       "The declared lifecycles side by side: the four claims stages with what each digital worker decides and when it gates, and the banking origination stage that proves portability. Stages are data in the packages, never code.",
