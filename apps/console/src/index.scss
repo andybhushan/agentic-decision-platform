@@ -848,7 +848,8 @@ body {
   bottom: 1.5rem;
   width: 22rem;
   max-width: calc(100vw - 3rem);
-  z-index: 8000;
+  // Above the copilot launcher (8000): the guided demo owns the corner while it is open.
+  z-index: 8100;
   background: var(--cds-layer);
   border: 1px solid var(--cds-border-subtle);
   border-block-start: 2px solid var(--cds-border-interactive);

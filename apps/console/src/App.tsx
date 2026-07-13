@@ -174,7 +174,7 @@ function Shell() {
           <span className="adp-footer__note">Demonstration environment · all data synthetic</span>
         </footer>
         <NarratorDock open={narratorOpen} onClose={() => setNarratorOpen(false)} />
-        <CopilotDock />
+        <CopilotDock suppressLauncher={narratorOpen} />
       </Theme>
     </>
   );

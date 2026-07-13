@@ -45,7 +45,9 @@ function Linkified({ text }: { text: string }) {
   );
 }
 
-export default function CopilotDock() {
+// suppressLauncher hides the closed-state launcher (e.g. while the guided demo owns the
+// corner) without unmounting the dock, so an open conversation survives.
+export default function CopilotDock({ suppressLauncher = false }: { suppressLauncher?: boolean }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatEntry[]>([]);
   const [input, setInput] = useState("");
@@ -83,7 +85,7 @@ export default function CopilotDock() {
 
   return (
     <>
-      {!open && (
+      {!open && !suppressLauncher && (
         <button type="button" className="adp-assist__launcher" onClick={() => setOpen(true)} aria-label="Open platform copilot">
           <IbmWatsonxAssistant size={24} />
           <span>Platform copilot</span>
