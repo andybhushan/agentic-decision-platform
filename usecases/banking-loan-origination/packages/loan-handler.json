@@ -2,7 +2,7 @@
   "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
   "package": {
     "id": "loan-handler",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "industry": "banking",
     "useCase": "consumer-loan-origination",
     "schemaVersion": "v1",
@@ -127,7 +127,7 @@
       "id": "agent.loan-application-intake",
       "kind": "prompt-agent",
       "capability": "loan-application-intake",
-      "systemPrompt": "You are the Loan Application Intake Agent. Read the incoming loan application and produce a structured LoanApplication record per [[BANK-002]]. Required fields: applicant identity, income (with source + employer tenure), existing monthly debt (from credit bureau report), loan amount + term + purpose, collateral description + appraised value. Output booleans incomeVerified, creditVerified, collateralVerified. State confidence per field. Drop overall confidence below 0.6 if any verification boolean is false.",
+      "systemPrompt": "You are the Loan Application Intake Agent. Read the incoming loan application and produce a structured LoanApplication record per [[BANK-002]]. Required fields: applicant identity, income (with source + employer tenure), existing monthly debt (from credit bureau report), loan amount + term + purpose, collateral description + appraised value. If the record carries an evidenceAssessment field, it is an objective GPT-4o reading of the income documents the applicant uploaded (payslip photos, statements): set incomeVerified=true only when the assessment's readable figures are consistent with the stated grossMonthlyIncome, and quote the figures it read. If the assessment contradicts the stated income or the documents are unreadable, set incomeVerified=false and say why. documentEvidence lists any attached statement PDFs. With no uploaded evidence, verification falls back to the profile on file and you must say the income is profile-verified, not document-verified. Output booleans incomeVerified, creditVerified, collateralVerified. State confidence per field. Drop overall confidence below 0.6 if any verification boolean is false.",
       "skillRefs": [
         "skill.application-field-extraction",
         "skill.verification-routing"

@@ -169,19 +169,40 @@ export default function MemberClaimPage() {
             <MachineLearningModel size={20} /> Damage assessment
           </h4>
           {evidence && evidence.files.length > 0 && (
-            <div className="adp-member-evidence__photos">
-              {evidence.files.map((f) => (
-                <a
-                  key={f.name}
-                  href={evidenceFileUrl(evidence.groupId, f.name)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="adp-report__photo-thumb"
-                >
-                  <img src={evidenceFileUrl(evidence.groupId, f.name)} alt={`Submitted damage photo ${f.name}`} />
-                </a>
-              ))}
-            </div>
+            <>
+              <div className="adp-member-evidence__photos">
+                {evidence.files
+                  .filter((f) => f.contentType.startsWith("image/"))
+                  .map((f) => (
+                    <a
+                      key={f.name}
+                      href={evidenceFileUrl(evidence.groupId, f.name)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="adp-report__photo-thumb"
+                    >
+                      <img src={evidenceFileUrl(evidence.groupId, f.name)} alt={`Submitted damage photo ${f.name}`} />
+                    </a>
+                  ))}
+              </div>
+              {evidence.files.some((f) => !f.contentType.startsWith("image/")) && (
+                <div className="adp-report__doc-list">
+                  {evidence.files
+                    .filter((f) => !f.contentType.startsWith("image/"))
+                    .map((f) => (
+                      <a
+                        key={f.name}
+                        className="adp-report__doc-chip"
+                        href={evidenceFileUrl(evidence.groupId, f.name)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {f.name} (police report)
+                      </a>
+                    ))}
+                </div>
+              )}
+            </>
           )}
           {record?.evidenceAssessment && (
             <p className="adp-queue__dim">

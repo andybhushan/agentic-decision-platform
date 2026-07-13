@@ -17,9 +17,14 @@ public sealed class Evidence(EvidenceStore store, ILogger<Evidence> logger)
 {
     private const int MaxImages = 6;
     private const int MaxBytesPerImage = 2_500_000; // client resizes to ~1024px; this is a hard cap
+    private const int MaxBytesPerDocument = 5_000_000; // police reports and similar, no client resize
     private static readonly HashSet<string> AllowedTypes = new(StringComparer.OrdinalIgnoreCase)
     {
         "image/jpeg", "image/png", "image/webp",
+    };
+    private static readonly HashSet<string> AllowedDocumentTypes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "application/pdf",
     };
     private static readonly JsonSerializerOptions JsonOpts = new(JsonSerializerDefaults.Web);
 
@@ -41,29 +46,41 @@ public sealed class Evidence(EvidenceStore store, ILogger<Evidence> logger)
 
         if (body?.Images is not { Count: > 0 })
             return new BadRequestObjectResult(new { error = "body must contain images[]" });
-        if (body.Images.Count > MaxImages)
-            return new BadRequestObjectResult(new { error = $"at most {MaxImages} images" });
+        if (body.Images.Count > MaxImages + 2)
+            return new BadRequestObjectResult(new { error = $"at most {MaxImages} images plus 2 documents" });
 
         var groupId = string.IsNullOrWhiteSpace(body.GroupId) ? Guid.NewGuid().ToString("n") : SanitizeId(body.GroupId);
         var files = new List<string>();
+        var photoIdx = 0;
+        var docIdx = 0;
         for (var i = 0; i < body.Images.Count; i++)
         {
             var img = body.Images[i];
-            if (img.ContentType is null || !AllowedTypes.Contains(img.ContentType))
-                return new BadRequestObjectResult(new { error = $"image {i + 1}: contentType must be jpeg/png/webp" });
+            var isDocument = img.ContentType is not null && AllowedDocumentTypes.Contains(img.ContentType);
+            if (img.ContentType is null || (!AllowedTypes.Contains(img.ContentType) && !isDocument))
+                return new BadRequestObjectResult(new { error = $"file {i + 1}: contentType must be jpeg/png/webp/pdf" });
             byte[] bytes;
             try { bytes = Convert.FromBase64String(img.DataBase64 ?? ""); }
-            catch (FormatException) { return new BadRequestObjectResult(new { error = $"image {i + 1}: invalid base64" }); }
-            if (bytes.Length == 0 || bytes.Length > MaxBytesPerImage)
-                return new BadRequestObjectResult(new { error = $"image {i + 1}: size must be 1..{MaxBytesPerImage} bytes" });
+            catch (FormatException) { return new BadRequestObjectResult(new { error = $"file {i + 1}: invalid base64" }); }
+            var cap = isDocument ? MaxBytesPerDocument : MaxBytesPerImage;
+            if (bytes.Length == 0 || bytes.Length > cap)
+                return new BadRequestObjectResult(new { error = $"file {i + 1}: size must be 1..{cap} bytes" });
 
-            var ext = img.ContentType.ToLowerInvariant() switch
+            string name;
+            if (isDocument)
             {
-                "image/png" => "png",
-                "image/webp" => "webp",
-                _ => "jpg",
-            };
-            var name = $"photo-{i + 1}.{ext}";
+                name = $"document-{++docIdx}.pdf";
+            }
+            else
+            {
+                var ext = img.ContentType.ToLowerInvariant() switch
+                {
+                    "image/png" => "png",
+                    "image/webp" => "webp",
+                    _ => "jpg",
+                };
+                name = $"photo-{++photoIdx}.{ext}";
+            }
             await store.UploadAsync(groupId, name, bytes, img.ContentType, cancellationToken);
             files.Add(name);
         }

@@ -1,0 +1,9 @@
+{
+  "packageId": "loan-handler",
+  "packageVersion": "0.3.0",
+  "artifactPath": "loan-handler.zip",
+  "artifactSha256": "7f4635eae1c731e085af07b0f3dcf3e14dcc02674e5f444b00ca05d3737db753",
+  "manifestSha256": "9570d7cd0f7cca15b1ef584ff8c07791be9249a43f21a5f6263fb13f712a66cf",
+  "registeredAt": "2026-07-13T03:24:42.0781953+00:00",
+  "note": "v0 stub registration. Real Agent 365 hook on D9\u002B."
+}

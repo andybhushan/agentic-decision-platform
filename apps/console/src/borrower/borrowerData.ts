@@ -78,8 +78,13 @@ export interface LoanForm {
 // A new application reuses the borrower's known financial profile; only the loan ask is new.
 // The application id is assigned server-side; eval-hint fields ("scenario") are corpus-only
 // and deliberately absent.
-export function buildApplicationRecord(borrower: BorrowerProfile, form: LoanForm): LoanApplication {
+export function buildApplicationRecord(
+  borrower: BorrowerProfile,
+  form: LoanForm,
+  evidenceGroupId?: string,
+): LoanApplication {
   return {
+    ...(evidenceGroupId ? { evidenceGroupId } : {}),
     borrowerId: borrower.borrowerId,
     borrowerName: borrower.name,
     state: borrower.state,

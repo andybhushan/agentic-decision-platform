@@ -645,19 +645,38 @@ export default function DecisionModePage() {
           <Tile className="adp-side-card">
             <h4 className="adp-side-card__title">Submitted evidence</h4>
             <div className="adp-evidence-panel__grid">
-              {evidence.files.map((f) => (
-                <a
-                  key={f.name}
-                  href={evidenceFileUrl(evidence.groupId, f.name)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="adp-report__photo-thumb"
-                  title={f.name}
-                >
-                  <img src={evidenceFileUrl(evidence.groupId, f.name)} alt={`Evidence ${f.name}`} />
-                </a>
-              ))}
+              {evidence.files
+                .filter((f) => f.contentType.startsWith("image/"))
+                .map((f) => (
+                  <a
+                    key={f.name}
+                    href={evidenceFileUrl(evidence.groupId, f.name)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="adp-report__photo-thumb"
+                    title={f.name}
+                  >
+                    <img src={evidenceFileUrl(evidence.groupId, f.name)} alt={`Evidence ${f.name}`} />
+                  </a>
+                ))}
             </div>
+            {evidence.files.some((f) => !f.contentType.startsWith("image/")) && (
+              <div className="adp-report__doc-list">
+                {evidence.files
+                  .filter((f) => !f.contentType.startsWith("image/"))
+                  .map((f) => (
+                    <a
+                      key={f.name}
+                      className="adp-report__doc-chip"
+                      href={evidenceFileUrl(evidence.groupId, f.name)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {f.name}
+                    </a>
+                  ))}
+              </div>
+            )}
             {evidenceAssessment ? (
               <p className="adp-queue__dim adp-evidence-panel__assessment">
                 <strong>Vision assessment at intake (GPT-4o):</strong> {evidenceAssessment}

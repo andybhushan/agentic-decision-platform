@@ -77,6 +77,16 @@ public sealed class PostIntake(
                     var dl = await evidence.DownloadAsync(evidenceGroupId, f.Name, cancellationToken);
                     if (dl is not null) images.Add(dl.Value);
                 }
+                // Non-image evidence (e.g. the police report PDF) is listed on the record so
+                // every stage's agents know the documents exist and can weigh the fact that
+                // the member actually attached them.
+                var documents = files.Where(f => !f.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+                    .Select(f => f.Name).ToList();
+                if (documents.Count > 0)
+                {
+                    record["documentEvidence"] = new System.Text.Json.Nodes.JsonArray(
+                        [.. documents.Select(d => System.Text.Json.Nodes.JsonValue.Create(d))]);
+                }
                 var vision = visionLazy.Value;
                 if (images.Count > 0 && vision is not null)
                 {

@@ -50,6 +50,18 @@ export function evidenceFileUrl(groupId: string, name: string): string {
   return `${resolveApiBase()}/evidence/file/${encodeURIComponent(groupId)}/${encodeURIComponent(name)}`;
 }
 
+// Reads a picked document (PDF) as base64, no resize; server cap is 5MB.
+export async function prepareDocument(file: File): Promise<EvidenceUpload & { fileName: string }> {
+  const buf = await file.arrayBuffer();
+  let binary = "";
+  const bytes = new Uint8Array(buf);
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return { contentType: "application/pdf", dataBase64: btoa(binary), fileName: file.name };
+}
+
 // Browser-side downscale: reads a picked File, draws it onto a canvas capped at maxEdge,
 // and returns a JPEG base64 payload sized for the 2.5MB server cap plus a preview URL.
 export async function prepareImage(file: File, maxEdge = 1024): Promise<EvidenceUpload & { previewUrl: string }> {

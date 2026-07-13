@@ -15,16 +15,21 @@ import {
   TextInput,
   Tile,
 } from "@carbon/react";
-import { Camera, CheckmarkFilled, CloseFilled } from "@carbon/icons-react";
+import { Camera, CheckmarkFilled, CloseFilled, DocumentAttachment, DocumentPdf } from "@carbon/icons-react";
 import { useMember } from "./MemberContext";
 import { buildClaimRecord, INCIDENT_TYPES, type IncidentForm } from "./memberData";
 import { submitIntake, type IntakeResult } from "../services/intakeClient";
-import { prepareImage, uploadEvidence, type EvidenceUpload } from "../services/evidenceClient";
+import { prepareDocument, prepareImage, uploadEvidence, type EvidenceUpload } from "../services/evidenceClient";
 
 const MAX_PHOTOS = 6;
+const MAX_DOCS = 2;
 
 interface PendingPhoto extends EvidenceUpload {
   previewUrl: string;
+  fileName: string;
+}
+
+interface PendingDoc extends EvidenceUpload {
   fileName: string;
 }
 
@@ -45,6 +50,23 @@ export default function ReportClaimPage() {
   const [photos, setPhotos] = useState<PendingPhoto[]>([]);
   const [photoBusy, setPhotoBusy] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [docs, setDocs] = useState<PendingDoc[]>([]);
+  const docInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAddDocs = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setError(null);
+    try {
+      const room = MAX_DOCS - docs.length;
+      const picked = [...files].filter((f) => f.type === "application/pdf").slice(0, room);
+      const prepared = await Promise.all(picked.map(prepareDocument));
+      setDocs((d) => [...d, ...prepared]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      if (docInputRef.current) docInputRef.current.value = "";
+    }
+  };
 
   const [form, setForm] = useState<IncidentForm>(() => ({
     incidentDate: new Date().toISOString().slice(0, 10),
@@ -102,11 +124,15 @@ export default function ReportClaimPage() {
     setError(null);
     try {
       let evidenceGroupId: string | undefined;
-      if (photos.length > 0) {
-        setBusyLabel("Uploading photos");
-        const group = await uploadEvidence(photos.map(({ contentType, dataBase64 }) => ({ contentType, dataBase64 })));
+      const uploads = [
+        ...photos.map(({ contentType, dataBase64 }) => ({ contentType, dataBase64 })),
+        ...docs.map(({ contentType, dataBase64 }) => ({ contentType, dataBase64 })),
+      ];
+      if (uploads.length > 0) {
+        setBusyLabel(docs.length > 0 ? "Uploading photos and documents" : "Uploading photos");
+        const group = await uploadEvidence(uploads);
         evidenceGroupId = group.groupId;
-        setBusyLabel("Analyzing your photos");
+        setBusyLabel(photos.length > 0 ? "Analyzing your photos" : "Submitting");
       } else {
         setBusyLabel("Submitting");
       }
@@ -261,6 +287,38 @@ export default function ReportClaimPage() {
               checked={form.policeReportFiled}
               onChange={(_, { checked }) => set("policeReportFiled", checked)}
             />
+            {form.policeReportFiled && (
+              <div className="adp-report__docs">
+                <p className="cds--label">Attach the police report (optional, PDF, up to {MAX_DOCS})</p>
+                <input
+                  ref={docInputRef}
+                  type="file"
+                  accept="application/pdf"
+                  multiple
+                  hidden
+                  onChange={(e) => handleAddDocs(e.target.files)}
+                />
+                <div className="adp-report__doc-list">
+                  {docs.map((d, i) => (
+                    <span key={`${d.fileName}-${i}`} className="adp-report__doc-chip">
+                      <DocumentPdf size={16} /> {d.fileName}
+                      <button
+                        type="button"
+                        aria-label={`Remove ${d.fileName}`}
+                        onClick={() => setDocs((prev) => prev.filter((_, j) => j !== i))}
+                      >
+                        <CloseFilled size={16} />
+                      </button>
+                    </span>
+                  ))}
+                  {docs.length < MAX_DOCS && (
+                    <Button kind="tertiary" size="sm" renderIcon={DocumentAttachment} onClick={() => docInputRef.current?.click()}>
+                      Attach PDF
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="adp-report__photos">
               <p className="cds--label">Photos of the damage (optional, up to {MAX_PHOTOS})</p>
               <p className="cds--form__helper-text">
@@ -335,6 +393,7 @@ export default function ReportClaimPage() {
                   form.thirdPartyInvolved ? "third party involved" : null,
                   form.policeReportFiled ? "police report filed" : null,
                   photos.length > 0 ? `${photos.length} damage photo${photos.length > 1 ? "s" : ""}` : null,
+                  docs.length > 0 ? `${docs.length} document${docs.length > 1 ? "s" : ""} attached` : null,
                 ]
                   .filter(Boolean)
                   .join(" · ") || "none"}

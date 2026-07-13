@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, ProgressIndicator, ProgressStep, SkeletonText, Tag, Tile } from "@carbon/react";
-import { Renew } from "@carbon/icons-react";
+import { MachineLearningModel, Renew } from "@carbon/icons-react";
 import { useBorrower } from "./BorrowerContext";
 import { fetchDecisions, lifecycleStages, type DecisionsResponse } from "../services/decisionsClient";
 import { fetchJourney, type JourneyResponse } from "../services/journeyClient";
+import { evidenceFileUrl, fetchEvidenceForSubject, type EvidenceGroup } from "../services/evidenceClient";
 import { relativeTime } from "../lib/format";
 
 // Borrower-facing application tracker: stage progress in customer language, no internal
@@ -20,6 +21,11 @@ export default function BorrowerApplicationPage() {
   const { borrower } = useBorrower();
   const [queue, setQueue] = useState<DecisionsResponse | null>(null);
   const [journey, setJourney] = useState<JourneyResponse | null>(null);
+  const [evidence, setEvidence] = useState<EvidenceGroup | null>(null);
+
+  useEffect(() => {
+    fetchEvidenceForSubject(subjectId).then(setEvidence).catch(() => setEvidence(null));
+  }, [subjectId]);
 
   const load = useCallback(async () => {
     try {
@@ -133,6 +139,53 @@ export default function BorrowerApplicationPage() {
               </p>
             )}
           </div>
+        </Tile>
+      )}
+
+      {Boolean(evidence || record?.evidenceAssessment) && (
+        <Tile className="adp-member-card adp-member-evidence">
+          <h4 className="adp-side-card__title">
+            <MachineLearningModel size={20} /> Income verification
+          </h4>
+          {evidence && evidence.files.some((f) => f.contentType.startsWith("image/")) && (
+            <div className="adp-member-evidence__photos">
+              {evidence.files
+                .filter((f) => f.contentType.startsWith("image/"))
+                .map((f) => (
+                  <a
+                    key={f.name}
+                    href={evidenceFileUrl(evidence.groupId, f.name)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="adp-report__photo-thumb"
+                  >
+                    <img src={evidenceFileUrl(evidence.groupId, f.name)} alt={`Income document ${f.name}`} />
+                  </a>
+                ))}
+            </div>
+          )}
+          {evidence && evidence.files.some((f) => !f.contentType.startsWith("image/")) && (
+            <div className="adp-report__doc-list">
+              {evidence.files
+                .filter((f) => !f.contentType.startsWith("image/"))
+                .map((f) => (
+                  <a
+                    key={f.name}
+                    className="adp-report__doc-chip"
+                    href={evidenceFileUrl(evidence.groupId, f.name)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {f.name} (statement)
+                  </a>
+                ))}
+            </div>
+          )}
+          {typeof record?.evidenceAssessment === "string" && (
+            <p className="adp-queue__dim">
+              <strong>What our AI read in your documents:</strong> {String(record.evidenceAssessment)}
+            </p>
+          )}
         </Tile>
       )}
 

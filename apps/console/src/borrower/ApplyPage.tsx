@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -11,10 +11,19 @@ import {
   Tag,
   Tile,
 } from "@carbon/react";
-import { CheckmarkFilled } from "@carbon/icons-react";
+import { Camera, CheckmarkFilled, CloseFilled, DocumentAttachment } from "@carbon/icons-react";
 import { useBorrower } from "./BorrowerContext";
 import { buildApplicationRecord, LOAN_PURPOSES, type LoanForm } from "./borrowerData";
 import { submitIntake, type IntakeResult } from "../services/intakeClient";
+import { prepareDocument, prepareImage, uploadEvidence, type EvidenceUpload } from "../services/evidenceClient";
+
+const MAX_INCOME_PHOTOS = 4;
+const MAX_INCOME_DOCS = 2;
+
+interface PendingFile extends EvidenceUpload {
+  fileName: string;
+  previewUrl?: string;
+}
 
 // Apply for a loan: the origination front door. The borrower's financial profile is already
 // on file; only the loan ask is new. Submitting creates a real runnable subject (POST /api/intake).
@@ -39,6 +48,30 @@ export default function ApplyPage() {
   });
   const set = <K extends keyof LoanForm>(key: K, value: LoanForm[K]) => setForm((f) => ({ ...f, [key]: value }));
 
+  const [busyLabel, setBusyLabel] = useState("Submitting");
+  const [incomePhotos, setIncomePhotos] = useState<PendingFile[]>([]);
+  const [incomeDocs, setIncomeDocs] = useState<PendingFile[]>([]);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAddIncomeFiles = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setError(null);
+    try {
+      const imgs = [...files].filter((f) => f.type.startsWith("image/")).slice(0, MAX_INCOME_PHOTOS - incomePhotos.length);
+      const pdfs = [...files].filter((f) => f.type === "application/pdf").slice(0, MAX_INCOME_DOCS - incomeDocs.length);
+      const preparedImgs = await Promise.all(imgs.map(async (f) => ({ ...(await prepareImage(f)), fileName: f.name })));
+      const preparedDocs = await Promise.all(pdfs.map(prepareDocument));
+      setIncomePhotos((p) => [...p, ...preparedImgs]);
+      setIncomeDocs((d) => [...d, ...preparedDocs]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      if (photoInputRef.current) photoInputRef.current.value = "";
+      if (docInputRef.current) docInputRef.current.value = "";
+    }
+  };
+
   const channel = window.matchMedia("(max-width: 671px)").matches ? "mobile-web" : "web";
   const stepValid = step === 0 ? form.loanPurpose && form.loanAmount >= 1000 && form.termMonths >= 6 : true;
 
@@ -47,7 +80,20 @@ export default function ApplyPage() {
     setBusy(true);
     setError(null);
     try {
-      const record = buildApplicationRecord(borrower, form);
+      let evidenceGroupId: string | undefined;
+      const uploads = [
+        ...incomePhotos.map(({ contentType, dataBase64 }) => ({ contentType, dataBase64 })),
+        ...incomeDocs.map(({ contentType, dataBase64 }) => ({ contentType, dataBase64 })),
+      ];
+      if (uploads.length > 0) {
+        setBusyLabel("Uploading income documents");
+        const group = await uploadEvidence(uploads);
+        evidenceGroupId = group.groupId;
+        setBusyLabel(incomePhotos.length > 0 ? "Verifying your documents" : "Submitting");
+      } else {
+        setBusyLabel("Submitting");
+      }
+      const record = buildApplicationRecord(borrower, form, evidenceGroupId);
       const res = await submitIntake("banking", channel, record);
       setResult(res);
       refresh();
@@ -147,6 +193,55 @@ export default function ApplyPage() {
               value={form.collateralValue}
               onChange={(_, { value }) => set("collateralValue", Number(value) || 0)}
             />
+            <div className="adp-report__photos">
+              <p className="cds--label">Income verification (optional)</p>
+              <p className="cds--form__helper-text">
+                A photo of your latest payslip (up to {MAX_INCOME_PHOTOS}) or a bank statement PDF (up to {MAX_INCOME_DOCS}).
+                Our AI reads it at intake and the underwriters see exactly what it says.
+              </p>
+              <input ref={photoInputRef} type="file" accept="image/*" multiple hidden onChange={(e) => handleAddIncomeFiles(e.target.files)} />
+              <input ref={docInputRef} type="file" accept="application/pdf" multiple hidden onChange={(e) => handleAddIncomeFiles(e.target.files)} />
+              <div className="adp-report__photo-grid">
+                {incomePhotos.map((p, i) => (
+                  <div key={`${p.fileName}-${i}`} className="adp-report__photo-thumb">
+                    <img src={p.previewUrl} alt={`Income document ${i + 1}`} />
+                    <button
+                      type="button"
+                      className="adp-report__photo-remove"
+                      aria-label={`Remove ${p.fileName}`}
+                      onClick={() => setIncomePhotos((prev) => prev.filter((_, j) => j !== i))}
+                    >
+                      <CloseFilled size={20} />
+                    </button>
+                  </div>
+                ))}
+                {incomePhotos.length < MAX_INCOME_PHOTOS && (
+                  <button type="button" className="adp-report__photo-add" onClick={() => photoInputRef.current?.click()}>
+                    <Camera size={24} />
+                    <span>Payslip photo</span>
+                  </button>
+                )}
+              </div>
+              <div className="adp-report__doc-list">
+                {incomeDocs.map((d, i) => (
+                  <span key={`${d.fileName}-${i}`} className="adp-report__doc-chip">
+                    {d.fileName}
+                    <button
+                      type="button"
+                      aria-label={`Remove ${d.fileName}`}
+                      onClick={() => setIncomeDocs((prev) => prev.filter((_, j) => j !== i))}
+                    >
+                      <CloseFilled size={16} />
+                    </button>
+                  </span>
+                ))}
+                {incomeDocs.length < MAX_INCOME_DOCS && (
+                  <Button kind="tertiary" size="sm" renderIcon={DocumentAttachment} onClick={() => docInputRef.current?.click()}>
+                    Attach statement PDF
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -160,6 +255,17 @@ export default function ApplyPage() {
               <dd>{money(form.loanAmount)} {form.loanPurpose.replaceAll("-", " ")} over {form.termMonths} months</dd>
               <dt>Collateral</dt>
               <dd>{form.collateralValue > 0 ? money(form.collateralValue) : "none"}</dd>
+              <dt>Income proof</dt>
+              <dd>
+                {incomePhotos.length + incomeDocs.length > 0
+                  ? [
+                      incomePhotos.length ? `${incomePhotos.length} payslip photo${incomePhotos.length > 1 ? "s" : ""}` : null,
+                      incomeDocs.length ? `${incomeDocs.length} statement PDF${incomeDocs.length > 1 ? "s" : ""}` : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")
+                  : "none attached"}
+              </dd>
               <dt>On file</dt>
               <dd>
                 FICO {borrower.ficoScore} ({borrower.ficoBand}) · income {money(borrower.grossMonthlyIncome ?? 0)}/mo ·
@@ -191,7 +297,7 @@ export default function ApplyPage() {
             </Button>
           ) : (
             <Button onClick={handleSubmit} disabled={busy}>
-              {busy ? <InlineLoading description="Submitting" /> : "Submit application"}
+              {busy ? <InlineLoading description={busyLabel} /> : "Submit application"}
             </Button>
           )}
         </div>
