@@ -13,6 +13,7 @@ import {
 import { resolveApiBase } from "../services/config";
 import { fetchHealth, type HealthStatus } from "../services/healthClient";
 import { fetchDecisions, type PackageSummary } from "../services/decisionsClient";
+import { fetchAgents, RUNTIME_LABELS } from "../services/agentsClient";
 import { useDecisionRun } from "../hooks/useDecisionRun";
 import { pct, secs } from "../lib/format";
 
@@ -26,11 +27,20 @@ export default function LiveRunPage() {
   const [packageId, setPackageId] = useState("fnol-handler");
   const [forceAgent, setForceAgent] = useState("");
   const [packages, setPackages] = useState<PackageSummary[]>([]);
+  const [runtimes, setRuntimes] = useState<string[]>([]);
+  const [runtime, setRuntime] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
     fetchDecisions()
       .then((d) => { if (!cancelled) setPackages(d.packages); })
+      .catch(() => {});
+    fetchAgents()
+      .then((a) => {
+        if (cancelled) return;
+        setRuntimes(a.availableRuntimes ?? []);
+        setRuntime(a.runtime);
+      })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
@@ -84,6 +94,19 @@ export default function LiveRunPage() {
               disabled={busy}
               className="adp-input-md"
             />
+            {runtimes.length > 1 && (
+              <Dropdown
+                id="lab-runtime"
+                titleText="Agent runtime"
+                label="runtime"
+                items={runtimes}
+                itemToString={(r) => RUNTIME_LABELS[r ?? ""] ?? (r ?? "")}
+                selectedItem={runtime}
+                onChange={({ selectedItem }) => setRuntime(selectedItem ?? "")}
+                disabled={busy}
+                className="adp-input-md"
+              />
+            )}
             <TextInput
               id="lab-force"
               labelText="Force HITL at agent id (optional)"
@@ -94,7 +117,7 @@ export default function LiveRunPage() {
               className="adp-input-md"
             />
             <Button
-              onClick={() => runState.start(packageId.trim() || "fnol-handler", forceAgent.trim() || undefined)}
+              onClick={() => runState.start(packageId.trim() || "fnol-handler", forceAgent.trim() || undefined, runtime || undefined)}
               disabled={busy || !subject.trim()}
             >
               {busy ? "Running" : "Start run"}

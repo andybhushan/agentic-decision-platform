@@ -12,7 +12,7 @@ namespace Adp.TracesApi.Functions;
 // signed packages (identity, model, guardrails, SLOs) joined with observed behavior from the
 // immutable journal (runs, confidence, gates fired, operator judgments). This is the
 // Agent-365-shaped control view; platform-generic throughout.
-public sealed class GetAgents(DwStateReader reader)
+public sealed class GetAgents(DwStateReader reader, Adp.Agents.AdapterRegistry adapters)
 {
     private static readonly JsonSerializerOptions CamelCase = new(JsonSerializerDefaults.Web);
 
@@ -92,7 +92,8 @@ public sealed class GetAgents(DwStateReader reader)
         }
 
         var payload = new AgentsResponse(
-            Runtime: (Environment.GetEnvironmentVariable("AGENT_BACKEND") ?? "auto").Trim().ToLowerInvariant(),
+            Runtime: adapters.DefaultName,
+            AvailableRuntimes: adapters.Available,
             WindowHours: window.TotalHours,
             Workers: workers);
 
@@ -126,6 +127,7 @@ public sealed class GetAgents(DwStateReader reader)
 
 public sealed record AgentsResponse(
     string Runtime,
+    IReadOnlyList<string> AvailableRuntimes,
     double WindowHours,
     IReadOnlyList<WorkerGovernance> Workers);
 

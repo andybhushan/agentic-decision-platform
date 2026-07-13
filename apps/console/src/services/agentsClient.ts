@@ -54,6 +54,7 @@ export interface WorkerGovernance {
 
 export interface AgentsResponse {
   runtime: string;
+  availableRuntimes: string[];
   windowHours: number;
   workers: WorkerGovernance[];
 }

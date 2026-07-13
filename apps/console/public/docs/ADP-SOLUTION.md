@@ -75,7 +75,7 @@ The SPA is deployed to Azure Static Web Apps; `/api/*` is proxied to the backend
 
 - **`AGENT_BACKEND=agent-framework` (ACTIVE)**: Microsoft Agent Framework 1.13 (`Microsoft.Agents.AI.OpenAI`), `ChatClientAgent` over the Azure OpenAI client, MCP tools bridged as `AIFunction`s that journal every call.
 - **`AGENT_BACKEND=legacy`**: direct Azure OpenAI chat completions, same contract.
-- **`AGENT_BACKEND=foundry` (PREPARED)**: Azure AI Foundry Agent Service, project `adp-v1` on `aif-adp-v1`. Blocked only on an "Azure AI User" RBAC grant from subscription admins; the flip is one env var.
+- **`AGENT_BACKEND=foundry` (LIVE, switchable)**: Azure AI Foundry Agent Service, project `adp-v1` on `aif-adp-v1`. RBAC granted 2026-07-13; validated live with a full grounded run and persistent agents visible in the Foundry portal. Any run may select it via the `backend` parameter; the console offers the choice next to the run button.
 
 Model: `gpt-4o` for both agent reasoning and evidence vision, plus embeddings for vector retrieval.
 
@@ -301,7 +301,7 @@ Still pending external action:
 
 | Item | Status | Unlock |
 |---|---|---|
-| Foundry Agent Service backend | Prepared, one env-var flip | "Azure AI User" RBAC grant on `aif-adp-v1` from sub admins |
+| Foundry Agent Service backend | SHIPPED 2026-07-13 | RBAC granted ("Cognitive Services User" on `aif-adp-v1`; the tenant lacks the newer "Azure AI User" role). Validated live on the first run: 4/4 steps GROUNDED, four persistent agents visible in the Foundry portal. Now switchable per run: `POST /api/runs` takes optional `backend` (agent-framework, foundry, legacy) with `AGENT_BACKEND` as default, and the console offers the choice in Decision Mode and the Lab |
 | Real Work IQ (Microsoft Graph) | Synthetic today | Tenant admin consent for Graph application permissions |
 | Banking tables in the Data Agent | Config only | Tick `fact_loan_applications` + `dim_borrower` in `claims_data_agent` sources and re-publish |
 | Microsoft 365 Copilot surface | Positioned | The operator copilot's contract (POST /copilot) is the natural declarative-agent action; exposing it inside M365 Copilot via Copilot Studio or the M365 Agents SDK needs tenant licensing + admin consent (same approval channel as Work IQ) |

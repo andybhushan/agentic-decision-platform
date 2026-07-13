@@ -14,7 +14,7 @@ namespace Adp.TracesApi.Functions;
 // If FORCE_HITL_AT_AGENT_ID env var matches the agent being run, the activity post-processes the
 // StepRunResult to force a low-confidence/needs-human-review status — useful for reliable HITL demos.
 public sealed class RunStepActivity(
-    IAgentAdapter adapter,
+    AdapterRegistry adapters,
     IContextRouter contextRouter,
     IToolRegistry toolRegistry,
     DwStateWriter dwWriter,
@@ -26,10 +26,13 @@ public sealed class RunStepActivity(
         [ActivityTrigger] StepActivityInput input,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("RunStepActivity trace={TraceId} step={StepIndex} subject={SubjectId}", input.TraceId, input.StepIndex, input.SubjectId);
+        logger.LogInformation("RunStepActivity trace={TraceId} step={StepIndex} subject={SubjectId} backend={Backend}",
+            input.TraceId, input.StepIndex, input.SubjectId, input.Backend ?? adapters.DefaultName);
 
         var pkg = PlanExecutor.LoadPackage(input.ArtifactPath);
 
+        // Per-run runtime selection: the run names its backend or rides the AGENT_BACKEND default.
+        var adapter = adapters.Resolve(input.Backend);
         var runner = new StepRunner(adapter, contextRouter, toolRegistry);
         var result = await runner.RunStepAsync(
             pkg,
@@ -89,6 +92,7 @@ public sealed record StepActivityInput(
     string ClaimJson,
     int StepIndex,
     IReadOnlyList<TraceStep> PreviousSteps,
-    string? ForceHitlAtAgentId);
+    string? ForceHitlAtAgentId,
+    string? Backend = null);
 
 public sealed record StepActivityResult(TraceStep Step);

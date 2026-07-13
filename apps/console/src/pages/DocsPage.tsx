@@ -116,7 +116,7 @@ const AZURE_RESOURCES = [
 const API_ROUTES = [
   ["GET /health", "Liveness"],
   ["GET /decisions", "Queue: subjects, packages, latest traces, lifecycle progress"],
-  ["POST /runs", "Start a decision run for a subject and package"],
+  ["POST /runs", "Start a decision run; optional backend picks the runtime (agent-framework | foundry | legacy)"],
   ["GET /runs/{runId}/status", "Durable orchestration status"],
   ["POST /runs/{runId}/resolve-hitl", "Resume a gated run with the operator judgment"],
   ["GET /traces/{subjectId}", "Full trace: steps, citations, tool calls, gates"],
@@ -149,7 +149,7 @@ const ROADMAP = [
   ["Document evidence (police report)", "Shipped", "PDF upload at FNOL, stored + surfaced + listed on the record as documentEvidence (v16)"],
   ["Banking evidence parity", "Shipped", "Payslip photos + statement PDFs; vision reads the figures; intake agent verifies income against them (v17)"],
   ["Fabric write-back of intake", "Shipped", "scripts/sync-intake-to-fabric.ps1: universe + intake overlay; the Data Agent answers about subjects filed minutes ago"],
-  ["Foundry Agent Service backend", "Prepared", "Azure AI User RBAC grant, then one env-var flip"],
+  ["Foundry Agent Service backend", "Shipped", "RBAC granted (Cognitive Services User); validated live 4/4 GROUNDED; now switchable per run vs Agent Framework (v22)"],
   ["Real Work IQ (Microsoft Graph)", "Synthetic today", "Tenant admin consent for Graph application permissions"],
   ["Banking tables in the Data Agent", "Config", "Tick fact_loan_applications + dim_borrower in claims_data_agent sources and re-publish"],
   ["Microsoft 365 Copilot surface", "Positioned", "Expose the operator copilot as a declarative agent (Copilot Studio / M365 Agents SDK) once tenant licensing + consent land"],

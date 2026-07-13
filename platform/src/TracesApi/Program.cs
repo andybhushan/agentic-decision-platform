@@ -21,7 +21,10 @@ builder.Services
 builder.Services.AddSingleton(_ => DwStateReader.FromEnvironment());
 
 // Agent runtime + retrieval + tools — singletons, reused across activity invocations within a worker instance.
-builder.Services.AddSingleton<IAgentAdapter>(_ => AgentAdapterFactory.FromEnvironment());
+// The registry holds every backend the environment supports (agent-framework, foundry, legacy);
+// AGENT_BACKEND names the default and a run may override per invocation.
+builder.Services.AddSingleton(_ => AdapterRegistry.FromEnvironment());
+builder.Services.AddSingleton<IAgentAdapter>(sp => sp.GetRequiredService<AdapterRegistry>().Default);
 builder.Services.AddSingleton(_ => EmbeddingService.FromEnvironment());
 // Context layer: Foundry IQ (Azure AI Search vector) + FabricIQ + Work IQ (stub).
 //

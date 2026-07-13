@@ -33,7 +33,7 @@ export interface DecisionRun {
   hitlOptions: HitlOption[];
   hitlBusy: boolean;
   error: string | null;
-  start: (packageId: string, forceHitlAtAgentId?: string) => Promise<void>;
+  start: (packageId: string, forceHitlAtAgentId?: string, backend?: string) => Promise<void>;
   resolveGate: (option: HitlOption) => Promise<void>;
   loadTrace: (traceId?: string) => Promise<void>;
   clear: () => void;
@@ -117,7 +117,7 @@ export function useDecisionRun(subjectId: string, onRunFinished?: () => void): D
   );
 
   const start = useCallback(
-    async (packageId: string, forceHitlAtAgentId?: string) => {
+    async (packageId: string, forceHitlAtAgentId?: string, backend?: string) => {
       setPhase("starting");
       setError(null);
       setLiveSteps([]);
@@ -129,7 +129,7 @@ export function useDecisionRun(subjectId: string, onRunFinished?: () => void): D
         await tailRef.current?.stop().catch(() => {});
         tailRef.current = null;
 
-        const started = await startRun(subjectId, packageId, forceHitlAtAgentId);
+        const started = await startRun(subjectId, packageId, forceHitlAtAgentId, backend);
         setRun(started);
         runRef.current = started;
 

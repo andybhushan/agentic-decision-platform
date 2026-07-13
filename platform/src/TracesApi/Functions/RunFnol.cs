@@ -44,12 +44,15 @@ public sealed class RunFnol(ILogger<RunFnol> logger)
         // Allow ?forceHitlAt=agent.id as a query override too.
         var forceHitlAtAgentId = body?.ForceHitlAtAgentId ?? req.Query["forceHitlAt"].ToString();
         if (string.IsNullOrWhiteSpace(forceHitlAtAgentId)) forceHitlAtAgentId = null;
+        // Optional per-run runtime: agent-framework | foundry | legacy; null = AGENT_BACKEND default.
+        var backend = string.IsNullOrWhiteSpace(body?.Backend) ? null : body!.Backend!.Trim().ToLowerInvariant();
 
-        logger.LogInformation("RunFnol starting subject={SubjectId}, package={PackageId}, forceHitlAt={ForceAt}", subjectId, packageId, forceHitlAtAgentId ?? "(none)");
+        logger.LogInformation("RunFnol starting subject={SubjectId}, package={PackageId}, backend={Backend}, forceHitlAt={ForceAt}",
+            subjectId, packageId, backend ?? "(default)", forceHitlAtAgentId ?? "(none)");
 
         var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(
             nameof(FnolOrchestrator),
-            new RunInput(subjectId, packageId, forceHitlAtAgentId),
+            new RunInput(subjectId, packageId, forceHitlAtAgentId, backend),
             cancellation: cancellationToken);
 
         return new AcceptedResult(
@@ -66,6 +69,6 @@ public sealed class RunFnol(ILogger<RunFnol> logger)
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 }
 
-public sealed record RunRequest(string? SubjectId, string? PackageId, string? ForceHitlAtAgentId);
-public sealed record RunInput(string SubjectId, string PackageId, string? ForceHitlAtAgentId = null);
+public sealed record RunRequest(string? SubjectId, string? PackageId, string? ForceHitlAtAgentId, string? Backend = null);
+public sealed record RunInput(string SubjectId, string PackageId, string? ForceHitlAtAgentId = null, string? Backend = null);
 public sealed record RunStarted(string RunId, string SubjectId, string PackageId, string StatusUrl, string TraceUrl, string ResolveHitlUrl);

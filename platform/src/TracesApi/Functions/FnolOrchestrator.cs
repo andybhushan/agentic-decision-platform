@@ -44,7 +44,8 @@ public static class FnolOrchestrator
                 ClaimJson: prep.ClaimJson,
                 StepIndex: i,
                 PreviousSteps: stepsSoFar,
-                ForceHitlAtAgentId: input.ForceHitlAtAgentId);
+                ForceHitlAtAgentId: input.ForceHitlAtAgentId,
+                Backend: input.Backend);
 
             var stepResult = await context.CallActivityAsync<StepActivityResult>(nameof(RunStepActivity), stepInput);
             stepsSoFar.Add(stepResult.Step);

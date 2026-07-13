@@ -143,6 +143,20 @@ export default function DecisionModePage() {
   const [actionError, setActionError] = useState<string | null>(null);
   const [evidence, setEvidence] = useState<EvidenceGroup | null>(null);
   const [evidenceAssessment, setEvidenceAssessment] = useState<string | null>(null);
+  const [runtimes, setRuntimes] = useState<string[]>([]);
+  const [runtime, setRuntime] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    import("../services/agentsClient").then(({ fetchAgents }) =>
+      fetchAgents().then((a) => {
+        if (cancelled) return;
+        setRuntimes(a.availableRuntimes ?? []);
+        setRuntime(a.runtime);
+      }),
+    ).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     fetchEvidenceForSubject(subjectId).then(setEvidence).catch(() => setEvidence(null));
@@ -277,8 +291,8 @@ export default function DecisionModePage() {
     if (!activePackage) return;
     setActionDone(null);
     shownTraceIdRef.current = null;
-    runState.start(activePackage, forceGateAgent ? forceableAgentId : undefined);
-  }, [runState, activePackage, forceGateAgent, forceableAgentId]);
+    runState.start(activePackage, forceGateAgent ? forceableAgentId : undefined, runtime || undefined);
+  }, [runState, activePackage, forceGateAgent, forceableAgentId, runtime]);
 
   const finalAgentStep = useMemo(() => {
     const agentSteps = (runState.trace?.steps ?? []).filter((s) => !s.agentId.startsWith("human."));
@@ -376,6 +390,20 @@ export default function DecisionModePage() {
                 toggled={forceGateAgent}
                 onToggle={setForceGateAgent}
                 disabled={busy}
+              />
+            )}
+            {runtimes.length > 1 && (
+              <Dropdown
+                id="run-runtime"
+                titleText=""
+                label="runtime"
+                size="md"
+                items={runtimes}
+                itemToString={(r) => (r === "agent-framework" ? "Agent Framework" : r === "foundry" ? "Foundry Agent Service" : (r ?? ""))}
+                selectedItem={runtime}
+                onChange={({ selectedItem }) => setRuntime(selectedItem ?? "")}
+                disabled={busy}
+                className="adp-runtime-pick"
               />
             )}
             <Button renderIcon={Play} onClick={handleStart} disabled={busy || !activePackage}>

@@ -43,12 +43,13 @@ export async function startRun(
   subjectId: string,
   packageId: string = "fnol-handler",
   forceHitlAtAgentId?: string,
+  backend?: string,
 ): Promise<RunStarted> {
   const base = resolveApiBase();
   const res = await fetch(`${base}/runs`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ subjectId, packageId, forceHitlAtAgentId }),
+    body: JSON.stringify({ subjectId, packageId, forceHitlAtAgentId, backend }),
   });
   if (!res.ok) throw new Error(`startRun: HTTP ${res.status} ${res.statusText}`);
   return (await res.json()) as RunStarted;

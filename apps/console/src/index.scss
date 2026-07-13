@@ -1898,6 +1898,11 @@ body {
   }
 }
 
+// Decision Mode: compact runtime picker beside the run button.
+.adp-runtime-pick {
+  min-inline-size: 13rem;
+}
+
 // Agents page: platform-assistants section subtitle.
 .adp-assistants-sub {
   margin-block-end: 1rem;
