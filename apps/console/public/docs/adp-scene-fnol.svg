@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 600" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="sa" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <style>
+      .lane{rx:12;fill:#ffffff;stroke:#c5d2e3;stroke-width:1.5}
+      .lbl{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .box{rx:8;stroke-width:1.5}
+      .bt{font-size:13px;font-weight:600;fill:#161616}
+      .bd{font-size:10.5px;fill:#6b7682}
+      .wt{font-size:13px;font-weight:600;fill:#ffffff}
+      .wd{font-size:10.5px;fill:#e8efff}
+      .mono{font-size:10px;font-family:'IBM Plex Mono',monospace;fill:#0043ce}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#sa)}
+    </style>
+  </defs>
+  <rect width="1280" height="600" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Scene: FNOL with photo evidence, as built on the live instance</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">A member files a claim with damage photos from any device. Vision runs exactly once, at intake, and the whole platform sees what the photos show.</text>
+
+  <!-- member lane -->
+  <rect x="40" y="90" width="1200" height="150" class="lane"/>
+  <text x="58" y="114" class="lbl">MEMBER &#183; /member (Meridian-branded, mobile-friendly)</text>
+  <rect x="58" y="126" width="212" height="98" class="box" fill="#defbe6" stroke="#198038"/>
+  <text x="72" y="150" class="bt">Sign in</text>
+  <text x="72" y="170" class="bd">Profile, policy, vehicles, and</text>
+  <text x="72" y="185" class="bd">claim history derived live from</text>
+  <text x="72" y="200" class="bd">GET /api/records; nothing</text>
+  <text x="72" y="215" class="bd">hardcoded in the frontend</text>
+  <rect x="290" y="126" width="240" height="98" class="box" fill="#defbe6" stroke="#198038"/>
+  <text x="304" y="150" class="bt">3-step wizard, prefilled</text>
+  <text x="304" y="170" class="bd">Incident date, type, location;</text>
+  <text x="304" y="185" class="bd">narrative + flags (injuries, third</text>
+  <text x="304" y="200" class="bd">party, police report); review with</text>
+  <text x="304" y="215" class="bd">photo thumbnails before submit</text>
+  <rect x="550" y="126" width="250" height="98" class="box" fill="#24a148" stroke="#198038"/>
+  <text x="564" y="150" class="wt">Damage photos, up to 6</text>
+  <text x="564" y="170" class="wd">Picked or shot on the phone, resized</text>
+  <text x="564" y="185" class="wd">client-side (canvas, 1024px JPEG),</text>
+  <text x="564" y="200" class="wd">previewed and removable before</text>
+  <text x="564" y="215" class="wd">anything uploads</text>
+  <rect x="960" y="126" width="260" height="98" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="974" y="150" class="bt">Submit states, honestly</text>
+  <text x="974" y="170" class="bd">"Uploading photos" then "Analyzing</text>
+  <text x="974" y="185" class="bd">your photos" while vision actually</text>
+  <text x="974" y="200" class="bd">runs; then the claim number,</text>
+  <text x="974" y="215" class="bd">assigned by the platform</text>
+
+  <!-- platform lane -->
+  <rect x="40" y="264" width="1200" height="180" class="lane"/>
+  <text x="58" y="288" class="lbl">PLATFORM &#183; ca-tracesapi</text>
+  <rect x="58" y="300" width="270" height="128" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="72" y="324" class="wt">POST /api/evidence</text>
+  <text x="72" y="344" class="wd">Validates type + size (jpeg/png/webp,</text>
+  <text x="72" y="359" class="wd">max 6 x 2.5MB), stores each photo in</text>
+  <text x="72" y="374" class="wd">the evidence blob container as</text>
+  <text x="72" y="391" font-size="10" font-family="'IBM Plex Mono',monospace" fill="#d0e2ff">{groupId}/photo-N.jpg</text>
+  <text x="72" y="409" class="wd">and returns the groupId</text>
+  <rect x="348" y="300" width="300" height="128" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="362" y="324" class="wt">POST /api/intake</text>
+  <text x="362" y="344" class="wd">Learns the corpus id pattern and assigns</text>
+  <text x="362" y="359" class="wd">the next claim number (CLM-2026-xxxxx);</text>
+  <text x="362" y="374" class="wd">writes the subject alias blob; downloads</text>
+  <text x="362" y="389" class="wd">the photos and calls GPT-4o vision once;</text>
+  <text x="362" y="404" class="wd">stores the record durably in Cosmos intake.</text>
+  <text x="362" y="421" class="wd">Vision failure degrades gracefully</text>
+  <rect x="668" y="300" width="280" height="128" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="682" y="324" class="bt">evidenceAssessment, embedded</text>
+  <text x="682" y="344" class="bd">An objective description: what is depicted,</text>
+  <text x="682" y="359" class="bd">damaged areas, apparent severity, readable</text>
+  <text x="682" y="374" class="bd">text, inconsistencies. It lives inside the</text>
+  <text x="682" y="389" class="bd">claim record, so every stage's agents see it</text>
+  <text x="682" y="404" class="bd">at zero extra per-run cost, and fraud can</text>
+  <text x="682" y="419" class="bd">compare photos against the narrative</text>
+  <rect x="968" y="300" width="252" height="128" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="982" y="324" class="bt">Queue, immediately</text>
+  <text x="982" y="344" class="bd">The new claim appears in the</text>
+  <text x="982" y="359" class="bd">operator queue (runtime intake</text>
+  <text x="982" y="374" class="bd">merges with the corpus) and is</text>
+  <text x="982" y="389" class="bd">runnable at once; Decision Mode</text>
+  <text x="982" y="404" class="bd">shows the photos + assessment</text>
+  <text x="982" y="419" class="bd">in a Submitted evidence card</text>
+
+  <!-- result strip -->
+  <rect x="40" y="468" width="1200" height="100" rx="12" fill="#defbe6" stroke="#198038" stroke-width="1.5"/>
+  <text x="58" y="492" class="lbl" fill="#0e6027">WHAT THE MEMBER GETS BACK</text>
+  <text x="58" y="516" font-size="13" fill="#161616">The tracker mirrors the lifecycle in member language and adds a Damage assessment card: the submitted photos, "what our AI saw in your photos"</text>
+  <text x="58" y="536" font-size="13" fill="#161616">(the real vision output), and the estimated repair cost lifted from the Damage &amp; Estimation step, e.g. $1,320 with the state labor-rate multiplier.</text>
+  <text x="58" y="554" class="mono" fill="#0e6027">verified live: CLM-2026-10028 &#183; photo &#8594; assessment on record &#8594; $1,320 estimate on the tracker</text>
+
+  <!-- flows -->
+  <path class="flow" d="M270,175 L290,175"/>
+  <path class="flow" d="M530,175 L550,175"/>
+  <path class="flow" d="M675,224 L193,300"/>
+  <path class="flow" d="M800,175 L960,175"/>
+  <path class="flow" d="M328,364 L348,364"/>
+  <path class="flow" d="M648,364 L668,364"/>
+  <path class="flow" d="M948,364 L968,364"/>
+  <path class="flow" d="M640,444 L640,468"/>
+</svg>

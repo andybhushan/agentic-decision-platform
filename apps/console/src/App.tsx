@@ -32,6 +32,7 @@ import BorrowerArea from "./borrower/BorrowerArea";
 // The charts library is heavy; it loads only when the dashboard is opened.
 const OutcomesPage = lazy(() => import("./pages/OutcomesPage"));
 const DocsPage = lazy(() => import("./pages/DocsPage"));
+const DiagramsPage = lazy(() => import("./pages/DiagramsPage"));
 
 // One nav definition for desktop header items AND the mobile drawer.
 const NAV_LINKS = [
@@ -40,7 +41,7 @@ const NAV_LINKS = [
   { to: "/outcomes", label: "Outcomes", isActive: (p: string) => p.startsWith("/outcomes") },
   { to: "/agents", label: "Agents", isActive: (p: string) => p === "/agents" },
   { to: "/lab", label: "Lab", isActive: (p: string) => p === "/lab" },
-  { to: "/docs", label: "Docs", isActive: (p: string) => p === "/docs" },
+  { to: "/docs", label: "Docs", isActive: (p: string) => p.startsWith("/docs") },
   { to: "/member", label: "Meridian claims", isActive: () => false },
   { to: "/bank", label: "Northwind lending", isActive: () => false },
 ];
@@ -152,6 +153,14 @@ function Shell() {
                 element={
                   <Suspense fallback={null}>
                     <DocsPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/docs/diagrams"
+                element={
+                  <Suspense fallback={null}>
+                    <DiagramsPage />
                   </Suspense>
                 }
               />

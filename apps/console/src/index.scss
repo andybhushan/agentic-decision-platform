@@ -1649,6 +1649,169 @@ body {
   min-inline-size: 0;
 }
 
+// Diagram library (/docs/diagrams): grouped chip index + per-diagram cards.
+.adp-dgl__nav {
+  position: sticky;
+  top: 3rem;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-block-end: 1.5rem;
+  background: var(--cds-layer);
+  border: 1px solid var(--cds-border-subtle);
+  border-radius: 0.5rem;
+}
+
+.adp-dgl__nav-group {
+  display: contents;
+}
+
+.adp-dgl__nav-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cds-text-secondary);
+  margin-inline: 0.5rem 0.25rem;
+  white-space: nowrap;
+}
+
+.adp-dgl__chip {
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: var(--cds-link-primary);
+  border: 1px solid var(--cds-border-strong);
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: #0f62fe;
+    border-color: #0f62fe;
+    color: #ffffff;
+  }
+
+  &--star {
+    border-color: #8a3ffc;
+    color: #8a3ffc;
+    font-weight: 600;
+
+    &:hover {
+      background: #8a3ffc;
+      border-color: #8a3ffc;
+      color: #ffffff;
+    }
+  }
+}
+
+.adp-dgl__group-title {
+  margin-block-start: 2.5rem;
+}
+
+.adp-dgl__section {
+  scroll-margin-top: 8.5rem;
+  margin-block-end: 2rem;
+}
+
+.adp-dgl__card {
+  border-block-start: 3px solid #0f62fe;
+
+  &--star {
+    border-block-start-color: #8a3ffc;
+  }
+
+  h4 .cds--tag {
+    margin-inline-start: 0.5rem;
+    vertical-align: middle;
+  }
+}
+
+.adp-dgl__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.625rem;
+  block-size: 1.625rem;
+  border-radius: 50%;
+  background: #0f62fe;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.adp-dgl__card--star .adp-dgl__num {
+  background: #8a3ffc;
+}
+
+.adp-dgl__blurb {
+  max-width: 58rem;
+}
+
+.adp-dgl__meta {
+  margin-block: 0.75rem 1rem;
+}
+
+.adp-dgl__meta-label {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  border-radius: 0.625rem;
+  padding: 0.0625rem 0.625rem;
+  margin-inline-end: 0.5rem;
+
+  &--steps {
+    background: #0f62fe;
+  }
+
+  &--sys {
+    background: #8a3ffc;
+  }
+}
+
+.adp-dgl__steps ol {
+  list-style: decimal;
+  margin: 0.5rem 0 0 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--cds-text-secondary);
+  line-height: 1.5;
+  max-width: 56rem;
+}
+
+.adp-dgl__sys {
+  margin-block-start: 0.75rem;
+  font-size: 0.8125rem;
+
+  code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.75rem;
+    background: var(--cds-layer-accent, var(--cds-layer-02));
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    color: var(--cds-text-primary);
+  }
+}
+
+@media (max-width: 671px) {
+  .adp-dgl__nav {
+    position: static;
+  }
+
+  .adp-dgl__section {
+    scroll-margin-top: 4rem;
+  }
+}
+
 @media (max-width: 1055px) {
   .adp-docs__layout {
     grid-template-columns: minmax(0, 1fr);

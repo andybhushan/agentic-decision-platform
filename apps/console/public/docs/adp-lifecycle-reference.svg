@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="la" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1192e8"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:14px;font-weight:600;fill:#161616}
+      .bd{font-size:10.5px;fill:#6b7682}
+      .stage{font-size:11px;font-weight:700;letter-spacing:.05em;fill:#0043ce}
+      .flow{stroke:#1192e8;stroke-width:2;fill:none;marker-end:url(#la)}
+      .gate{font-size:10px;fill:#a2191f}
+    </style>
+  </defs>
+  <rect width="1280" height="640" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Lifecycle reference: the stages, their digital workers, and what each one decides</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Stages are declared in the packages (stage + stageOrder), never in code. The queue, the member tracker, the journey view, and Outcomes all render from these declarations.</text>
+
+  <text x="40" y="108" font-size="14" font-weight="700" fill="#161616">p-and-c-auto-claims &#183; Meridian Mutual (insurance)</text>
+
+  <rect x="40" y="124" width="280" height="230" class="box" fill="#ffffff" stroke="#1192e8"/>
+  <text x="56" y="150" class="stage">STAGE 1 &#183; INTAKE &amp; ROUTING</text>
+  <text x="56" y="174" class="bt">FNOL Handler &#183; 4 agents</text>
+  <text x="56" y="198" class="bd">Validates the first notice of loss, verifies</text>
+  <text x="56" y="213" class="bd">coverage against the policy, triages</text>
+  <text x="56" y="228" class="bd">severity, and routes the claim to the right</text>
+  <text x="56" y="243" class="bd">handling track.</text>
+  <text x="56" y="266" class="bd">Sees the photo evidenceAssessment</text>
+  <text x="56" y="281" class="bd">from intake in the claim record.</text>
+  <text x="56" y="304" class="gate">Gates when: coverage is ambiguous or</text>
+  <text x="56" y="318" class="gate">triage confidence drops below the</text>
+  <text x="56" y="332" class="gate">package threshold</text>
+
+  <rect x="350" y="124" width="280" height="230" class="box" fill="#ffffff" stroke="#1192e8"/>
+  <text x="366" y="150" class="stage">STAGE 2 &#183; DAMAGE &amp; ESTIMATION</text>
+  <text x="366" y="174" class="bt">Damage Handler &#183; 4 agents</text>
+  <text x="366" y="198" class="bd">Assesses the damage, categorizes it</text>
+  <text x="366" y="213" class="bd">(cosmetic / structural / total-loss</text>
+  <text x="366" y="228" class="bd">suspicion), and produces the repair</text>
+  <text x="366" y="243" class="bd">estimate with state labor-rate multipliers.</text>
+  <text x="366" y="266" class="bd">The estimate figure surfaces on the</text>
+  <text x="366" y="281" class="bd">member tracker ($1,320 on the live demo).</text>
+  <text x="366" y="304" class="gate">Gates when: estimate confidence is low</text>
+  <text x="366" y="318" class="gate">or the high estimate approaches total-</text>
+  <text x="366" y="332" class="gate">loss territory (75% of ACV)</text>
+
+  <rect x="660" y="124" width="280" height="230" class="box" fill="#ffffff" stroke="#1192e8"/>
+  <text x="676" y="150" class="stage">STAGE 3 &#183; FRAUD SCREEN</text>
+  <text x="676" y="174" class="bt">Fraud Handler &#183; 4 agents</text>
+  <text x="676" y="198" class="bd">Runs the integrity screen: indicator</text>
+  <text x="676" y="213" class="bd">patterns, narrative consistency, history</text>
+  <text x="676" y="228" class="bd">signals from the semantic layer.</text>
+  <text x="676" y="251" class="bd">Photo evidence gives it something rules</text>
+  <text x="676" y="266" class="bd">never had: what the damage actually</text>
+  <text x="676" y="281" class="bd">looks like versus what the narrative says.</text>
+  <text x="676" y="304" class="gate">Gates when: indicators conflict, or</text>
+  <text x="676" y="318" class="gate">evidence and narrative disagree; a human</text>
+  <text x="676" y="332" class="gate">sees it before any adverse path</text>
+
+  <rect x="970" y="124" width="270" height="230" class="box" fill="#ffffff" stroke="#1192e8"/>
+  <text x="986" y="150" class="stage">STAGE 4 &#183; SETTLEMENT &amp; PAYMENT</text>
+  <text x="986" y="174" class="bt">Settlement Handler &#183; 4 agents</text>
+  <text x="986" y="198" class="bd">Calculates the settlement from the</text>
+  <text x="986" y="213" class="bd">estimate, deductible, and coverage</text>
+  <text x="986" y="228" class="bd">limits; prepares payment and the</text>
+  <text x="986" y="243" class="bd">member communication.</text>
+  <text x="986" y="266" class="bd">Every figure it uses is journaled with</text>
+  <text x="986" y="281" class="bd">its provenance.</text>
+  <text x="986" y="304" class="gate">Gates when: settlement deviates from</text>
+  <text x="986" y="318" class="gate">the estimate corridor or limits are</text>
+  <text x="986" y="332" class="gate">nearly exhausted</text>
+
+  <path class="flow" d="M320,239 L350,239"/>
+  <path class="flow" d="M630,239 L660,239"/>
+  <path class="flow" d="M940,239 L970,239"/>
+
+  <text x="40" y="404" font-size="14" font-weight="700" fill="#161616">consumer-loan-origination &#183; Northwind Bank (banking), the portability proof</text>
+
+  <rect x="40" y="420" width="500" height="150" class="box" fill="#ffffff" stroke="#8a3ffc"/>
+  <text x="56" y="446" class="stage" fill="#6d28d0">STAGE 1 &#183; ORIGINATION DECISION</text>
+  <text x="56" y="470" class="bt">Consumer Loan Handler &#183; 3 agents</text>
+  <text x="56" y="494" class="bd">Assesses the application: affordability and debt-to-income, credit</text>
+  <text x="56" y="509" class="bd">signals from the semantic layer, and policy compliance; produces an</text>
+  <text x="56" y="524" class="bd">approve / refer / decline proposal with cited grounding.</text>
+  <text x="56" y="546" class="gate">Gates when: the proposal is adverse or borderline; a human decides</text>
+  <text x="56" y="560" class="gate">before any declination stands</text>
+
+  <rect x="570" y="420" width="670" height="150" class="box" fill="#f4f4f4" stroke="#8d8d8d"/>
+  <text x="586" y="446" font-size="12" font-weight="700" letter-spacing=".06em" fill="#5b6b7c">WHY THIS ROW MATTERS</text>
+  <text x="586" y="470" font-size="13" fill="#161616">A different industry, a different lifecycle depth, a different tool kit, and a different branded</text>
+  <text x="586" y="490" font-size="13" fill="#161616">portal, running on the identical platform build. Same queue, same gates, same journal, same</text>
+  <text x="586" y="510" font-size="13" fill="#161616">Decision Record, same Outcomes lens. The delta between the two industries is one signed</text>
+  <text x="586" y="530" font-size="13" fill="#161616">package plus one tool-kit registration line, which is the entire commercial argument for a</text>
+  <text x="586" y="550" font-size="13" fill="#161616">platform rather than a bespoke build per use case.</text>
+</svg>

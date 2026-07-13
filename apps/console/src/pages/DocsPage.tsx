@@ -184,7 +184,10 @@ export default function DocsPage() {
           <Button as="a" href="/docs/ADP-SOLUTION.md" download renderIcon={Document}>
             Download full documentation (.md)
           </Button>
-          <Button kind="tertiary" as={Link} to="/" renderIcon={ArrowRight}>
+          <Button kind="tertiary" as={Link} to="/docs/diagrams" renderIcon={FlowData}>
+            Diagram library (12 views)
+          </Button>
+          <Button kind="ghost" as={Link} to="/" renderIcon={ArrowRight}>
             Open the live platform
           </Button>
         </div>

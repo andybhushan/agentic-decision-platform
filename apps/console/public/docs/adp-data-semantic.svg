@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 660" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="da" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="dc" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1192e8"/></marker>
+    <style>
+      .zone{rx:12;fill:#ffffff;stroke:#c5d2e3;stroke-width:1.5}
+      .lbl{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .box{rx:8;stroke-width:1.5}
+      .bt{font-size:13px;font-weight:600;fill:#161616}
+      .bd{font-size:10.5px;fill:#6b7682}
+      .mono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#da)}
+      .cflow{stroke:#1192e8;stroke-width:1.8;fill:none;marker-end:url(#dc)}
+    </style>
+  </defs>
+  <rect width="1280" height="660" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Data and semantic foundation: what the agents actually stand on</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Three operational stores feed the runs directly; the Fabric side gives the same universe a governed semantic shape that agents can query in natural language.</text>
+
+  <!-- operational -->
+  <rect x="40" y="92" width="560" height="440" class="zone"/>
+  <text x="58" y="116" class="lbl">OPERATIONAL &#183; read/write on every run</text>
+  <rect x="58" y="130" width="524" height="88" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="154" class="bt">Bundled corpus (per use case)</text>
+  <text x="72" y="174" class="bd">25 synthetic claims + 13 loan applications with realistic shape: policyholders, policies,</text>
+  <text x="72" y="189" class="bd">vehicles, incidents, flags. Ships inside the package resources; defines the id pattern</text>
+  <text x="72" y="206" class="mono">usecases/*/data/*.json &#8594; Resources/</text>
+  <rect x="58" y="234" width="524" height="88" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="258" class="bt">Runtime intake (Cosmos &#183; intake)</text>
+  <text x="72" y="278" class="bd">Every claim or application filed through the portals, stored durably with the server-</text>
+  <text x="72" y="293" class="bd">assigned subject id and the embedded photo evidenceAssessment. Merges with the</text>
+  <text x="72" y="308" class="bd">corpus on read, so new subjects are queued and runnable instantly</text>
+  <rect x="58" y="338" width="524" height="88" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="362" class="bt">Evidence store (Blob &#183; evidence container)</text>
+  <text x="72" y="382" class="bd">Damage photos uploaded at FNOL, grouped per submission with a subject alias for</text>
+  <text x="72" y="397" class="bd">read-side resolution. Served back to the tracker and Decision Mode by the API</text>
+  <text x="72" y="414" class="mono">{groupId}/photo-N.jpg &#183; subjects/{subjectId}</text>
+  <rect x="58" y="442" width="524" height="74" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="72" y="466" class="bt">Decision journal (Cosmos &#183; dw-state)</text>
+  <text x="72" y="486" class="bd">The immutable output side: every run's steps, citations, gates, and judgments.</text>
+  <text x="72" y="501" class="bd">Aggregated live into Outcomes, never rewritten</text>
+
+  <!-- fabric -->
+  <rect x="660" y="92" width="580" height="440" class="zone"/>
+  <text x="678" y="116" class="lbl">SEMANTIC &#183; Microsoft Fabric (Fabric IQ)</text>
+  <rect x="678" y="130" width="544" height="86" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="692" y="154" class="bt">Gold lakehouse, 24 tables</text>
+  <text x="692" y="174" class="bd">A dimensional model generated from the same synthetic universe: dim_policyholder,</text>
+  <text x="692" y="189" class="bd">dim_vehicle, fact_claims, dim_borrower, fact_loan_applications, plus the claims-domain</text>
+  <text x="692" y="204" class="bd">entities (loss events, coverages, payments, fraud indicators, visual evidence...)</text>
+  <rect x="678" y="232" width="544" height="80" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="692" y="256" class="bt">Ontology over the gold layer</text>
+  <text x="692" y="276" class="bd">Entity and relationship definitions that give the tables business meaning; agent steps</text>
+  <text x="692" y="291" class="bd">record which ontology entities a decision touched (ontologyBindings on the journal)</text>
+  <rect x="678" y="328" width="544" height="98" class="box" fill="#1192e8" stroke="#0e7fc0"/>
+  <text x="692" y="352" font-size="13px" font-weight="600" fill="#ffffff">Published Data Agent &#183; claims_data_agent</text>
+  <text x="692" y="372" font-size="10.5" fill="#e0f3ff">Answers natural-language questions over the ontology + semantic model. The platform</text>
+  <text x="692" y="387" font-size="10.5" fill="#e0f3ff">consults it once per subject (FabricDataAgentSource) and cites the answer per step.</text>
+  <text x="692" y="404" font-size="10" font-family="'IBM Plex Mono',monospace" fill="#cdeeff">every call: ?api-version=2024-05-01-preview &#183; assistant minted via POST /assistants</text>
+  <rect x="678" y="442" width="544" height="74" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="692" y="466" class="bt">Loaders + generators, reproducible</text>
+  <text x="692" y="486" class="bd">usecases/*/data/fabric-gold-generator produces the CSVs; loader scripts land them in</text>
+  <text x="692" y="501" class="bd">the lakehouse. The whole semantic side rebuilds from the repo</text>
+
+  <!-- bottom -->
+  <rect x="40" y="556" width="1200" height="70" rx="10" fill="#defbe6" stroke="#198038" stroke-width="1.5"/>
+  <text x="56" y="580" font-size="12" font-weight="700" letter-spacing=".06em" fill="#0e6027">ONE UNIVERSE, TWO SHAPES</text>
+  <text x="56" y="602" font-size="13" fill="#161616">The record a run reasons over and the tables the Data Agent queries describe the same subjects, so a grounded answer from Fabric IQ genuinely</text>
+  <text x="56" y="618" font-size="13" fill="#161616">corroborates (or contradicts) the operational record. That is what makes the citations meaningful rather than decorative.</text>
+
+  <!-- flows -->
+  <path class="cflow" d="M600,174 L660,174" stroke-dasharray="5 4"/>
+  <text x="606" y="166" font-size="9.5" fill="#1192e8">same universe</text>
+</svg>

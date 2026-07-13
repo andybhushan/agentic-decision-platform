@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ra" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:13.5px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:13.5px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .mono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .wmono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#d0e2ff}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#ra)}
+    </style>
+  </defs>
+  <rect width="1280" height="560" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Runtime portability: one contract, three backends, zero package changes</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Decision semantics live in the PromptContract, not in any vendor SDK. Swapping the agent runtime is an environment variable, and the journal proves the behavior held.</text>
+
+  <!-- contract -->
+  <rect x="40" y="100" width="380" height="180" class="box" fill="#161616" stroke="#000000"/>
+  <text x="56" y="128" font-size="14" font-weight="600" fill="#ffffff">PromptContract (shared)</text>
+  <text x="56" y="152" font-size="11" fill="#e0e0e0">One canonical assembly of what an agent step is:</text>
+  <text x="56" y="172" font-size="11" fill="#e0e0e0">instructions + subject record (with evidence) + cited</text>
+  <text x="56" y="188" font-size="11" fill="#e0e0e0">context from the IQ federation + tool definitions +</text>
+  <text x="56" y="204" font-size="11" fill="#e0e0e0">output expectations and confidence calibration.</text>
+  <text x="56" y="228" font-size="11" fill="#e0e0e0">Every adapter consumes this contract verbatim, so a</text>
+  <text x="56" y="244" font-size="11" fill="#e0e0e0">backend swap can never silently change what a</text>
+  <text x="56" y="260" font-size="11" fill="#e0e0e0">decision means</text>
+
+  <!-- backends -->
+  <rect x="480" y="88" width="760" height="128" class="box" fill="#24a148" stroke="#198038"/>
+  <text x="496" y="116" class="wt">AGENT_BACKEND=agent-framework &#183; ACTIVE in production today</text>
+  <text x="496" y="138" class="wd">Microsoft Agent Framework 1.13 (Microsoft.Agents.AI.OpenAI): ChatClientAgent over the key-authenticated Azure OpenAI</text>
+  <text x="496" y="153" class="wd">client; MCP tools bridged as AIFunctions that journal every call; sessions per run.</text>
+  <text x="496" y="173" class="wd">Verified live: full claim run 4/4 steps GROUNDED with all three IQ systems cited, including the Fabric Data Agent.</text>
+  <text x="496" y="196" class="wmono">new ChatClientAgent(chatClient.AsIChatClient(), instructions, name, description, tools)</text>
+
+  <rect x="480" y="236" width="760" height="108" class="box" fill="#f4f4f4" stroke="#8d8d8d"/>
+  <text x="496" y="264" class="bt">AGENT_BACKEND=foundry &#183; prepared, one grant away</text>
+  <text x="496" y="286" class="bd">Azure AI Foundry Agent Service: project adp-v1 created on aif-adp-v1, FOUNDRY_PROJECT_ENDPOINT already staged on the</text>
+  <text x="496" y="301" class="bd">container. The agents data plane requires Entra RBAC (api-key is rejected by design), so the flip waits on an Azure AI User</text>
+  <text x="496" y="316" class="bd">grant from the subscription admins. After the grant:</text>
+  <text x="496" y="334" class="mono">az containerapp update -n ca-tracesapi -g rg-adp-v1 --set-env-vars AGENT_BACKEND=foundry</text>
+
+  <rect x="480" y="364" width="760" height="88" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="496" y="392" class="bt">AGENT_BACKEND=legacy &#183; the fallback that stays honest</text>
+  <text x="496" y="414" class="bd">Direct Azure OpenAI chat completions on the same contract. Kept alive as the rollback path and as proof that the platform's</text>
+  <text x="496" y="429" class="bd">value (grounding, gates, journal, record) does not depend on any one agent SDK</text>
+
+  <!-- footnote -->
+  <rect x="40" y="310" width="380" height="142" class="box" fill="#fff8e1" stroke="#b28600"/>
+  <text x="56" y="338" class="bt">A lesson this diagram encodes</text>
+  <text x="56" y="360" class="bd">Azure.AI.OpenAI 2.1 chat calls crash against the</text>
+  <text x="56" y="375" class="bd">OpenAI 2.10 assembly Agent Framework resolves</text>
+  <text x="56" y="390" class="bd">(MissingMethodException in PostfixSwapMaxTokens).</text>
+  <text x="56" y="405" class="bd">New direct chat-completion code (like evidence</text>
+  <text x="56" y="420" class="bd">vision) therefore calls the Azure OpenAI REST API</text>
+  <text x="56" y="435" class="bd">over HttpClient. Paid for in two deploys</text>
+
+  <!-- honesty strip -->
+  <rect x="40" y="480" width="1200" height="52" rx="10" fill="#edf5ff" stroke="#0f62fe" stroke-width="1.2"/>
+  <text x="56" y="502" font-size="12" font-weight="700" letter-spacing=".06em" fill="#0043ce">THE TEST THAT MATTERS</text>
+  <text x="56" y="521" font-size="13" fill="#161616">Run the same subject on two backends and diff the journals: same grounding, same gate behavior, same decision shape. That is what "portable" means here.</text>
+
+  <!-- flows -->
+  <path class="flow" d="M420,152 L480,152"/>
+  <path class="flow" d="M420,190 L480,290"/>
+  <path class="flow" d="M420,228 L480,408"/>
+</svg>

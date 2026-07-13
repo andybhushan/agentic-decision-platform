@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ka" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:13.5px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:13.5px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .mono{font-size:11px;font-family:'IBM Plex Mono',monospace;fill:#161616}
+      .monosub{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#ka)}
+    </style>
+  </defs>
+  <rect width="1280" height="640" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">The package model: how a use case ships without touching the platform</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Everything domain-specific lives in one declarative, versioned, signed artifact. The schema is agent-package.v1; five packages run on this instance today.</text>
+
+  <!-- anatomy -->
+  <rect x="40" y="92" width="430" height="470" class="box" fill="#ffffff" stroke="#0f62fe"/>
+  <text x="58" y="120" class="bt">Anatomy of a package (agent-package.v1.schema.json)</text>
+  <text x="58" y="148" class="mono">package:      id, version, industry, useCase</text>
+  <text x="58" y="168" class="mono">stage:        "Damage &amp; Estimation", stageOrder: 2</text>
+  <text x="58" y="196" class="mono">digitalWorker:</text>
+  <text x="76" y="216" class="monosub">workerName, description</text>
+  <text x="76" y="234" class="monosub">entraAgentId declaration (identity)</text>
+  <text x="76" y="252" class="monosub">corpusBinding: arrayKey, subjectIdField</text>
+  <text x="58" y="280" class="mono">agents[]:</text>
+  <text x="76" y="300" class="monosub">agentId, model (gpt-4o), instructions</text>
+  <text x="76" y="318" class="monosub">skills[], calibration (confidence mapping)</text>
+  <text x="76" y="336" class="monosub">ontologyBindings, regulatoryBasis</text>
+  <text x="58" y="364" class="mono">tools[]:      bound from the industry tool kit</text>
+  <text x="58" y="392" class="mono">hitl:</text>
+  <text x="76" y="412" class="monosub">confidence threshold per gate</text>
+  <text x="76" y="430" class="monosub">options[]: approve / override outputs</text>
+  <text x="58" y="458" class="mono">slos[]:       metric, target, window</text>
+  <text x="58" y="486" class="bd">The platform learns everything from this file: the queue's</text>
+  <text x="58" y="502" class="bd">lifecycle columns, the id pattern for new intake, the gate</text>
+  <text x="58" y="518" class="bd">policy, the Agents governance page, the Outcomes lens.</text>
+  <text x="58" y="534" class="bd">No frontend or backend code names a use case</text>
+
+  <!-- pipeline -->
+  <rect x="520" y="92" width="330" height="120" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="536" y="120" class="wt">1 &#183; Author declaratively</text>
+  <text x="536" y="142" class="wd">usecases/meridian-pnc-auto-claims/packages/</text>
+  <text x="536" y="157" class="wd">damage-handler.json (+ fnol, fraud, settlement;</text>
+  <text x="536" y="172" class="wd">banking has loan-handler.json). The corpus and</text>
+  <text x="536" y="187" class="wd">gold-layer generators live beside them</text>
+  <rect x="520" y="232" width="330" height="104" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="536" y="260" class="wt">2 &#183; Compile + sign (adpc)</text>
+  <text x="536" y="282" class="wd">adpc validates against the schema, resolves</text>
+  <text x="536" y="297" class="wd">skills and tools, signs the bundle, and emits</text>
+  <text x="536" y="312" class="wd">a zip artifact per digital worker</text>
+  <rect x="520" y="356" width="330" height="104" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="536" y="384" class="wt">3 &#183; Ship inside the API image</text>
+  <text x="536" y="406" class="wd">platform/src/TracesApi/Resources/*.zip travels</text>
+  <text x="536" y="421" class="wd">in the container image; v1+ pulls from blob or</text>
+  <text x="536" y="436" class="wd">a Process Studio instead, same loader</text>
+  <rect x="520" y="480" width="330" height="82" class="box" fill="#24a148" stroke="#198038"/>
+  <text x="536" y="508" class="wt">4 &#183; Load, validate, run</text>
+  <text x="536" y="530" class="wd">PlanExecutor loads and verifies the package at</text>
+  <text x="536" y="545" class="wd">run time; the queue reflects it immediately</text>
+
+  <!-- what it buys -->
+  <rect x="900" y="92" width="340" height="470" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="916" y="120" class="bt">What this buys, concretely</text>
+  <text x="916" y="150" font-size="12" font-weight="600" fill="#161616">A second industry cost one package</text>
+  <text x="916" y="168" class="bd">Northwind lending went live by adding</text>
+  <text x="916" y="183" class="bd">loan-handler.json + a tool-kit registration line.</text>
+  <text x="916" y="198" class="bd">Zero platform code changed</text>
+  <text x="916" y="230" font-size="12" font-weight="600" fill="#161616">Stages are data, not code</text>
+  <text x="916" y="248" class="bd">The 4-stage claims lifecycle is stage/stageOrder</text>
+  <text x="916" y="263" class="bd">in four packages; the queue, tracker, journey,</text>
+  <text x="916" y="278" class="bd">and Outcomes all render from it</text>
+  <text x="916" y="310" font-size="12" font-weight="600" fill="#161616">Governance reads the same file</text>
+  <text x="916" y="328" class="bd">The /agents registry shows the declared estate</text>
+  <text x="916" y="343" class="bd">(agents, models, calibration, SLOs, identity)</text>
+  <text x="916" y="358" class="bd">joined with journal-observed behavior</text>
+  <text x="916" y="390" font-size="12" font-weight="600" fill="#161616">Runtime intake follows the corpus</text>
+  <text x="916" y="408" class="bd">New subjects get ids by continuing the corpus's</text>
+  <text x="916" y="423" class="bd">own pattern (CLM-2026-10027, 10028...), learned</text>
+  <text x="916" y="438" class="bd">from the corpusBinding, never hardcoded</text>
+  <text x="916" y="470" font-size="12" font-weight="600" fill="#161616">Prompt semantics stay portable</text>
+  <text x="916" y="488" class="bd">The package's instructions flow through one</text>
+  <text x="916" y="503" class="bd">PromptContract to whichever backend is active,</text>
+  <text x="916" y="518" class="bd">so a runtime swap never changes a decision's</text>
+  <text x="916" y="533" class="bd">meaning</text>
+
+  <!-- flows -->
+  <path class="flow" d="M470,320 L520,152"/>
+  <path class="flow" d="M685,212 L685,232"/>
+  <path class="flow" d="M685,336 L685,356"/>
+  <path class="flow" d="M685,460 L685,480"/>
+  <path class="flow" d="M850,521 L900,521"/>
+</svg>

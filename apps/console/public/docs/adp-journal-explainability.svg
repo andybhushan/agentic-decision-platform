@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ja" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="jp" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a3ffc"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:13.5px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:13.5px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .mono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#ja)}
+      .pflow{stroke:#8a3ffc;stroke-width:1.8;fill:none;marker-end:url(#jp)}
+    </style>
+  </defs>
+  <rect width="1280" height="620" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">The decision journal: write once, explain forever</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Every step is an event, journaled before the run moves on. Everything the console, the member tracker, and the regulator artifact show is a replay of this log.</text>
+
+  <!-- event -->
+  <rect x="40" y="100" width="330" height="240" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="56" y="128" class="wt">One step event (DecisionEvent)</text>
+  <text x="56" y="152" class="wd">traceId, subjectId, packageId, stepId, agentId</text>
+  <text x="56" y="170" class="wd">label, output, origin (GROUNDED | DERIVED)</text>
+  <text x="56" y="188" class="wd">confidence (calibrated), durationMs, status</text>
+  <text x="56" y="206" class="wd">toolCalls[]: name, arguments, result, success</text>
+  <text x="56" y="224" class="wd">citedSourcesFull[]: sourceId, docId, title, score</text>
+  <text x="56" y="242" class="wd">ontologyBindings[], regulatoryBasis[]</text>
+  <text x="56" y="260" class="wd">hitlGateId + operator judgment when gated</text>
+  <text x="56" y="286" class="wd">Written by the step runner through composite</text>
+  <text x="56" y="301" class="wd">sinks; the orchestration does not proceed until</text>
+  <text x="56" y="316" class="wd">the journal write lands</text>
+
+  <!-- sinks -->
+  <rect x="430" y="100" width="250" height="100" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="446" y="128" class="bt">Cosmos DB &#183; dw-state</text>
+  <text x="446" y="148" class="bd">The immutable system of record.</text>
+  <text x="446" y="163" class="bd">Append-only; never updated in place;</text>
+  <text x="446" y="178" class="bd">survives every deploy and demo</text>
+  <rect x="430" y="220" width="250" height="56" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="446" y="244" class="bt">Event Hubs</text>
+  <text x="446" y="262" class="bd">Fan-out for downstream consumers</text>
+  <rect x="430" y="296" width="250" height="56" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="446" y="320" class="bt">Azure SignalR</text>
+  <text x="446" y="338" class="bd">Live tail: steps stream to Decision Mode</text>
+
+  <!-- replays -->
+  <rect x="740" y="88" width="500 " height="108" class="box" fill="#ffffff" stroke="#8a3ffc"/>
+  <text x="756" y="116" class="bt">Decision Record &#183; /decisions/&#123;id&#125;/record</text>
+  <text x="756" y="138" class="bd">The print-ready regulator artifact: every step with its confidence, origin, citations per</text>
+  <text x="756" y="153" class="bd">source system, tool calls, gates, and operator judgments, reconstructed entirely from</text>
+  <text x="756" y="168" class="bd">the journal. If it is not in the log, it is not in the record; there is no second source of truth</text>
+  <rect x="740" y="216" width="500" height="88" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="756" y="244" class="bt">Decision Mode + member tracker</text>
+  <text x="756" y="266" class="bd">The operator's per-step trace and the member's stage progress are the same journal,</text>
+  <text x="756" y="281" class="bd">rendered for two audiences: full evidence for the operator, member language for the member</text>
+  <rect x="740" y="324" width="500" height="88" class="box" fill="#defbe6" stroke="#198038"/>
+  <text x="756" y="352" class="bt">Outcomes, computed, not claimed</text>
+  <text x="756" y="374" class="bd">Runs, grounding rate, calibrated confidence, oversight rate, lifecycle depth, and p50/p90</text>
+  <text x="756" y="389" class="bd">decision cycle time per worker are aggregates over the journal (GET /api/aggregate/*)</text>
+
+  <!-- honesty -->
+  <rect x="40" y="446" width="1200" height="130" rx="10" fill="#f4f4f4" stroke="#8d8d8d" stroke-width="1.2"/>
+  <text x="56" y="472" font-size="12" font-weight="700" letter-spacing=".06em" fill="#5b6b7c">WHY THIS SHAPE</text>
+  <text x="56" y="496" font-size="13" fill="#161616">Explainability that is generated after the fact is a story; explainability replayed from an append-only log is evidence. ADP journals the reasoning,</text>
+  <text x="56" y="516" font-size="13" fill="#161616">the retrieval (with scores), the tool calls, the uncertainty, and the human interventions at the moment they happen. The Decision Record, the tracker,</text>
+  <text x="56" y="536" font-size="13" fill="#161616">and every KPI on Outcomes are derived views with no private inputs. This is also why the live tail is trustworthy: SignalR streams the same events</text>
+  <text x="56" y="556" font-size="13" fill="#161616">the journal stores, not a parallel telemetry path.</text>
+
+  <!-- flows -->
+  <path class="flow" d="M370,150 L430,150"/>
+  <path class="flow" d="M370,220 L430,248"/>
+  <path class="flow" d="M370,290 L430,324"/>
+  <path class="pflow" d="M680,150 L740,142"/>
+  <path class="pflow" d="M680,150 L740,260"/>
+  <path class="pflow" d="M680,150 L740,368"/>
+</svg>

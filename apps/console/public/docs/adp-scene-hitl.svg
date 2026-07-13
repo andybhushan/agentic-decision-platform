@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ha" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="hr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#da1e28"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:13.5px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:13.5px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#ha)}
+      .rflow{stroke:#da1e28;stroke-width:1.8;fill:none;marker-end:url(#hr)}
+      .mono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .tl{stroke:#c5d2e3;stroke-width:2}
+    </style>
+  </defs>
+  <rect width="1280" height="620" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Scene: a human gate trips, organically, and the run resumes with the judgment journaled</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Gates are not scripted demo moments: they open whenever a step's calibrated confidence falls below the threshold the package declares. Red marks the suspended interval.</text>
+
+  <!-- timeline -->
+  <line x1="60" y1="120" x2="1240" y2="120" class="tl"/>
+  <circle cx="120" cy="120" r="6" fill="#0f62fe"/>
+  <circle cx="420" cy="120" r="6" fill="#da1e28"/>
+  <circle cx="860" cy="120" r="6" fill="#24a148"/>
+  <circle cx="1160" cy="120" r="6" fill="#8a3ffc"/>
+  <text x="90" y="100" font-size="11" font-weight="600" fill="#0f62fe">run starts</text>
+  <text x="385" y="100" font-size="11" font-weight="600" fill="#da1e28">gate opens</text>
+  <text x="820" y="100" font-size="11" font-weight="600" fill="#24a148">run resumes</text>
+  <text x="1115" y="100" font-size="11" font-weight="600" fill="#8a3ffc">run completes</text>
+  <line x1="420" y1="114" x2="860" y2="114" stroke="#da1e28" stroke-width="4" opacity="0.35"/>
+
+  <!-- steps -->
+  <rect x="60" y="156" width="280" height="118" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="76" y="182" class="wt">1 &#183; Steps execute and score</text>
+  <text x="76" y="204" class="wd">Each agent step grounds through the IQ</text>
+  <text x="76" y="219" class="wd">federation, reasons on gpt-4o, and gets a</text>
+  <text x="76" y="234" class="wd">calibrated confidence. Journal first,</text>
+  <text x="76" y="249" class="wd">then move on</text>
+  <rect x="370" y="156" width="300" height="118" class="box" fill="#da1e28" stroke="#a2191f"/>
+  <text x="386" y="182" class="wt">2 &#183; Confidence below threshold</text>
+  <text x="386" y="204" class="wd">e.g. ambiguous coverage on a step scoring</text>
+  <text x="386" y="219" class="wd">0.62 against a 0.75 gate policy. The Durable</text>
+  <text x="386" y="234" class="wd">orchestration suspends; nothing downstream</text>
+  <text x="386" y="249" class="wd">executes while a human is thinking</text>
+  <rect x="700" y="156" width="300" height="118" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="716" y="182" class="bt">3 &#183; The queue shows it live</text>
+  <text x="716" y="204" class="bd">The subject flips to "needs review" in the</text>
+  <text x="716" y="219" class="bd">operator queue in real time (SignalR tail).</text>
+  <text x="716" y="234" class="bd">Decision Mode's "Your judgment" panel holds</text>
+  <text x="716" y="249" class="bd">the step, its reasoning, and its evidence</text>
+  <rect x="1030" y="156" width="210" height="118" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="1046" y="182" class="bt">4 &#183; Evidence attached</text>
+  <text x="1046" y="204" class="bd">Cited sources per system,</text>
+  <text x="1046" y="219" class="bd">ontology entities touched,</text>
+  <text x="1046" y="234" class="bd">submitted photos + the</text>
+  <text x="1046" y="249" class="bd">intake vision assessment</text>
+
+  <rect x="60" y="306" width="360" height="128" class="box" fill="#ffffff" stroke="#da1e28"/>
+  <text x="76" y="332" class="bt">5 &#183; The operator judges</text>
+  <text x="76" y="354" class="bd">Approve the agent's proposal, override it with one of the</text>
+  <text x="76" y="369" class="bd">package's declared alternatives, or redirect. A rationale is</text>
+  <text x="76" y="384" class="bd">captured. The resolution posts to</text>
+  <text x="76" y="404" class="mono">POST /api/runs/{runId}/resolve-hitl</text>
+  <text x="76" y="422" class="bd">and the judgment becomes a first-class journal event</text>
+  <rect x="450" y="306" width="360" height="128" class="box" fill="#24a148" stroke="#198038"/>
+  <text x="466" y="332" class="wt">6 &#183; The run resumes, exactly where it stopped</text>
+  <text x="466" y="354" class="wd">The orchestration continues with the human decision in</text>
+  <text x="466" y="369" class="wd">context. Downstream steps see the override output, not</text>
+  <text x="466" y="384" class="wd">the below-threshold proposal. The member tracker shows</text>
+  <text x="466" y="399" class="wd">"a specialist is reviewing" during the gate and moves on</text>
+  <text x="466" y="414" class="wd">when it clears</text>
+  <rect x="840" y="306" width="400" height="128" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="856" y="332" class="bt">7 &#183; Audit, for free</text>
+  <text x="856" y="354" class="bd">The gate, the operator identity, the rationale, and the taken</text>
+  <text x="856" y="369" class="bd">option are all journal events, so the Decision Record reprints the</text>
+  <text x="856" y="384" class="bd">whole intervention verbatim, and Outcomes counts it in the</text>
+  <text x="856" y="399" class="bd">oversight rate. Nothing about the intervention is reconstructed</text>
+  <text x="856" y="414" class="bd">from memory; it is all replayed from the immutable log</text>
+
+  <!-- note -->
+  <rect x="60" y="468" width="1180" height="110" rx="10" fill="#f4f4f4" stroke="#8d8d8d" stroke-width="1.2"/>
+  <text x="76" y="494" font-size="12" font-weight="700" letter-spacing=".06em" fill="#5b6b7c">DESIGN INTENT</text>
+  <text x="76" y="518" font-size="13" fill="#161616">The platform never asks a human to rubber-stamp everything (that is theater) and never lets uncertainty through silently (that is negligence).</text>
+  <text x="76" y="538" font-size="13" fill="#161616">The package declares the threshold per use case; the runtime honors it uniformly; the journal proves it happened. A forced-gate switch exists in the</text>
+  <text x="76" y="558" font-size="13" fill="#161616">Lab page for rehearsals, and is labeled as such.</text>
+
+  <!-- flows -->
+  <path class="flow" d="M340,215 L370,215"/>
+  <path class="rflow" d="M670,215 L700,215"/>
+  <path class="flow" d="M1000,215 L1030,215"/>
+  <path class="rflow" d="M850,274 L240,306"/>
+  <path class="flow" d="M420,370 L450,370"/>
+  <path class="flow" d="M810,370 L840,370"/>
+</svg>
