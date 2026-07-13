@@ -117,6 +117,7 @@ const API_ROUTES = [
   ["GET /evidence/subject/{id}", "Resolve a subject's photo group"],
   ["GET /evidence/file/{group}/{name}", "Serve a photo"],
   ["POST /actions", "Execute a governed operator action with rationale"],
+  ["POST /assist", "Member assistant: chat grounded server-side in the member's own records"],
   ["GET /agents", "Governance registry: declared estate + observed behavior"],
   ["GET /aggregate/outcomes", "KPI aggregates, filterable per use case"],
   ["GET /aggregate/timeline", "Time-bucketed run and confidence series"],

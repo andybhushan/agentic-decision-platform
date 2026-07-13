@@ -7,6 +7,7 @@ import SignInPage from "./SignInPage";
 import MemberHomePage from "./MemberHomePage";
 import ReportClaimPage from "./ReportClaimPage";
 import MemberClaimPage from "./MemberClaimPage";
+import AssistDock from "../components/AssistDock";
 
 // The claims use-case view: the carrier-branded (Meridian Mutual) member portal, a separate
 // experience zone from the ADP platform console. Same app, own shell, claimant language.
@@ -58,6 +59,20 @@ function MemberShell() {
             </Routes>
           </div>
         </Content>
+        {member && (
+          <AssistDock
+            industry="insurance"
+            memberId={member.policyholderId}
+            brand="Meridian Mutual"
+            greeting={`Hi ${member.firstName}, I can answer questions about your policy, your claims, their status, your photos and documents, and repair estimates. What would you like to know?`}
+            starters={[
+              "What is the status of my latest claim?",
+              "What did your AI see in my photos?",
+              "What is my repair estimate?",
+              "What happens next on my claim?",
+            ]}
+          />
+        )}
       </Theme>
     </>
   );

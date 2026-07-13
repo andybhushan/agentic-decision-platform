@@ -210,6 +210,7 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 | GET | `/evidence/subject/{subjectId}` | Resolve a subject's photo group |
 | GET | `/evidence/file/{groupId}/{name}` | Serve a photo |
 | POST | `/actions` | Execute a governed operator action with rationale |
+| POST | `/assist` | Member assistant: chat grounded server-side in the signed-in member's own records and journey (fraud details never surfaced) |
 | GET | `/agents` | Governance registry: declared workers joined with observed behavior |
 | GET | `/aggregate/outcomes?packages=` | KPI aggregates, filterable per use case |
 | GET | `/aggregate/timeline?packages=` | Time-bucketed run/confidence series |

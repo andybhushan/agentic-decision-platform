@@ -7,6 +7,7 @@ import BankSignInPage from "./BankSignInPage";
 import BorrowerHomePage from "./BorrowerHomePage";
 import ApplyPage from "./ApplyPage";
 import BorrowerApplicationPage from "./BorrowerApplicationPage";
+import AssistDock from "../components/AssistDock";
 
 // The lending use-case view: the bank-branded (Northwind Bank) borrower portal.
 // Reuses the member-portal visual system with the banking accent.
@@ -58,6 +59,20 @@ function BorrowerShell() {
             </Routes>
           </div>
         </Content>
+        {borrower && (
+          <AssistDock
+            industry="banking"
+            memberId={borrower.borrowerId}
+            brand="Northwind Bank"
+            greeting={`Hi ${borrower.name.split(" ")[0]}, I can answer questions about your loan applications, their status, decisions, and the income documents you uploaded. What would you like to know?`}
+            starters={[
+              "What is the status of my application?",
+              "What did your AI read in my income documents?",
+              "Was my loan approved?",
+              "What happens next?",
+            ]}
+          />
+        )}
       </Theme>
     </>
   );
