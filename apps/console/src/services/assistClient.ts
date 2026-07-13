@@ -12,10 +12,12 @@ export interface AssistMessage {
 export interface CopilotAnswer {
   reply: string;
   toolsUsed: string[];
+  followUps: string[];
 }
 
 // POST /api/copilot: the operator copilot (platform console). A Microsoft Agent Framework
-// agent with journal, records, and Fabric Data Agent tools; toolsUsed feeds source chips.
+// agent with journal, records, and Fabric Data Agent tools; toolsUsed feeds source chips
+// and followUps feed the contextual next-question chips.
 export async function askCopilot(messages: AssistMessage[]): Promise<CopilotAnswer> {
   const base = resolveApiBase();
   const res = await fetch(`${base}/copilot`, {
@@ -25,14 +27,19 @@ export async function askCopilot(messages: AssistMessage[]): Promise<CopilotAnsw
   });
   if (!res.ok) throw new Error(`askCopilot: HTTP ${res.status} ${res.statusText}`);
   const body = (await res.json()) as Partial<CopilotAnswer>;
-  return { reply: body.reply ?? "", toolsUsed: body.toolsUsed ?? [] };
+  return { reply: body.reply ?? "", toolsUsed: body.toolsUsed ?? [], followUps: body.followUps ?? [] };
+}
+
+export interface AssistAnswer {
+  reply: string;
+  followUps: string[];
 }
 
 export async function askAssist(
   industry: string,
   memberId: string,
   messages: AssistMessage[],
-): Promise<string> {
+): Promise<AssistAnswer> {
   const base = resolveApiBase();
   const res = await fetch(`${base}/assist`, {
     method: "POST",
@@ -40,6 +47,6 @@ export async function askAssist(
     body: JSON.stringify({ industry, memberId, messages }),
   });
   if (!res.ok) throw new Error(`askAssist: HTTP ${res.status} ${res.statusText}`);
-  const body = (await res.json()) as { reply?: string };
-  return body.reply ?? "";
+  const body = (await res.json()) as Partial<AssistAnswer>;
+  return { reply: body.reply ?? "", followUps: body.followUps ?? [] };
 }

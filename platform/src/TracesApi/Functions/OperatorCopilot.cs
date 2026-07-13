@@ -69,7 +69,10 @@ public sealed class OperatorCopilot(IntakeStore intake, DwStateReader reader, IL
             "query_records for subject details and filtering (state, incident type, evidence, amounts); " +
             "ask_fabric_data_agent for portfolio analytics over the governed semantic layer (counts, distributions, history). " +
             "Answer concisely in plain prose, cite subject ids exactly as given (e.g. CLM-2026-10028), and when a tool " +
-            "returned nothing say so honestly. Do not invent subjects, figures, or dates.";
+            "returned nothing say so honestly. Do not invent subjects, figures, or dates. " +
+            "Respond as a JSON object: {\"reply\": \"your answer\", \"followUps\": [\"...\", \"...\", \"...\"]} where followUps are up to 3 short " +
+            "operator questions (under 70 characters each) that naturally follow from your answer and that your tools could answer, " +
+            "e.g. drilling into a subject you mentioned, a related aggregate, or the other use case.";
 
         try
         {
@@ -84,7 +87,12 @@ public sealed class OperatorCopilot(IntakeStore intake, DwStateReader reader, IL
             var session = await agent.CreateSessionAsync(cancellationToken);
             var runOptions = new ChatClientAgentRunOptions
             {
-                ChatOptions = new ChatOptions { Temperature = 0.2f, MaxOutputTokens = 600 },
+                ChatOptions = new ChatOptions
+                {
+                    ResponseFormat = ChatResponseFormat.Json,
+                    Temperature = 0.2f,
+                    MaxOutputTokens = 700,
+                },
             };
 
             var history = body.Messages.TakeLast(MaxHistory)
@@ -92,11 +100,11 @@ public sealed class OperatorCopilot(IntakeStore intake, DwStateReader reader, IL
                 .ToList();
 
             var response = await agent.RunAsync(history, session, runOptions, cancellationToken);
-            var reply = response.Text ?? "";
+            var (reply, followUps) = AssistantReply.Parse(response.Text ?? "");
 
-            logger.LogInformation("OperatorCopilot answered, tools=[{Tools}], {Chars} chars",
-                string.Join(",", toolsUsed.Distinct()), reply.Length);
-            return new OkObjectResult(new { reply, toolsUsed = toolsUsed.Distinct().ToArray() });
+            logger.LogInformation("OperatorCopilot answered, tools=[{Tools}], {Chars} chars, {Fu} follow-ups",
+                string.Join(",", toolsUsed.Distinct()), reply.Length, followUps.Count);
+            return new OkObjectResult(new { reply, toolsUsed = toolsUsed.Distinct().ToArray(), followUps });
         }
         catch (Exception ex)
         {

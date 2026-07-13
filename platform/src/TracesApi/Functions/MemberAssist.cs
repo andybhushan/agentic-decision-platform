@@ -78,7 +78,10 @@ public sealed class MemberAssist(IntakeStore intake, DwStateReader reader, ILogg
             "You may share repair estimates, decisions, what our AI saw in their photos or documents, and stage progress. " +
             "NEVER discuss fraud screening, integrity checks, internal scores, other members, or anything not in the data. " +
             "If asked something outside this member's account (general advice, other people, pricing), politely say you can only help with their own account and suggest calling the care line. " +
-            "Never invent facts, amounts, or dates.\n\n" + context;
+            "Never invent facts, amounts, or dates. " +
+            "Respond as a JSON object: {\"reply\": \"your answer\", \"followUps\": [\"...\", \"...\", \"...\"]} where followUps are up to 3 short " +
+            "questions (under 60 characters each) this member would naturally ask NEXT, based on your answer and their data; only suggest " +
+            "questions you could actually answer from the data provided.\n\n" + context;
 
         // 3. Conversation: last N turns on top of the grounded system prompt.
         var messages = new List<object> { new { role = "system", content = systemPrompt } };
@@ -91,7 +94,13 @@ public sealed class MemberAssist(IntakeStore intake, DwStateReader reader, ILogg
         var url = $"{endpoint.TrimEnd('/')}/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21";
         using var chatReq = new HttpRequestMessage(HttpMethod.Post, url)
         {
-            Content = JsonContent.Create(new { messages, temperature = 0.3, max_tokens = 350 }),
+            Content = JsonContent.Create(new
+            {
+                messages,
+                temperature = 0.3,
+                max_tokens = 450,
+                response_format = new { type = "json_object" },
+            }),
         };
         chatReq.Headers.Add("api-key", apiKey);
 
@@ -104,12 +113,14 @@ public sealed class MemberAssist(IntakeStore intake, DwStateReader reader, ILogg
         }
 
         using var doc = JsonDocument.Parse(raw);
-        var reply = doc.RootElement.TryGetProperty("choices", out var choices) && choices.GetArrayLength() > 0
+        var content = doc.RootElement.TryGetProperty("choices", out var choices) && choices.GetArrayLength() > 0
             ? choices[0].GetProperty("message").GetProperty("content").GetString() ?? ""
             : "";
+        var (reply, followUps) = AssistantReply.Parse(content);
 
-        logger.LogInformation("MemberAssist answered for {MemberId} ({Industry}), {Chars} chars", body.MemberId, body.Industry, reply.Length);
-        return new OkObjectResult(new { reply });
+        logger.LogInformation("MemberAssist answered for {MemberId} ({Industry}), {Chars} chars, {Fu} follow-ups",
+            body.MemberId, body.Industry, reply.Length, followUps.Count);
+        return new OkObjectResult(new { reply, followUps });
     }
 
     private async Task<(List<JsonElement> Records, string IdField)> LoadMemberRecordsAsync(

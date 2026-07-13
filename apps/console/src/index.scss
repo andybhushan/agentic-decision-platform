@@ -2029,6 +2029,16 @@ body {
   }
 }
 
+// Follow-up chips ride under the latest answer, slightly quieter than the starters.
+.adp-assist__starters--followups {
+  margin-block-start: 0.125rem;
+
+  button {
+    border-style: dashed;
+    font-size: 0.75rem;
+  }
+}
+
 .adp-assist__typing {
   display: flex;
   gap: 0.25rem;

@@ -15,9 +15,13 @@ interface AssistDockProps {
   starters: string[];
 }
 
+interface ChatEntry extends AssistMessage {
+  followUps?: string[];
+}
+
 export default function AssistDock({ industry, memberId, brand, greeting, starters }: AssistDockProps) {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<AssistMessage[]>([]);
+  const [messages, setMessages] = useState<ChatEntry[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,18 +36,28 @@ export default function AssistDock({ industry, memberId, brand, greeting, starte
     if (!question || busy) return;
     setError(null);
     setInput("");
-    const next: AssistMessage[] = [...messages, { role: "user", content: question }];
+    const next: ChatEntry[] = [...messages, { role: "user", content: question }];
     setMessages(next);
     setBusy(true);
     try {
-      const reply = await askAssist(industry, memberId, next);
-      setMessages([...next, { role: "assistant", content: reply || "Sorry, I could not find an answer just now." }]);
+      const { reply, followUps } = await askAssist(
+        industry,
+        memberId,
+        next.map(({ role, content }) => ({ role, content })),
+      );
+      setMessages([
+        ...next,
+        { role: "assistant", content: reply || "Sorry, I could not find an answer just now.", followUps },
+      ]);
     } catch {
       setError("The assistant is unavailable right now. Please try again in a moment.");
     } finally {
       setBusy(false);
     }
   };
+
+  // Contextual next questions from the latest answer only, so chips always match the moment.
+  const latestFollowUps = !busy && messages.length > 0 ? (messages[messages.length - 1].followUps ?? []) : [];
 
   return (
     <>
@@ -83,6 +97,15 @@ export default function AssistDock({ industry, memberId, brand, greeting, starte
             {busy && (
               <div className="adp-assist__msg adp-assist__msg--bot adp-assist__typing" aria-label="Assistant is typing">
                 <span /><span /><span />
+              </div>
+            )}
+            {latestFollowUps.length > 0 && (
+              <div className="adp-assist__starters adp-assist__starters--followups">
+                {latestFollowUps.map((q) => (
+                  <button key={q} type="button" onClick={() => send(q)}>
+                    {q}
+                  </button>
+                ))}
               </div>
             )}
             {error && <div className="adp-assist__error">{error}</div>}

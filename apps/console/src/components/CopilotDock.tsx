@@ -23,6 +23,7 @@ const STARTERS = [
 
 interface ChatEntry extends AssistMessage {
   tools?: string[];
+  followUps?: string[];
 }
 
 // Subject ids in replies become links into Decision Mode; markdown emphasis markers are
@@ -65,14 +66,20 @@ export default function CopilotDock() {
     setMessages(next);
     setBusy(true);
     try {
-      const { reply, toolsUsed } = await askCopilot(next.map(({ role, content }) => ({ role, content })));
-      setMessages([...next, { role: "assistant", content: reply || "I could not find an answer just now.", tools: toolsUsed }]);
+      const { reply, toolsUsed, followUps } = await askCopilot(next.map(({ role, content }) => ({ role, content })));
+      setMessages([
+        ...next,
+        { role: "assistant", content: reply || "I could not find an answer just now.", tools: toolsUsed, followUps },
+      ]);
     } catch {
       setError("The copilot is unavailable right now. Please try again in a moment.");
     } finally {
       setBusy(false);
     }
   };
+
+  // Contextual next questions from the latest answer only.
+  const latestFollowUps = !busy && messages.length > 0 ? (messages[messages.length - 1].followUps ?? []) : [];
 
   return (
     <>
@@ -124,6 +131,15 @@ export default function CopilotDock() {
             {busy && (
               <div className="adp-assist__msg adp-assist__msg--bot adp-assist__typing" aria-label="Copilot is working">
                 <span /><span /><span />
+              </div>
+            )}
+            {latestFollowUps.length > 0 && (
+              <div className="adp-assist__starters adp-assist__starters--followups">
+                {latestFollowUps.map((q) => (
+                  <button key={q} type="button" onClick={() => send(q)}>
+                    {q}
+                  </button>
+                ))}
               </div>
             )}
             {error && <div className="adp-assist__error">{error}</div>}
