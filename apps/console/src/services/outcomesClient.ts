@@ -80,3 +80,27 @@ export async function fetchTimeline(window: string, bucket?: string, packages?: 
   if (!res.ok) throw new Error(`fetchTimeline: HTTP ${res.status} ${res.statusText}`);
   return (await res.json()) as TimelineResponse;
 }
+
+// GET /api/aggregate/insights: the governance-story aggregates (evidence mix, confidence
+// calibration, human judgment outcomes, straight-through rate). Mirrors GetInsights.cs.
+
+export interface InsightsResponse {
+  windowHours: number;
+  citationsBySource: Record<string, number>;
+  confidenceBins: number[];
+  stepsWithConfidence: number;
+  gateOutcomes: { opened: number; resolved: number; approvedAsIs: number; overridden: number };
+  straightThrough: { traces: number; untouched: number; rate: number };
+  tracesCompleted: number;
+}
+
+export async function fetchInsights(window?: string, packages?: string[]): Promise<InsightsResponse> {
+  const base = resolveApiBase();
+  const q = new URLSearchParams();
+  if (window) q.set("window", window);
+  if (packages?.length) q.set("packages", packages.join(","));
+  const qs = q.toString();
+  const res = await fetch(`${base}/aggregate/insights${qs ? `?${qs}` : ""}`, { headers: { Accept: "application/json" } });
+  if (!res.ok) throw new Error(`fetchInsights: HTTP ${res.status} ${res.statusText}`);
+  return (await res.json()) as InsightsResponse;
+}

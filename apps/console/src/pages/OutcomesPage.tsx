@@ -15,16 +15,18 @@ import {
 import { Printer } from "@carbon/icons-react";
 import { CheckmarkCircle24Regular, Gauge24Regular, Search24Regular, Warning24Regular } from "@fluentui/react-icons";
 import StatTile from "../components/StatTile";
-import { StackedBarChart, LineChart } from "@carbon/charts-react";
-import { ChartTheme, ScaleTypes } from "@carbon/charts";
-import type { BarChartOptions, LineChartOptions } from "@carbon/charts";
+import { StackedBarChart, LineChart, DonutChart, SimpleBarChart } from "@carbon/charts-react";
+import { Alignments, ChartTheme, ScaleTypes } from "@carbon/charts";
+import type { BarChartOptions, DonutChartOptions, LineChartOptions } from "@carbon/charts";
 import "@carbon/charts/styles.css";
 import {
   fetchCycleTime,
+  fetchInsights,
   fetchOutcomes,
   fetchTimeline,
   type AggregateOutcomes,
   type CycleTimeResponse,
+  type InsightsResponse,
   type TimelineResponse,
 } from "../services/outcomesClient";
 import { fetchDecisions, lifecycleStages, type DecisionsResponse } from "../services/decisionsClient";
@@ -65,6 +67,7 @@ export default function OutcomesPage() {
   const [outcomes, setOutcomes] = useState<AggregateOutcomes | null>(null);
   const [timeline, setTimeline] = useState<TimelineResponse | null>(null);
   const [cycle, setCycle] = useState<CycleTimeResponse | null>(null);
+  const [insights, setInsights] = useState<InsightsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const allPackages = queueData?.packages ?? [];
@@ -99,14 +102,16 @@ export default function OutcomesPage() {
     setError(null);
     try {
       const win = WINDOWS.find((x) => x.id === w)!;
-      const [agg, tl, ct] = await Promise.all([
+      const [agg, tl, ct, ins] = await Promise.all([
         fetchOutcomes(w, packages),
         fetchTimeline(w, win.bucket, packages),
         fetchCycleTime(w, packages).catch(() => null),
+        fetchInsights(w, packages).catch(() => null),
       ]);
       setOutcomes(agg);
       setTimeline(tl);
       setCycle(ct);
+      setInsights(ins);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -244,6 +249,69 @@ export default function OutcomesPage() {
     }),
     [accent, chartTheme],
   );
+  // Evidence mix: which IQ system produced the citations behind the window's decisions.
+  const sourceColors: Record<string, string> = useMemo(
+    () =>
+      mode === "dark"
+        ? { "Foundry IQ": "#4589ff", "Fabric IQ": "#1192e8", "Fabric IQ Data Agent": "#08bdba", "Work IQ": "#d2a106" }
+        : { "Foundry IQ": "#0f62fe", "Fabric IQ": "#1192e8", "Fabric IQ Data Agent": "#009d9a", "Work IQ": "#b28600" },
+    [mode],
+  );
+
+  const evidenceMixData = useMemo(
+    () =>
+      Object.entries(insights?.citationsBySource ?? {})
+        .map(([group, value]) => ({ group, value }))
+        .sort((a, b) => b.value - a.value),
+    [insights],
+  );
+
+  const evidenceMixOptions: DonutChartOptions = useMemo(
+    () => ({
+      title: "Evidence mix: the IQ federation",
+      height: "320px",
+      theme: chartTheme,
+      resizable: false,
+      color: { scale: sourceColors },
+      donut: {
+        center: { label: "citations" },
+        alignment: Alignments.CENTER,
+      },
+      toolbar: { enabled: false },
+    }),
+    [chartTheme, sourceColors],
+  );
+
+  // Confidence calibration: the distribution that explains WHERE the gates sit.
+  const confHistData = useMemo(
+    () =>
+      (insights?.confidenceBins ?? [])
+        .map((v, i) => ({ group: "steps", bin: `${i * 10}-${i * 10 + 10}%`, value: v }))
+        .filter((d, i) => d.value > 0 || i >= 4),
+    [insights],
+  );
+
+  const confHistOptions: BarChartOptions = useMemo(
+    () => ({
+      title: "Confidence calibration (all steps)",
+      height: "320px",
+      theme: chartTheme,
+      axes: {
+        bottom: { title: "calibrated confidence", mapsTo: "bin", scaleType: ScaleTypes.LABELS },
+        left: { title: "steps", mapsTo: "value", includeZero: true },
+      },
+      color: { scale: { steps: accent } },
+      legend: { enabled: false },
+      grid: { x: { enabled: false } },
+      bars: { maxWidth: 40 },
+      toolbar: { enabled: false },
+    }),
+    [chartTheme, accent],
+  );
+
+  const judgment = insights?.gateOutcomes;
+  const stp = insights?.straightThrough;
+
   return (
     <Grid fullWidth>
       <Column lg={16} md={8} sm={4}>
@@ -391,6 +459,79 @@ export default function OutcomesPage() {
                 </div>
               ))}
               {lifecycleProgress.length === 0 && <p className="adp-queue__dim">No lifecycle data yet.</p>}
+            </Tile>
+          </Column>
+        </Grid>
+
+        <h3 className="adp-section-title">Governance insights</h3>
+        <Grid narrow>
+          <Column lg={5} md={4} sm={4}>
+            <Tile className="adp-chart-card">
+              {loading ? (
+                <SkeletonText paragraph lineCount={8} />
+              ) : evidenceMixData.length > 0 ? (
+                <>
+                  <DonutChart data={evidenceMixData} options={evidenceMixOptions} />
+                  <p className="adp-queue__dim adp-insight-note">
+                    Every citation behind this window's decisions, by the IQ system that produced it.
+                  </p>
+                </>
+              ) : (
+                <p className="adp-queue__dim">No citations journaled in this window.</p>
+              )}
+            </Tile>
+          </Column>
+          <Column lg={6} md={4} sm={4}>
+            <Tile className="adp-chart-card">
+              {loading ? (
+                <SkeletonText paragraph lineCount={8} />
+              ) : confHistData.length > 0 ? (
+                <>
+                  <SimpleBarChart data={confHistData} options={confHistOptions} />
+                  <p className="adp-queue__dim adp-insight-note">
+                    The distribution behind the gate policy: the low tail is exactly what goes to humans.
+                  </p>
+                </>
+              ) : (
+                <p className="adp-queue__dim">No scored steps in this window.</p>
+              )}
+            </Tile>
+          </Column>
+          <Column lg={5} md={8} sm={4}>
+            <Tile className="adp-chart-card adp-judgment">
+              <h4 className="adp-side-card__title">Human judgment outcomes</h4>
+              {loading || !judgment || !stp ? (
+                <SkeletonText paragraph lineCount={6} />
+              ) : (
+                <>
+                  <p className="adp-judgment__stp">
+                    {pct(stp.rate)}
+                    <span> straight-through: {stp.untouched} of {stp.traces} runs needed no human at all</span>
+                  </p>
+                  {judgment.resolved > 0 ? (
+                    <>
+                      <div className="adp-judgment__bar" role="img" aria-label={`${judgment.approvedAsIs} approved as-is, ${judgment.overridden} overridden`}>
+                        <span
+                          className="adp-judgment__bar-approve"
+                          style={{ width: `${Math.round((judgment.approvedAsIs / judgment.resolved) * 100)}%` }}
+                        />
+                      </div>
+                      <div className="adp-judgment__legend">
+                        <span><i className="adp-judgment__dot adp-judgment__dot--approve" /> Agent proposal approved as-is · {judgment.approvedAsIs}</span>
+                        <span><i className="adp-judgment__dot adp-judgment__dot--override" /> Overridden or redirected · {judgment.overridden}</span>
+                      </div>
+                      <p className="adp-queue__dim adp-insight-note">
+                        When gates opened, specialists agreed with the agent {pct(judgment.resolved ? judgment.approvedAsIs / judgment.resolved : 0)} of the
+                        time. Agreement builds trust; overrides retrain the thresholds.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="adp-queue__dim adp-insight-note">
+                      No gates were resolved in this window{judgment.opened > 0 ? `; ${judgment.opened} currently open` : ""}.
+                    </p>
+                  )}
+                </>
+              )}
             </Tile>
           </Column>
         </Grid>
