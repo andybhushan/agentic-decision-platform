@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 700" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ta" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="tg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8d8d8d"/></marker>
+    <style>
+      .zone{rx:12;fill:#ffffff;stroke:#c5d2e3;stroke-width:1.5}
+      .zonelbl{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .box{rx:8;stroke-width:1.5}
+      .bt{font-size:13px;font-weight:600;fill:#161616}
+      .bd{font-size:10.5px;fill:#6b7682}
+      .mono{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#ta)}
+      .ops{stroke:#8d8d8d;stroke-width:1.6;fill:none;stroke-dasharray:5 4;marker-end:url(#tg)}
+    </style>
+  </defs>
+  <rect width="1280" height="700" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Deployment topology: resource group rg-adp-v1 (East US 2, DT Offering subscription)</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Solid blue: the request path. Dashed gray: the deployment path. The browser sees one origin; the SWA proxies /api to the Container App.</text>
+
+  <!-- client -->
+  <rect x="40" y="100" width="210" height="90" class="box" fill="#161616" stroke="#000000"/>
+  <text x="56" y="128" font-size="14" font-weight="600" fill="#ffffff">Browser</text>
+  <text x="56" y="150" font-size="11" fill="#e0e0e0">Operators, members, borrowers,</text>
+  <text x="56" y="166" font-size="11" fill="#e0e0e0">leadership on the global stage</text>
+
+  <!-- SWA -->
+  <rect x="320" y="100" width="290" height="90" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="336" y="128" class="bt">Azure Static Web Apps</text>
+  <text x="336" y="148" class="mono">swa-adp-v1-console</text>
+  <text x="336" y="168" class="bd">React SPA: console + member + borrower + docs</text>
+
+  <!-- Container App -->
+  <rect x="680" y="88" width="330" height="114" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="696" y="116" font-size="14" font-weight="600" fill="#ffffff">Azure Container Apps</text>
+  <text x="696" y="136" font-size="10.5" font-family="'IBM Plex Mono',monospace" fill="#d0e2ff">ca-tracesapi &#183; tracesapi:v13-evidence-3</text>
+  <text x="696" y="156" font-size="11" fill="#e8efff">.NET 10 isolated Functions + Durable orchestration,</text>
+  <text x="696" y="172" font-size="11" fill="#e8efff">agent runtime (AGENT_BACKEND=agent-framework),</text>
+  <text x="696" y="188" font-size="11" fill="#e8efff">IQ federation router, evidence vision</text>
+
+  <!-- data services zone -->
+  <rect x="40" y="240" width="1200" height="180" class="zone"/>
+  <text x="58" y="264" class="zonelbl">STATE + EVENTS</text>
+  <rect x="58" y="278" width="220" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="72" y="302" class="bt">Cosmos DB</text>
+  <text x="72" y="320" class="mono">cdb-adp-v1</text>
+  <text x="72" y="340" class="bd">dw-state: immutable decision</text>
+  <text x="72" y="355" class="bd">journal &#183; intake: runtime-filed</text>
+  <text x="72" y="370" class="bd">subjects</text>
+  <rect x="296" y="278" width="200" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="310" y="302" class="bt">Event Hubs</text>
+  <text x="310" y="320" class="mono">evh-adp-v1</text>
+  <text x="310" y="340" class="bd">Decision event fan-out</text>
+  <rect x="514" y="278" width="200" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="528" y="302" class="bt">Azure SignalR</text>
+  <text x="528" y="320" class="mono">sigr-adp-v1</text>
+  <text x="528" y="340" class="bd">Serverless live tail: agent</text>
+  <text x="528" y="355" class="bd">steps stream to the console</text>
+  <text x="528" y="370" class="bd">as a run executes</text>
+  <rect x="732" y="278" width="230" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="746" y="302" class="bt">Storage (blob)</text>
+  <text x="746" y="320" class="mono">stadpv1 &#183; evidence</text>
+  <text x="746" y="340" class="bd">Damage photos {groupId}/photo-N</text>
+  <text x="746" y="355" class="bd">+ alias subjects/{subjectId};</text>
+  <text x="746" y="370" class="bd">also the Functions runtime store</text>
+  <rect x="980" y="278" width="240" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="994" y="302" class="bt">Key Vault / App Insights</text>
+  <text x="994" y="320" class="mono">kv-adp-v1 &#183; appi-adp-v1</text>
+  <text x="994" y="340" class="bd">Secrets &#183; telemetry &#183; Log Analytics</text>
+  <text x="994" y="355" class="bd">workspace log-adp-v1; six per-</text>
+  <text x="994" y="370" class="bd">workload managed identities</text>
+
+  <!-- AI zone -->
+  <rect x="40" y="440" width="1200" height="150" class="zone"/>
+  <text x="58" y="464" class="zonelbl">AI + KNOWLEDGE</text>
+  <rect x="58" y="478" width="270" height="94" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="502" class="bt">Azure OpenAI</text>
+  <text x="72" y="520" class="mono">dt-navigator-openai (shared)</text>
+  <text x="72" y="540" class="bd">gpt-4o: agent reasoning + photo vision;</text>
+  <text x="72" y="555" class="bd">embeddings for vector retrieval</text>
+  <rect x="346" y="478" width="270" height="94" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="360" y="502" class="bt">Azure AI Search</text>
+  <text x="360" y="520" class="mono">srch-adp-v1</text>
+  <text x="360" y="540" class="bd">Foundry IQ vector index: policy and</text>
+  <text x="360" y="555" class="bd">regulatory corpus with scores</text>
+  <rect x="634" y="478" width="290" height="94" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="648" y="502" class="bt">Microsoft Fabric</text>
+  <text x="648" y="520" class="mono">lakehouse + claims_data_agent</text>
+  <text x="648" y="540" class="bd">Gold semantic layer (24 tables), ontology,</text>
+  <text x="648" y="555" class="bd">published Data Agent (Fabric IQ)</text>
+  <rect x="942" y="478" width="278" height="94" class="box" fill="#f4f4f4" stroke="#8d8d8d"/>
+  <text x="956" y="502" class="bt">Azure AI Foundry (prepared)</text>
+  <text x="956" y="520" class="mono">aif-adp-v1 / project adp-v1</text>
+  <text x="956" y="540" class="bd">Agent Service path staged; one env-var flip</text>
+  <text x="956" y="555" class="bd">after the Azure AI User RBAC grant</text>
+
+  <!-- ops zone -->
+  <rect x="40" y="610" width="1200" height="66" class="zone" fill="#f4f4f4"/>
+  <text x="58" y="634" class="zonelbl">DEPLOYMENT PATH</text>
+  <text x="58" y="656" class="bd">dotnet publish (exit-code gated, warnings as errors) &#8594; az acr build &#8594; acradpv1 &#8594; az containerapp update &#183; frontend: npm run build &#8594; SWA CLI deploy &#8594; live bundle-hash check &#8594; Playwright screenshots</text>
+
+  <!-- flows -->
+  <path class="flow" d="M250,145 L320,145"/>
+  <path class="flow" d="M610,145 L680,145"/>
+  <text x="622" y="136" font-size="10.5" fill="#0f62fe">/api proxy</text>
+  <path class="flow" d="M845,202 L168,278"/>
+  <path class="flow" d="M845,202 L396,278"/>
+  <path class="flow" d="M845,202 L614,278"/>
+  <path class="flow" d="M845,202 L847,278"/>
+  <path class="flow" d="M845,202 L1100,278"/>
+  <path class="flow" d="M1010,150 L1262,150 L1262,505 L1226,505"/>
+  <text x="1120" y="141" font-size="10.5" fill="#0f62fe">grounding + reasoning</text>
+  <path class="ops" d="M640,610 L640,594"/>
+</svg>

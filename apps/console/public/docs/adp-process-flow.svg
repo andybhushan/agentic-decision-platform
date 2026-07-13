@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 780" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="pa" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="pg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#198038"/></marker>
+    <style>
+      .lane{rx:12;fill:#ffffff;stroke:#c5d2e3;stroke-width:1.5}
+      .lanelbl{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .box{rx:8;stroke-width:1.5}
+      .bt{font-size:13px;font-weight:600;fill:#161616}
+      .bd{font-size:10.5px;fill:#6b7682}
+      .wt{font-size:13px;font-weight:600;fill:#ffffff}
+      .wd{font-size:10.5px;fill:#e8efff}
+      .num{font-size:12px;font-weight:700;fill:#ffffff}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#pa)}
+      .gflow{stroke:#198038;stroke-width:1.8;fill:none;marker-end:url(#pg);stroke-dasharray:5 4}
+    </style>
+  </defs>
+  <rect width="1280" height="780" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">End-to-end process flow: a claim from the member's phone to the regulator's desk</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Solid arrows: the claim's forward journey. Dashed green: what flows back to the member. The banking flow is the same platform verbatim.</text>
+
+  <!-- Member lane -->
+  <rect x="40" y="90" width="1200" height="170" class="lane"/>
+  <text x="58" y="114" class="lanelbl">MEMBER &#183; Meridian Mutual portal (/member)</text>
+  <rect x="58" y="128" width="200" height="112" class="box" fill="#defbe6" stroke="#198038"/>
+  <circle cx="78" cy="148" r="11" fill="#198038"/><text x="74" y="152" class="num">1</text>
+  <text x="96" y="152" class="bt">Sign in</text>
+  <text x="70" y="174" class="bd">Identity, policy, vehicles and</text>
+  <text x="70" y="189" class="bd">history derived live from the</text>
+  <text x="70" y="204" class="bd">platform records API,</text>
+  <text x="70" y="219" class="bd">nothing hardcoded</text>
+  <rect x="278" y="128" width="230" height="112" class="box" fill="#defbe6" stroke="#198038"/>
+  <circle cx="298" cy="148" r="11" fill="#198038"/><text x="294" y="152" class="num">2</text>
+  <text x="316" y="152" class="bt">File a claim (FNOL wizard)</text>
+  <text x="290" y="174" class="bd">Prefilled policy + vehicle. Member</text>
+  <text x="290" y="189" class="bd">describes the incident and uploads</text>
+  <text x="290" y="204" class="bd">up to 6 damage photos (resized</text>
+  <text x="290" y="219" class="bd">client-side, previewed, removable)</text>
+  <rect x="920" y="128" width="300" height="112" class="box" fill="#defbe6" stroke="#198038"/>
+  <circle cx="940" cy="148" r="11" fill="#198038"/><text x="936" y="152" class="num">8</text>
+  <text x="958" y="152" class="bt">Track everything</text>
+  <text x="932" y="174" class="bd">Stage progress in member language,</text>
+  <text x="932" y="189" class="bd">submitted photos, "what our AI saw in</text>
+  <text x="932" y="204" class="bd">your photos", and the estimated repair</text>
+  <text x="932" y="219" class="bd">cost from the estimation step</text>
+
+  <!-- Platform lane -->
+  <rect x="40" y="284" width="1200" height="252" class="lane"/>
+  <text x="58" y="308" class="lanelbl">PLATFORM &#183; decision plane + IQ federation (ca-tracesapi)</text>
+  <rect x="58" y="322" width="220" height="100" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <circle cx="78" cy="342" r="11" fill="#ffffff"/><text x="74" y="346" font-size="12" font-weight="700" fill="#0f62fe">3</text>
+  <text x="96" y="346" class="wt">Evidence upload</text>
+  <text x="70" y="368" class="wd">POST /api/evidence stores photos</text>
+  <text x="70" y="383" class="wd">in blob under a groupId that</text>
+  <text x="70" y="398" class="wd">rides on the claim record</text>
+  <rect x="298" y="322" width="240" height="100" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <circle cx="318" cy="342" r="11" fill="#ffffff"/><text x="314" y="346" font-size="12" font-weight="700" fill="#0f62fe">4</text>
+  <text x="336" y="346" class="wt">Intake + vision (once)</text>
+  <text x="310" y="368" class="wd">POST /api/intake assigns the next claim</text>
+  <text x="310" y="383" class="wd">number from the corpus pattern; GPT-4o</text>
+  <text x="310" y="398" class="wd">describes the photos objectively and the</text>
+  <text x="310" y="413" class="wd">assessment embeds inside the record</text>
+  <rect x="558" y="322" width="300" height="100" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <circle cx="578" cy="342" r="11" fill="#ffffff"/><text x="574" y="346" font-size="12" font-weight="700" fill="#0f62fe">5</text>
+  <text x="596" y="346" class="wt">Lifecycle runs (Durable orchestration)</text>
+  <text x="570" y="368" class="wd">Intake &amp; Routing &#8594; Damage &amp; Estimation &#8594;</text>
+  <text x="570" y="383" class="wd">Fraud Screen &#8594; Settlement &amp; Payment.</text>
+  <text x="570" y="398" class="wd">Every agent step grounded, scored,</text>
+  <text x="570" y="413" class="wd">and journaled with citations</text>
+  <rect x="878" y="322" width="342" height="100" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="892" y="346" class="bt">Grounding: the IQ federation</text>
+  <text x="892" y="368" class="bd">Foundry IQ (AI Search vectors) + Fabric IQ (gold semantic</text>
+  <text x="892" y="383" class="bd">layer + published Data Agent, natural-language answers)</text>
+  <text x="892" y="398" class="bd">+ Work IQ (collaboration signals). Citations stored per</text>
+  <text x="892" y="413" class="bd">step: source system, document, relevance score</text>
+
+  <rect x="58" y="436" width="480" height="84" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="72" y="460" class="bt">Immutable decision journal (Cosmos dw-state)</text>
+  <text x="72" y="480" class="bd">Every step, confidence, citation, tool call, gate, and judgment. Fan-out to Event Hubs;</text>
+  <text x="72" y="495" class="bd">Azure SignalR streams the live tail to the console while a run executes</text>
+  <rect x="558" y="436" width="300" height="84" class="box" fill="#fff1f1" stroke="#da1e28"/>
+  <circle cx="578" cy="456" r="11" fill="#da1e28"/><text x="574" y="460" class="num">6</text>
+  <text x="596" y="460" class="bt">HITL gate (organic)</text>
+  <text x="570" y="480" class="bd">Confidence below the package threshold suspends</text>
+  <text x="570" y="495" class="bd">the run and asks a person, evidence attached</text>
+  <rect x="878" y="436" width="342" height="84" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="892" y="460" class="bt">Governed actions</text>
+  <text x="892" y="480" class="bd">Request documents, schedule inspection, adjust reserve:</text>
+  <text x="892" y="495" class="bd">executed with rationale, journaled first-class</text>
+
+  <!-- Operator lane -->
+  <rect x="40" y="560" width="1200" height="180" class="lane"/>
+  <text x="58" y="584" class="lanelbl">OPERATOR + REGULATOR &#183; platform console</text>
+  <rect x="58" y="598" width="270" height="122" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="622" class="bt">Decision queue + Decision Mode</text>
+  <text x="72" y="644" class="bd">Lifecycle progress per subject; per-step trace</text>
+  <text x="72" y="659" class="bd">with origin (grounded vs derived), confidence,</text>
+  <text x="72" y="674" class="bd">evidence chips, submitted photos, and the</text>
+  <text x="72" y="689" class="bd">intake vision assessment</text>
+  <rect x="348" y="598" width="270" height="122" class="box" fill="#fff1f1" stroke="#da1e28"/>
+  <circle cx="368" cy="618" r="11" fill="#da1e28"/><text x="364" y="622" class="num">7</text>
+  <text x="386" y="622" class="bt">Your judgment</text>
+  <text x="362" y="644" class="bd">The operator approves, overrides, or redirects</text>
+  <text x="362" y="659" class="bd">the gated step; the judgment is journaled and</text>
+  <text x="362" y="674" class="bd">the orchestration resumes exactly where it</text>
+  <text x="362" y="689" class="bd">suspended</text>
+  <rect x="638" y="598" width="270" height="122" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="652" y="622" class="bt">Decision Record</text>
+  <text x="652" y="644" class="bd">Print-ready regulator artifact for any subject,</text>
+  <text x="652" y="659" class="bd">reconstructed entirely from the journal:</text>
+  <text x="652" y="674" class="bd">steps, citations, gates, judgments</text>
+  <rect x="928" y="598" width="292" height="122" class="box" fill="#defbe6" stroke="#198038"/>
+  <text x="942" y="622" class="bt">Outcomes + weekly report</text>
+  <text x="942" y="644" class="bd">Runs, grounding rate, calibrated confidence,</text>
+  <text x="942" y="659" class="bd">oversight rate, lifecycle depth, p50/p90 cycle</text>
+  <text x="942" y="674" class="bd">time per worker, per-use-case lens, exportable</text>
+  <text x="942" y="689" class="bd">weekly Outcomes Report</text>
+
+  <!-- flows -->
+  <path class="flow" d="M258,184 L278,184"/>
+  <path class="flow" d="M393,240 L393,290 L168,290 L168,322"/>
+  <path class="flow" d="M278,372 L298,372"/>
+  <path class="flow" d="M538,372 L558,372"/>
+  <path class="flow" d="M878,372 L862,372"/>
+  <path class="flow" d="M660,422 L660,436"/>
+  <path class="flow" d="M558,478 L542,478"/>
+  <path class="flow" d="M298,520 L298,560 L193,560 L193,598"/>
+  <path class="flow" d="M760,520 L760,560 L483,560 L483,598"/>
+  <path class="gflow" d="M1070,318 L1070,244"/>
+  <text x="1082" y="290" font-size="10.5" fill="#198038">assessment + estimate</text>
+  <text x="1082" y="304" font-size="10.5" fill="#198038">back to the member</text>
+</svg>

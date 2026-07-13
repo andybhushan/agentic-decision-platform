@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#525252"/></marker>
+    <style>
+      .plane{rx:12;fill:#ffffff;stroke:#c5d2e3;stroke-width:1.5}
+      .planelbl{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .box{rx:8;stroke-width:1.5}
+      .bt{font-size:13.5px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:13.5px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .flow{stroke:#525252;stroke-width:1.6;fill:none;marker-end:url(#ar)}
+      .tag{font-size:10px;font-weight:700;letter-spacing:.05em}
+    </style>
+  </defs>
+  <rect width="1280" height="860" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">ADP solution architecture: five planes, one governed decision engine</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">The use case is a package the platform runs, not a product the platform becomes. Two industries run side by side on this instance.</text>
+
+  <!-- Experience plane -->
+  <rect x="40" y="88" width="920" height="118" class="plane"/>
+  <text x="58" y="112" class="planelbl">EXPERIENCE PLANE &#183; React SPA on Azure Static Web Apps (Carbon v11 + Fluent 2)</text>
+  <rect x="58" y="124" width="280" height="64" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="148" class="bt">Platform console</text>
+  <text x="72" y="166" class="bd">Queue &#183; Decision Mode &#183; Outcomes &#183; Agents &#183; Docs</text>
+  <rect x="354" y="124" width="280" height="64" class="box" fill="#defbe6" stroke="#198038"/>
+  <text x="368" y="148" class="bt">Meridian member portal (/member)</text>
+  <text x="368" y="166" class="bd">FNOL wizard + damage photos &#183; claim tracker</text>
+  <rect x="650" y="124" width="290" height="64" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="664" y="148" class="bt">Northwind borrower portal (/bank)</text>
+  <text x="664" y="166" class="bd">Loan application &#183; origination tracker</text>
+
+  <!-- Governance rail -->
+  <rect x="985" y="88" width="255" height="732" class="plane" fill="#f4f4f4"/>
+  <text x="1003" y="112" class="planelbl">GOVERNANCE RAIL</text>
+  <rect x="1003" y="128" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="152" class="bt">Immutable journal</text>
+  <text x="1015" y="170" class="bd">Every step, citation, gate,</text>
+  <text x="1015" y="186" class="bd">and judgment in Cosmos DB</text>
+  <rect x="1003" y="222" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="246" class="bt">HITL gates</text>
+  <text x="1015" y="264" class="bd">Confidence below threshold</text>
+  <text x="1015" y="280" class="bd">suspends the run for a human</text>
+  <rect x="1003" y="316" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="340" class="bt">Decision Record</text>
+  <text x="1015" y="358" class="bd">Print-ready regulator artifact</text>
+  <text x="1015" y="374" class="bd">rebuilt from the journal</text>
+  <rect x="1003" y="410" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="434" class="bt">Agent registry (/agents)</text>
+  <text x="1015" y="452" class="bd">Declared estate joined with</text>
+  <text x="1015" y="468" class="bd">journal-observed behavior</text>
+  <rect x="1003" y="504" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="528" class="bt">Outcomes + cycle time</text>
+  <text x="1015" y="546" class="bd">Grounding rate, oversight,</text>
+  <text x="1015" y="562" class="bd">p50/p90 per digital worker</text>
+  <rect x="1003" y="598" width="219" height="78" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="1015" y="622" class="bt">Governed actions</text>
+  <text x="1015" y="640" class="bd">Operator actions execute with</text>
+  <text x="1015" y="656" class="bd">rationale, journaled first-class</text>
+  <rect x="1003" y="692" width="219" height="106" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="1015" y="716" class="bt">Signed agent packages</text>
+  <text x="1015" y="734" class="bd">Workers, agents, skills, tools,</text>
+  <text x="1015" y="750" class="bd">gate policy, SLOs, corpus binding.</text>
+  <text x="1015" y="766" class="bd">Adding a use case = adding a</text>
+  <text x="1015" y="782" class="bd">package, not forking the platform</text>
+
+  <!-- Decision plane -->
+  <rect x="40" y="230" width="920" height="128" class="plane"/>
+  <text x="58" y="254" class="planelbl">DECISION PLANE &#183; .NET 10 isolated Functions on Azure Container Apps (ca-tracesapi)</text>
+  <rect x="58" y="266" width="212" height="74" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="72" y="290" class="wt">HTTP API</text>
+  <text x="72" y="308" class="wd">intake &#183; runs &#183; traces &#183; records</text>
+  <text x="72" y="324" class="wd">evidence &#183; actions &#183; aggregates</text>
+  <rect x="286" y="266" width="212" height="74" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="300" y="290" class="wt">Durable orchestration</text>
+  <text x="300" y="308" class="wd">Plan executor walks the package,</text>
+  <text x="300" y="324" class="wd">suspends on HITL, resumes</text>
+  <rect x="514" y="266" width="204" height="74" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="528" y="290" class="wt">Vision at intake</text>
+  <text x="528" y="308" class="wd">GPT-4o describes damage photos</text>
+  <text x="528" y="324" class="wd">once; rides inside the record</text>
+  <rect x="734" y="266" width="206" height="74" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="748" y="290" class="wt">Tool registry</text>
+  <text x="748" y="308" class="wd">Industry-aware kits, MCP tools</text>
+  <text x="748" y="324" class="wd">journaling every call</text>
+
+  <!-- Agent runtime -->
+  <rect x="40" y="382" width="920" height="118" class="plane"/>
+  <text x="58" y="406" class="planelbl">AGENT RUNTIME &#183; one PromptContract, three swappable backends (AGENT_BACKEND)</text>
+  <rect x="58" y="418" width="280" height="66" class="box" fill="#24a148" stroke="#198038"/>
+  <text x="72" y="442" class="wt">Microsoft Agent Framework &#183; ACTIVE</text>
+  <text x="72" y="460" class="wd">ChatClientAgent over Azure OpenAI,</text>
+  <text x="72" y="475" class="wd">MCP tools bridged as AIFunctions</text>
+  <rect x="354" y="418" width="280" height="66" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="368" y="442" class="bt">Azure AI Foundry Agent Service</text>
+  <text x="368" y="460" class="bd">Project adp-v1 prepared; one env-var flip</text>
+  <text x="368" y="475" class="bd">once the RBAC grant lands</text>
+  <rect x="650" y="418" width="290" height="66" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="664" y="442" class="bt">Legacy Azure OpenAI adapter</text>
+  <text x="664" y="460" class="bd">Same contract, direct chat completions.</text>
+  <text x="664" y="475" class="bd">Model: gpt-4o (reasoning + vision)</text>
+
+  <!-- Context plane -->
+  <rect x="40" y="524" width="920" height="128" class="plane"/>
+  <text x="58" y="548" class="planelbl">CONTEXT PLANE &#183; the Microsoft IQ federation (ContextRouter fans out every step, merges cited fragments)</text>
+  <rect x="58" y="560" width="280" height="76" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="72" y="584" class="bt">Foundry IQ</text>
+  <text x="72" y="602" class="bd">Azure AI Search vector + semantic:</text>
+  <text x="72" y="618" class="bd">policies, guidelines, regulatory text</text>
+  <rect x="354" y="560" width="280" height="76" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="368" y="584" class="bt">Fabric IQ + Data Agent</text>
+  <text x="368" y="602" class="bd">Lakehouse gold semantic layer, plus the</text>
+  <text x="368" y="618" class="bd">published claims_data_agent, cited per step</text>
+  <rect x="650" y="560" width="290" height="76" class="box" fill="#fff8e1" stroke="#b28600"/>
+  <text x="664" y="584" class="bt">Work IQ</text>
+  <text x="664" y="602" class="bd">Collaboration context; synthetic today,</text>
+  <text x="664" y="618" class="bd">Microsoft Graph-ready behind consent</text>
+
+  <!-- Data plane -->
+  <rect x="40" y="676" width="920" height="144" class="plane"/>
+  <text x="58" y="700" class="planelbl">DATA PLANE</text>
+  <rect x="58" y="712" width="170" height="92" class="box" fill="#ffffff" stroke="#c5d2e3"/>
+  <text x="70" y="734" class="bt">Cosmos DB</text>
+  <text x="70" y="752" class="bd">dw-state journal</text>
+  <text x="70" y="768" class="bd">+ runtime intake</text>
+  <rect x="240" y="712" width="160" height="92" class="box" fill="#ffffff" stroke="#c5d2e3"/>
+  <text x="252" y="734" class="bt">Event Hubs</text>
+  <text x="252" y="752" class="bd">decision event</text>
+  <text x="252" y="768" class="bd">fan-out</text>
+  <rect x="412" y="712" width="160" height="92" class="box" fill="#ffffff" stroke="#c5d2e3"/>
+  <text x="424" y="734" class="bt">Azure SignalR</text>
+  <text x="424" y="752" class="bd">live step tail</text>
+  <text x="424" y="768" class="bd">to the console</text>
+  <rect x="584" y="712" width="170" height="92" class="box" fill="#ffffff" stroke="#c5d2e3"/>
+  <text x="596" y="734" class="bt">Blob storage</text>
+  <text x="596" y="752" class="bd">evidence container:</text>
+  <text x="596" y="768" class="bd">damage photos + alias</text>
+  <rect x="766" y="712" width="174" height="92" class="box" fill="#ffffff" stroke="#c5d2e3"/>
+  <text x="778" y="734" class="bt">Microsoft Fabric</text>
+  <text x="778" y="752" class="bd">gold layer (24 tables),</text>
+  <text x="778" y="768" class="bd">ontology, Data Agent</text>
+
+  <!-- flows -->
+  <path class="flow" d="M500,206 L500,230"/>
+  <path class="flow" d="M500,358 L500,382"/>
+  <path class="flow" d="M500,500 L500,524"/>
+  <path class="flow" d="M500,652 L500,676"/>
+  <path class="flow" d="M960,168 L985,168"/>
+  <path class="flow" d="M960,300 L985,300"/>
+</svg>

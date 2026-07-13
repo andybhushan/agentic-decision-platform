@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="fa" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0f62fe"/></marker>
+    <marker id="fp" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a3ffc"/></marker>
+    <style>
+      .box{rx:10;stroke-width:1.6}
+      .bt{font-size:14px;font-weight:600;fill:#161616}
+      .bd{font-size:11px;fill:#6b7682}
+      .wt{font-size:14px;font-weight:600;fill:#ffffff}
+      .wd{font-size:11px;fill:#e8efff}
+      .flow{stroke:#0f62fe;stroke-width:1.8;fill:none;marker-end:url(#fa)}
+      .pflow{stroke:#8a3ffc;stroke-width:1.8;fill:none;marker-end:url(#fp)}
+      .cite{font-size:10.5px;font-family:'IBM Plex Mono',monospace;fill:#525252}
+    </style>
+  </defs>
+  <rect width="1280" height="620" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Grounding: how one agent step consults the Microsoft IQ federation</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">Every step's retrieval fans out across the registered sources; the merged, cited fragments enter the prompt, and the citations survive all the way to the regulator artifact.</text>
+
+  <!-- the step -->
+  <rect x="40" y="230" width="250" height="130" class="box" fill="#0f62fe" stroke="#0a4fd0"/>
+  <text x="56" y="258" class="wt">One agent step</text>
+  <text x="56" y="280" class="wd">e.g. coverage-verification inside</text>
+  <text x="56" y="296" class="wd">FNOL Handler. The subject's own</text>
+  <text x="56" y="312" class="wd">record (including the photo</text>
+  <text x="56" y="328" class="wd">evidenceAssessment) is already</text>
+  <text x="56" y="344" class="wd">in the prompt</text>
+
+  <!-- router -->
+  <rect x="360" y="250" width="200" height="90" class="box" fill="#161616" stroke="#000000"/>
+  <text x="376" y="278" class="wt">ContextRouter</text>
+  <text x="376" y="298" class="wd">fans out the step's intent,</text>
+  <text x="376" y="314" class="wd">merges cited fragments,</text>
+  <text x="376" y="330" class="wd">caches per subject</text>
+
+  <!-- sources -->
+  <rect x="640" y="96" width="330" height="108" class="box" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="656" y="124" class="bt">Foundry IQ &#183; Azure AI Search</text>
+  <text x="656" y="146" class="bd">Vector + semantic retrieval over policy wordings,</text>
+  <text x="656" y="162" class="bd">underwriting guidelines, and regulatory text.</text>
+  <text x="656" y="184" class="cite">POLICY_DOC/coverage-collision &#183; score 0.87</text>
+
+  <rect x="640" y="226" width="330" height="138" class="box" fill="#e5f6ff" stroke="#1192e8"/>
+  <text x="656" y="254" class="bt">Fabric IQ &#183; lakehouse + Data Agent</text>
+  <text x="656" y="276" class="bd">The gold semantic layer (dimensional model of policy-</text>
+  <text x="656" y="292" class="bd">holders, vehicles, claims, loans) answered via SQL, plus</text>
+  <text x="656" y="308" class="bd">the published claims_data_agent answering in natural</text>
+  <text x="656" y="324" class="bd">language over the ontology, consulted once per subject.</text>
+  <text x="656" y="346" class="cite">DATA_AGENT/CLM-2026-10006 &#183; score 0.90</text>
+
+  <rect x="640" y="386" width="330" height="108" class="box" fill="#fff8e1" stroke="#b28600"/>
+  <text x="656" y="414" class="bt">Work IQ &#183; collaboration context</text>
+  <text x="656" y="436" class="bd">Adjuster threads and prior discussion signals.</text>
+  <text x="656" y="452" class="bd">Synthetic and deterministic today; Microsoft Graph</text>
+  <text x="656" y="468" class="bd">behind tenant consent, zero code change.</text>
+  <text x="656" y="484" class="cite">TEAMS_THREAD/adjuster-sync &#183; score 0.74</text>
+
+  <!-- downstream -->
+  <rect x="1040" y="226" width="200" height="138" class="box" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="1056" y="254" class="bt">Citations persist</text>
+  <text x="1056" y="276" class="bd">Per step, per source:</text>
+  <text x="1056" y="292" class="bd">system, document id,</text>
+  <text x="1056" y="308" class="bd">title, relevance score</text>
+  <text x="1056" y="330" class="bd">(citedSourcesFull in</text>
+  <text x="1056" y="346" class="bd">the Cosmos journal)</text>
+
+  <rect x="40" y="430" width="520" height="120" class="box" fill="#ffffff" stroke="#8d8d8d"/>
+  <text x="56" y="458" class="bt">Where you see it</text>
+  <text x="56" y="480" class="bd">Decision Mode: source-attributed evidence chips per step, the "IQ federation" grounding</text>
+  <text x="56" y="496" class="bd">card (citations per source system), ontology entities touched, regulatory references.</text>
+  <text x="56" y="512" class="bd">Decision Record: every citation reprinted in the regulator artifact.</text>
+  <text x="56" y="528" class="bd">Outcomes: the grounding rate KPI (share of steps grounded in cited evidence).</text>
+
+  <!-- flows -->
+  <path class="flow" d="M290,295 L360,295"/>
+  <path class="flow" d="M560,278 L640,152"/>
+  <path class="flow" d="M560,295 L640,295"/>
+  <path class="flow" d="M560,312 L640,438"/>
+  <path class="pflow" d="M970,295 L1040,295"/>
+  <path class="pflow" d="M1140,364 L1140,580 L300,580 L300,554"/>
+  <text x="310" y="286" font-size="10.5" fill="#0f62fe">retrieve</text>
+</svg>
