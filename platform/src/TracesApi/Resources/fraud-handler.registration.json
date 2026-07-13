@@ -1,0 +1,9 @@
+{
+  "packageId": "fraud-handler",
+  "packageVersion": "0.2.0",
+  "artifactPath": "fraud-handler.zip",
+  "artifactSha256": "b3fdb0caaa1ee30b8233671b59240b03d7f5e71d83c52e6a2469ca16e408f7c8",
+  "manifestSha256": "390805487aab58fc420dec7b57b3bcb9ce75bc7194af520c1eedb70b456e1d91",
+  "registeredAt": "2026-07-13T03:00:45.292052+00:00",
+  "note": "v0 stub registration. Real Agent 365 hook on D9\u002B."
+}

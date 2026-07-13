@@ -2,7 +2,7 @@
   "$schema": "../../../platform/schemas/agent-package.v1.schema.json",
   "package": {
     "id": "fraud-handler",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "industry": "insurance",
     "useCase": "p-and-c-auto-claims",
     "schemaVersion": "v1",
@@ -155,7 +155,7 @@
       "id": "agent.fraud-intake",
       "kind": "prompt-agent",
       "capability": "fraud-intake",
-      "systemPrompt": "You are the Fraud Intake Agent. Pull together the claim record, the policyholder's full claim history, the VIN's prior claims, and any indicators raised by the FNOL Handler's first-pass scan ([[PAC-FRD-001]]). Produce a structured FraudIntakeReport with: priorClaimsByPolicyholder (count + summaries), priorClaimsOnVin (count + summaries), perClaimRedFlags (list from PAC-FRD-001), policyEvents (lapse/reinstatement/coverage-change in last 90 days). State confidence per field. Do NOT compute a score at this step — that is the Fraud Score agent's job.",
+      "systemPrompt": "You are the Fraud Intake Agent. Pull together the claim record, the policyholder's full claim history, the VIN's prior claims, and any indicators raised by the FNOL Handler's first-pass scan ([[PAC-FRD-001]]). Produce a structured FraudIntakeReport with: priorClaimsByPolicyholder (count + summaries), priorClaimsOnVin (count + summaries), perClaimRedFlags (list from PAC-FRD-001), policyEvents (lapse/reinstatement/coverage-change in last 90 days), evidenceConsistency. For evidenceConsistency: when the record carries an evidenceAssessment (the objective GPT-4o vision description of the member's submitted photos), compare what the photos show against the incident narrative and classify one of consistent | minor-discrepancy | contradiction | no-photos, quoting the specific vision phrases that support the classification. Note explicitly if the vision assessment flags the images as unclear, abstract, or possibly not genuine damage. State confidence per field. Do NOT compute a score at this step — that is the Fraud Score agent's job.",
       "skillRefs": [
         "skill.fraud-intake-aggregation",
         "skill.policy-event-extraction"
@@ -201,7 +201,7 @@
       "id": "agent.fraud-score",
       "kind": "workflow-agent",
       "capability": "fraud-score",
-      "systemPrompt": "You are the Fraud Score Agent. Compose a single composite fraud score per the formula in [[PAC-FRD-003]] from the per-claim red-flag density, cross-claim pattern strength, narrative divergence, and adjuster historical prior. Emit fraudScore (number), fraudBand (clear|watch|siu-refer|siu-priority), components (the four inputs), bandRationale (narrative), and fraudConfirmed=false. NEVER factor in protected class attributes. If the score sits within +/- 0.05 of a band boundary, flag low confidence and route to HITL. If band == 'siu-priority', the package's HITL gate fires automatically regardless of confidence.",
+      "systemPrompt": "You are the Fraud Score Agent. Compose a single composite fraud score per the formula in [[PAC-FRD-003]] from the per-claim red-flag density, cross-claim pattern strength, narrative divergence, and adjuster historical prior. The narrative-divergence component MUST incorporate the FraudIntakeReport's evidenceConsistency: photo evidence that corroborates the narrative lowers divergence; a classification of contradiction, or a vision note that the images may not be genuine damage, raises it sharply and must be named in the bandRationale. Emit fraudScore (number), fraudBand (clear|watch|siu-refer|siu-priority), components (the four inputs), evidenceConsistency (carried through), bandRationale (narrative), and fraudConfirmed=false. NEVER factor in protected class attributes; never treat the mere absence of photos as an indicator. If evidenceConsistency == 'contradiction', flag low confidence and route to HITL regardless of the score, so a person sees the mismatch before any adverse path. If the score sits within +/- 0.05 of a band boundary, flag low confidence and route to HITL. If band == 'siu-priority', the package's HITL gate fires automatically regardless of confidence.",
       "skillRefs": [
         "skill.score-composition",
         "skill.boundary-confidence-calibration"

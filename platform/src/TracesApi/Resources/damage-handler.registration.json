@@ -1,0 +1,9 @@
+{
+  "packageId": "damage-handler",
+  "packageVersion": "0.2.0",
+  "artifactPath": "damage-handler.zip",
+  "artifactSha256": "9980c799e33f0d564bdd2d144e914d3f35c400147b1c46b52741342aeb517bd4",
+  "manifestSha256": "9f21324ca5cb39c990c82dac663ecd373397ddb49f5e713a7dd44f9369beb5d9",
+  "registeredAt": "2026-07-13T02:56:48.5469445+00:00",
+  "note": "v0 stub registration. Real Agent 365 hook on D9\u002B."
+}
