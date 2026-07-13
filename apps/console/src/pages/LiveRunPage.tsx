@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Button,
   Column,
+  Dropdown,
   Grid,
   InlineLoading,
   InlineNotification,
@@ -11,6 +12,7 @@ import {
 } from "@carbon/react";
 import { resolveApiBase } from "../services/config";
 import { fetchHealth, type HealthStatus } from "../services/healthClient";
+import { fetchDecisions, type PackageSummary } from "../services/decisionsClient";
 import { useDecisionRun } from "../hooks/useDecisionRun";
 import { pct, secs } from "../lib/format";
 
@@ -23,6 +25,15 @@ export default function LiveRunPage() {
   const [subject, setSubject] = useState("CLM-2026-10005");
   const [packageId, setPackageId] = useState("fnol-handler");
   const [forceAgent, setForceAgent] = useState("");
+  const [packages, setPackages] = useState<PackageSummary[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchDecisions()
+      .then((d) => { if (!cancelled) setPackages(d.packages); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   const runState = useDecisionRun(subject.trim());
   const apiBase = resolveApiBase();
@@ -59,11 +70,17 @@ export default function LiveRunPage() {
               disabled={busy}
               className="adp-input-md"
             />
-            <TextInput
+            <Dropdown
               id="lab-package"
-              labelText="Package id"
-              value={packageId}
-              onChange={(e) => setPackageId(e.target.value)}
+              titleText="Package"
+              label="fnol-handler"
+              items={packages.length > 0 ? packages.map((p) => p.packageId) : ["fnol-handler"]}
+              itemToString={(id) => {
+                const p = packages.find((x) => x.packageId === id);
+                return p?.stage ? `${id} (${p.stage})` : (id ?? "");
+              }}
+              selectedItem={packageId}
+              onChange={({ selectedItem }) => setPackageId(selectedItem ?? "fnol-handler")}
               disabled={busy}
               className="adp-input-md"
             />

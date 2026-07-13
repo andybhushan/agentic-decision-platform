@@ -1,9 +1,33 @@
 import { useEffect, useState } from "react";
 import { Column, Grid, InlineNotification, SkeletonText, Tag, Tile } from "@carbon/react";
-import { Bot } from "@carbon/icons-react";
+import { Bot, Chat } from "@carbon/icons-react";
 import { fetchAgents, RUNTIME_LABELS, type AgentsResponse } from "../services/agentsClient";
 import { pct, relativeTime } from "../lib/format";
 import { ontologyLabel } from "../lib/evidence";
+
+// The conversational agents are platform features, not signed packages, so they are
+// declared here rather than discovered from the registry. Governance still lists them:
+// an agent surface the page does not know about is a governance gap.
+const PLATFORM_ASSISTANTS = [
+  {
+    id: "assistant.member",
+    name: "Member assistant",
+    surface: "Member + borrower portals",
+    endpoint: "POST /api/assist",
+    runtime: "gpt-4o via Azure OpenAI REST",
+    grounding: "The signed-in member's own records + journey, assembled server-side",
+    guardrail: "Fraud detail excluded from context by construction; off-account questions redirect",
+  },
+  {
+    id: "assistant.copilot",
+    name: "Operator copilot",
+    surface: "Platform console, every page",
+    endpoint: "POST /api/copilot",
+    runtime: "Microsoft Agent Framework (ChatClientAgent + 3 AIFunction tools)",
+    grounding: "Decision journal, subject records, Fabric IQ Data Agent; toolsUsed returned as source chips",
+    guardrail: "Operator entitlement: fraud detail allowed; answers cite subjects and sources",
+  },
+] as const;
 
 // The governance view: every digital worker and agent on the platform, from the signed
 // packages (identity, model, guardrails, SLOs) joined with what the immutable journal has
@@ -121,6 +145,35 @@ export default function AgentsPage() {
             )}
           </Tile>
         ))}
+
+        {data && (
+          <>
+            <h3 className="adp-section-title">Platform assistants</h3>
+            <p className="adp-queue__dim adp-assistants-sub">
+              Conversational agents that are platform features rather than signed packages. Listed here because a
+              governance page that misses an agent surface is not a governance page.
+            </p>
+            {PLATFORM_ASSISTANTS.map((a) => (
+              <Tile key={a.id} className="adp-worker-card">
+                <div className="adp-worker-card__head">
+                  <Chat size={20} />
+                  <h3 className="adp-worker-card__name">{a.name}</h3>
+                  <Tag type="outline" size="sm">{a.endpoint}</Tag>
+                  <Tag type="teal" size="sm">{a.surface}</Tag>
+                  <Tag type="blue" size="sm">{a.runtime}</Tag>
+                </div>
+                <div className="adp-agent-rows">
+                  <div className="adp-agent-row">
+                    <span className="adp-queue__dim"><strong>Grounding:</strong> {a.grounding}</span>
+                  </div>
+                  <div className="adp-agent-row">
+                    <span className="adp-queue__dim"><strong>Guardrail:</strong> {a.guardrail}</span>
+                  </div>
+                </div>
+              </Tile>
+            ))}
+          </>
+        )}
       </Column>
     </Grid>
   );
