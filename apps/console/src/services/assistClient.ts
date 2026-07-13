@@ -9,6 +9,25 @@ export interface AssistMessage {
   content: string;
 }
 
+export interface CopilotAnswer {
+  reply: string;
+  toolsUsed: string[];
+}
+
+// POST /api/copilot: the operator copilot (platform console). A Microsoft Agent Framework
+// agent with journal, records, and Fabric Data Agent tools; toolsUsed feeds source chips.
+export async function askCopilot(messages: AssistMessage[]): Promise<CopilotAnswer> {
+  const base = resolveApiBase();
+  const res = await fetch(`${base}/copilot`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ messages }),
+  });
+  if (!res.ok) throw new Error(`askCopilot: HTTP ${res.status} ${res.statusText}`);
+  const body = (await res.json()) as Partial<CopilotAnswer>;
+  return { reply: body.reply ?? "", toolsUsed: body.toolsUsed ?? [] };
+}
+
 export async function askAssist(
   industry: string,
   memberId: string,

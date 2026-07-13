@@ -78,14 +78,35 @@ public sealed class FabricDataAgentSource(string agentUrl, TokenCredential? cred
 
     private async Task<ContextFragment?> AskAsync(string subjectId, ContextRequest request, CancellationToken ct)
     {
+        var answer = await AskQuestionAsync(BuildQuestion(subjectId, request), ct);
+        if (string.IsNullOrWhiteSpace(answer)) return null;
+
+        // Quality gate: a short answer that is only an inability apology grounds nothing.
+        // (Mixed answers that hedge then deliver ontology content are long and pass.)
+        var lowered = answer.ToLowerInvariant();
+        if (answer.Length < 350 && (lowered.Contains("unable to") || lowered.Contains("technical issue")))
+            return null;
+
+        return new ContextFragment(
+            SourceId: SourceId,
+            DocId: $"DATA_AGENT/{subjectId}",
+            Title: "Fabric IQ Data Agent: semantic-layer answer",
+            Content: answer.Length > 1500 ? answer[..1500] : answer,
+            RelevanceScore: 0.9,
+            Origin: "GROUNDED",
+            Dimensions: [ContextDimension.Historical, ContextDimension.Entity]);
+    }
+
+    // Raw ask: one natural-language question to the published Data Agent, the full answer back.
+    // Used by the per-subject grounding above AND by the operator copilot's portfolio tool.
+    public async Task<string?> AskQuestionAsync(string question, CancellationToken ct = default)
+    {
         using var timeout = new CancellationTokenSource(AnswerTimeout);
         var token = (await _credential.GetTokenAsync(
             new TokenRequestContext(["https://api.fabric.microsoft.com/.default"]), timeout.Token)).Token;
 
         _assistantId ??= await PostAsync<string>(token, "/assistants",
             JsonSerializer.Serialize(new { model = "gpt-4o" }), doc => doc.GetProperty("id").GetString()!, timeout.Token);
-
-        var question = BuildQuestion(subjectId, request);
 
         var threadId = await PostAsync<string>(token, "/threads", "{}", doc => doc.GetProperty("id").GetString()!, timeout.Token);
         await PostAsync<object?>(token, $"/threads/{threadId}/messages",
@@ -119,22 +140,7 @@ public sealed class FabricDataAgentSource(string agentUrl, TokenCredential? cred
             return null;
         }, timeout.Token);
 
-        if (string.IsNullOrWhiteSpace(answer)) return null;
-
-        // Quality gate: a short answer that is only an inability apology grounds nothing.
-        // (Mixed answers that hedge then deliver ontology content are long and pass.)
-        var lowered = answer.ToLowerInvariant();
-        if (answer.Length < 350 && (lowered.Contains("unable to") || lowered.Contains("technical issue")))
-            return null;
-
-        return new ContextFragment(
-            SourceId: SourceId,
-            DocId: $"DATA_AGENT/{subjectId}",
-            Title: "Fabric IQ Data Agent: semantic-layer answer",
-            Content: answer.Length > 1500 ? answer[..1500] : answer,
-            RelevanceScore: 0.9,
-            Origin: "GROUNDED",
-            Dimensions: [ContextDimension.Historical, ContextDimension.Entity]);
+        return answer;
     }
 
     private static string BuildQuestion(string subjectId, ContextRequest request)

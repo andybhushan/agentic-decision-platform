@@ -211,6 +211,7 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 | GET | `/evidence/file/{groupId}/{name}` | Serve a photo |
 | POST | `/actions` | Execute a governed operator action with rationale |
 | POST | `/assist` | Member assistant: chat grounded server-side in the signed-in member's own records and journey (fraud details never surfaced) |
+| POST | `/copilot` | Operator copilot: a Microsoft Agent Framework agent with three governed tools (decision journal, subject records, Fabric IQ Data Agent); returns the reply plus which tools grounded it |
 | GET | `/agents` | Governance registry: declared workers joined with observed behavior |
 | GET | `/aggregate/outcomes?packages=` | KPI aggregates, filterable per use case |
 | GET | `/aggregate/timeline?packages=` | Time-bucketed run/confidence series |
@@ -270,6 +271,7 @@ Still pending external action:
 | Foundry Agent Service backend | Prepared, one env-var flip | "Azure AI User" RBAC grant on `aif-adp-v1` from sub admins |
 | Real Work IQ (Microsoft Graph) | Synthetic today | Tenant admin consent for Graph application permissions |
 | Banking tables in the Data Agent | Config only | Tick `fact_loan_applications` + `dim_borrower` in `claims_data_agent` sources and re-publish |
+| Microsoft 365 Copilot surface | Positioned | The operator copilot's contract (POST /copilot) is the natural declarative-agent action; exposing it inside M365 Copilot via Copilot Studio or the M365 Agents SDK needs tenant licensing + admin consent (same approval channel as Work IQ) |
 
 ---
 

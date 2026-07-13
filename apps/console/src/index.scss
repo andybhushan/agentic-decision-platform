@@ -2056,6 +2056,23 @@ body {
   color: var(--cds-support-error);
 }
 
+// Operator copilot variant: wider panel, source chips under answers, linked subject ids.
+.adp-assist--copilot {
+  inline-size: min(28rem, calc(100vw - 2rem));
+}
+
+.adp-assist__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-block-start: 0.5rem;
+}
+
+.adp-assist__msg--bot a {
+  color: var(--cds-link-primary);
+  font-weight: 600;
+}
+
 .adp-assist__input {
   display: flex;
   gap: 0.5rem;

@@ -19,6 +19,7 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { ThemeProvider, useTheme } from "./theme/ThemeContext";
 import AccessGate from "./AccessGate";
 import NarratorDock from "./narrator/NarratorDock";
+import CopilotDock from "./components/CopilotDock";
 import DecisionQueuePage from "./pages/DecisionQueuePage";
 import DecisionModePage from "./pages/DecisionModePage";
 import DecisionRecordPage from "./pages/DecisionRecordPage";
@@ -173,6 +174,7 @@ function Shell() {
           <span className="adp-footer__note">Demonstration environment · all data synthetic</span>
         </footer>
         <NarratorDock open={narratorOpen} onClose={() => setNarratorOpen(false)} />
+        <CopilotDock />
       </Theme>
     </>
   );

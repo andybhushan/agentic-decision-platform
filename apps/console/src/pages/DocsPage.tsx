@@ -118,6 +118,7 @@ const API_ROUTES = [
   ["GET /evidence/file/{group}/{name}", "Serve a photo"],
   ["POST /actions", "Execute a governed operator action with rationale"],
   ["POST /assist", "Member assistant: chat grounded server-side in the member's own records"],
+  ["POST /copilot", "Operator copilot: Agent Framework agent with journal, records, and Fabric Data Agent tools"],
   ["GET /agents", "Governance registry: declared estate + observed behavior"],
   ["GET /aggregate/outcomes", "KPI aggregates, filterable per use case"],
   ["GET /aggregate/timeline", "Time-bucketed run and confidence series"],
@@ -141,6 +142,7 @@ const ROADMAP = [
   ["Foundry Agent Service backend", "Prepared", "Azure AI User RBAC grant, then one env-var flip"],
   ["Real Work IQ (Microsoft Graph)", "Synthetic today", "Tenant admin consent for Graph application permissions"],
   ["Banking tables in the Data Agent", "Config", "Tick fact_loan_applications + dim_borrower in claims_data_agent sources and re-publish"],
+  ["Microsoft 365 Copilot surface", "Positioned", "Expose the operator copilot as a declarative agent (Copilot Studio / M365 Agents SDK) once tenant licensing + consent land"],
 ];
 
 function DiagramCard({ d }: { d: (typeof DIAGRAMS)[number] }) {
