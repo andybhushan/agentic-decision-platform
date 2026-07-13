@@ -252,15 +252,23 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 
 ## 8. Roadmap
 
+Shipped 2026-07-13 (each verified live end to end):
+
+| Item | How it landed |
+|---|---|
+| Vision-informed estimation | damage-handler v0.2.0 (image v14): intake summarizes the photo assessment, categorization grounds primarily in what the photos show (unclear or possibly non-genuine images gate to HITL), estimation positions the figure inside the band by visible damage and states how the photos moved it |
+| Fraud evidence cross-check | fraud-handler v0.2.0 (v15): FraudIntakeReport gains evidenceConsistency (consistent / minor-discrepancy / contradiction / no-photos); contradiction gates to HITL regardless of score; ambiguity alone is never an indicator |
+| Document evidence | Evidence store accepts police-report PDFs (v16); stored, served, listed on the record as `documentEvidence`, surfaced as chips on tracker and Decision Mode |
+| Banking evidence parity | Borrower wizard uploads payslip photos + statement PDFs (v17); vision reads the actual figures; loan-handler v0.3.0 verifies stated income against them |
+| Fabric write-back of intake | `scripts/sync-intake-to-fabric.ps1`: rebuilds the lakehouse tables as the full synthetic universe overlaid with runtime intake (runtime truth replaces colliding ids), then refreshes the SQL endpoint metadata; the Data Agent answers about subjects filed minutes ago |
+
+Still pending external action:
+
 | Item | Status | Unlock |
 |---|---|---|
 | Foundry Agent Service backend | Prepared, one env-var flip | "Azure AI User" RBAC grant on `aif-adp-v1` from sub admins |
 | Real Work IQ (Microsoft Graph) | Synthetic today | Tenant admin consent for Graph application permissions |
-| Vision-informed estimation | Next | Damage agent reasons explicitly over `evidenceAssessment` |
-| Fraud evidence cross-check | Next | Photo assessment vs narrative mismatch gates to HITL |
-| Document evidence (police report PDF) | Next | Same evidence store, Foundry IQ grounding |
-| Banking evidence parity | Next | Payslip/bank-statement upload with vision at intake |
-| Fabric write-back of runtime intake | Roadmap | Data Agent answers about claims filed minutes ago |
+| Banking tables in the Data Agent | Config only | Tick `fact_loan_applications` + `dim_borrower` in `claims_data_agent` sources and re-publish |
 
 ---
 

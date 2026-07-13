@@ -132,13 +132,14 @@ const LESSONS = [
 ];
 
 const ROADMAP = [
+  ["Vision-informed estimation", "Shipped", "Damage agents reason over the photo assessment; estimate positions inside the band by visible damage (v14)"],
+  ["Fraud evidence cross-check", "Shipped", "evidenceConsistency classification; photo vs narrative contradiction gates to a human (v15)"],
+  ["Document evidence (police report)", "Shipped", "PDF upload at FNOL, stored + surfaced + listed on the record as documentEvidence (v16)"],
+  ["Banking evidence parity", "Shipped", "Payslip photos + statement PDFs; vision reads the figures; intake agent verifies income against them (v17)"],
+  ["Fabric write-back of intake", "Shipped", "scripts/sync-intake-to-fabric.ps1: universe + intake overlay; the Data Agent answers about subjects filed minutes ago"],
   ["Foundry Agent Service backend", "Prepared", "Azure AI User RBAC grant, then one env-var flip"],
   ["Real Work IQ (Microsoft Graph)", "Synthetic today", "Tenant admin consent for Graph application permissions"],
-  ["Vision-informed estimation", "Next", "Damage agent reasons explicitly over the photo assessment"],
-  ["Fraud evidence cross-check", "Next", "Photo assessment vs narrative mismatch gates to a human"],
-  ["Document evidence (police report)", "Next", "Same evidence store, Foundry IQ grounding"],
-  ["Banking evidence parity", "Next", "Payslip and statement upload with vision at intake"],
-  ["Fabric write-back of intake", "Roadmap", "Data Agent answers about claims filed minutes ago"],
+  ["Banking tables in the Data Agent", "Config", "Tick fact_loan_applications + dim_borrower in claims_data_agent sources and re-publish"],
 ];
 
 function DiagramCard({ d }: { d: (typeof DIAGRAMS)[number] }) {
@@ -386,7 +387,7 @@ export default function DocsPage() {
                     <tr key={r[0]}>
                       <td>{r[0]}</td>
                       <td>
-                        <Tag size="sm" type={r[1] === "Next" ? "blue" : r[1] === "Prepared" ? "green" : "cool-gray"}>
+                        <Tag size="sm" type={r[1] === "Shipped" ? "green" : r[1] === "Prepared" ? "blue" : "cool-gray"}>
                           {r[1]}
                         </Tag>
                       </td>
