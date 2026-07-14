@@ -1,7 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 // App-wide light/dark mode. Carbon zones: content flips white <-> g100, the header
-// stays g100 in both (standard Carbon shell pattern). Persisted; defaults to the OS.
+// stays g100 in both (standard Carbon shell pattern). Persisted; defaults to LIGHT
+// (stage/projector friendly) regardless of the OS preference.
 
 export type Mode = "light" | "dark";
 
@@ -18,7 +19,7 @@ const ThemeContext = createContext<ThemeState>({ mode: "light", carbonTheme: "wh
 function initialMode(): Mode {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
