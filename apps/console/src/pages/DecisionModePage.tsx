@@ -469,7 +469,17 @@ export default function DecisionModePage() {
       <Column lg={10} md={8} sm={4}>
         <h3 className="adp-section-title">
           {activeStage ? `${activeStage.stage} trace` : "Agent trace"}{" "}
-          {busy && <InlineLoading description={runState.phase === "starting" ? "Starting orchestration" : "Agents working"} />}
+          {busy && (
+            <InlineLoading
+              description={
+                runState.phase === "starting"
+                  ? "Starting orchestration"
+                  : runState.openGate
+                    ? "Paused: waiting for your judgment (right rail)"
+                    : "Agents working"
+              }
+            />
+          )}
         </h3>
 
         {steps.length === 0 && !busy && (
