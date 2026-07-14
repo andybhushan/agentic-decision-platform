@@ -1646,6 +1646,22 @@ body {
   margin-block-start: 1.5rem;
 }
 
+.adp-docs__faq {
+  max-width: 58rem;
+  margin-block-start: 1rem;
+
+  .cds--accordion__title {
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--cds-text-secondary);
+    max-width: 52rem;
+  }
+}
+
 .adp-docs__body {
   min-inline-size: 0;
 }

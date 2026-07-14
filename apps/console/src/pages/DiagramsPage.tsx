@@ -93,9 +93,27 @@ const DIAGRAMS: DiagramEntry[] = [
     src: "/docs/adp-runtime-portability.svg",
   },
   {
+    id: "integration",
+    group: "Architecture",
+    num: 5,
+    star: true,
+    title: "Platform stack and use-case stack: the four sockets",
+    blurb:
+      "The separation that makes the platform a platform, drawn as the puzzle joints they are. The platform stack (left) ships zero domain logic and is never edited per client; the use-case stack (right) ships everything domain as signed content. They interlock at exactly four typed contracts.",
+    steps: [
+      "Package socket: agent-package.v1, compiled and signed by adpc, loaded and verified at runtime.",
+      "Corpus socket: corpusBinding (array key + subject id field) drives the queue, intake ids, and the portals.",
+      "Grounding socket: per-step sourceBindings plus ontology-tagged knowledge decide which IQ fires.",
+      "Tooling socket: one IToolRegistry registration line per industry; every call journaled.",
+      "Proof of the contract: banking went live as one package plus one registry line, zero platform edits.",
+    ],
+    sysflow: "use-case content -> { package | corpus | grounding | tooling } sockets -> platform engine -> journal proves behavior on both sides of any change",
+    src: "/docs/adp-platform-usecase-integration.svg",
+  },
+  {
     id: "process-flow",
     group: "Journeys & scenes",
-    num: 5,
+    num: 6,
     star: true,
     title: "Master end-to-end: phone to regulator",
     blurb:
@@ -114,7 +132,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "scene-fnol",
     group: "Journeys & scenes",
-    num: 6,
+    num: 7,
     title: "Scene: FNOL with photo evidence",
     blurb:
       "The feature in closest detail: a member reports an accident with photos and the platform turns them into decision-grade evidence at intake. Verified live end to end (CLM-2026-10028: photo to assessment to a $1,320 estimate on the tracker).",
@@ -132,7 +150,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "scene-hitl",
     group: "Journeys & scenes",
-    num: 7,
+    num: 8,
     title: "Scene: a human gate trips",
     blurb:
       "Human-in-the-loop as governance, not theater. Gates open organically when a step's calibrated confidence falls below the threshold the package declares; the run suspends, a person judges with the evidence attached, and the judgment itself is journaled.",
@@ -150,7 +168,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "iq-federation",
     group: "Platform internals",
-    num: 8,
+    num: 9,
     title: "Grounding: one step through the IQ federation",
     blurb:
       "What grounded actually means here: the ContextRouter fans each step across Foundry IQ, Fabric IQ (semantic layer plus the published Data Agent), and Work IQ; the merged cited fragments enter the prompt and the citations survive to the regulator artifact.",
@@ -168,7 +186,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "package-model",
     group: "Platform internals",
-    num: 9,
+    num: 10,
     title: "The package model: how a use case ships",
     blurb:
       "The anatomy of the signed agent package (agent-package.v1) and its pipeline: author declaratively, compile and sign with adpc, ship inside the API image, load and validate at run time. Northwind lending went live as one package plus one registration line.",
@@ -184,7 +202,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "journal-explainability",
     group: "Platform internals",
-    num: 10,
+    num: 11,
     title: "The decision journal: write once, explain forever",
     blurb:
       "Every step is an event with its reasoning, retrieval scores, tool calls, confidence, and any human judgment, journaled before the run proceeds. The Decision Record, both trace views, and every Outcomes KPI are replays of this log with no private inputs.",
@@ -201,7 +219,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "data-semantic",
     group: "Platform internals",
-    num: 11,
+    num: 12,
     title: "Data and semantic foundation",
     blurb:
       "What the agents stand on: three operational stores (bundled corpus, runtime intake, evidence blobs) plus the journal, and the Fabric side that gives the same universe a governed semantic shape: the 24-table gold lakehouse, the ontology, and the published Data Agent.",
@@ -218,7 +236,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "conversational",
     group: "Platform internals",
-    num: 12,
+    num: 13,
     title: "Conversational AI: assistant + copilot",
     blurb:
       "The two chat surfaces side by side: the member assistant (both portals, member-scoped grounding assembled server-side, fraud excluded by construction) and the operator copilot (a real Agent Framework agent with journal, records, and Fabric Data Agent tools). Shared foundation: gpt-4o, one structured response with contextual follow-ups, graceful degradation.",
@@ -236,7 +254,7 @@ const DIAGRAMS: DiagramEntry[] = [
   {
     id: "lifecycle-reference",
     group: "Platform internals",
-    num: 13,
+    num: 14,
     title: "Lifecycle reference: stages and workers",
     blurb:
       "The declared lifecycles side by side: the four claims stages with what each digital worker decides and when it gates, and the banking origination stage that proves portability. Stages are data in the packages, never code.",

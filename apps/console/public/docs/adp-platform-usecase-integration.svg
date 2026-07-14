@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <style>
+      .stack{rx:14;fill:#ffffff;stroke-width:2}
+      .stacklbl{font-size:13px;font-weight:700;letter-spacing:.08em;fill:#5b6b7c}
+      .row{rx:8;stroke-width:1.3}
+      .rt{font-size:12.5px;font-weight:600;fill:#161616}
+      .rd{font-size:10px;fill:#6b7682}
+      .ct{font-size:12.5px;font-weight:700;fill:#ffffff}
+      .cd{font-size:10px;font-family:'IBM Plex Mono',monospace;fill:#ffffff;opacity:.92}
+      .note{font-size:11px;fill:#6b7682}
+    </style>
+  </defs>
+  <rect width="1280" height="800" fill="#fbfcfe"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#161616">Platform stack and use-case stack: four sockets where they interlock</text>
+  <text x="40" y="64" font-size="13" fill="#6b7682">The platform ships zero domain logic; the use case ships zero infrastructure. They meet at exactly four typed contracts, drawn here as the puzzle joints they are.</text>
+
+  <!-- PLATFORM STACK (left) -->
+  <rect x="40" y="92" width="500" height="560" class="stack" stroke="#0f62fe"/>
+  <text x="60" y="120" class="stacklbl">PLATFORM STACK &#183; use-case agnostic, never edited per client</text>
+
+  <rect x="60" y="136" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="159" class="rt">Experience shell + portal framework</text>
+  <text x="74" y="176" class="rd">Console, queue, trackers, docks; portals derive members from records, nothing hardcoded</text>
+
+  <rect x="60" y="206" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="229" class="rt">Orchestration + human gates</text>
+  <text x="74" y="246" class="rd">Durable Functions walks any declared plan; suspends below threshold, resumes on judgment</text>
+
+  <rect x="60" y="276" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="299" class="rt">Agent runtime (AdapterRegistry)</text>
+  <text x="74" y="316" class="rd">Agent Framework, Foundry Agent Service, legacy: switchable per run, one PromptContract</text>
+
+  <rect x="60" y="346" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="369" class="rt">IQ federation router + evidence pipeline</text>
+  <text x="74" y="386" class="rd">Foundry IQ, Fabric IQ + Data Agent, Work IQ; photo/document store with vision at intake</text>
+
+  <rect x="60" y="416" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="439" class="rt">Immutable journal + governance surfaces</text>
+  <text x="74" y="456" class="rd">Decision Record, agent registry, outcomes, cycle time: replayed, never claimed</text>
+
+  <rect x="60" y="486" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="509" class="rt">Conversational surfaces</text>
+  <text x="74" y="526" class="rd">Member assistant (scoped grounding) + operator copilot (journal, records, Data Agent tools)</text>
+
+  <rect x="60" y="556" width="460" height="60" class="row" fill="#edf5ff" stroke="#0f62fe"/>
+  <text x="74" y="579" class="rt">Azure + Fabric infrastructure</text>
+  <text x="74" y="596" class="rd">Container Apps, Cosmos, SignalR, AI Search, AI Foundry, OneLake: one Bicep + runbooks</text>
+
+  <!-- USE CASE STACK (right) -->
+  <rect x="740" y="92" width="500" height="560" class="stack" stroke="#8a3ffc"/>
+  <text x="760" y="120" class="stacklbl">USE-CASE STACK &#183; everything domain, shipped as signed content</text>
+
+  <rect x="760" y="136" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="159" class="rt">Digital workers + agents</text>
+  <text x="774" y="176" class="rd">Prompts, skills, confidence calibration, gate policy, SLOs, lifecycle stages, Entra identity</text>
+
+  <rect x="760" y="206" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="229" class="rt">Subject corpus</text>
+  <text x="774" y="246" class="rd">Claims / applications with the domain's own id scheme; runtime intake continues the pattern</text>
+
+  <rect x="760" y="276" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="299" class="rt">Knowledge base</text>
+  <text x="774" y="316" class="rd">Policy + procedure documents (PAC-*, BANK-*) with ontology-tagged frontmatter</text>
+
+  <rect x="760" y="346" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="369" class="rt">Ontology + semantic data</text>
+  <text x="774" y="386" class="rd">acl:* entity bindings, Fabric gold tables, published Data Agent sources</text>
+
+  <rect x="760" y="416" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="439" class="rt">Industry tool kit</text>
+  <text x="774" y="456" class="rd">MCP tools for the domain's systems of record (claim store, policy store, credit bureau...)</text>
+
+  <rect x="760" y="486" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="509" class="rt">Branded experience</text>
+  <text x="774" y="526" class="rd">Meridian member portal, Northwind borrower portal: use-case views over platform APIs</text>
+
+  <rect x="760" y="556" width="460" height="60" class="row" fill="#f6f2ff" stroke="#8a3ffc"/>
+  <text x="774" y="579" class="rt">Demo narrative</text>
+  <text x="774" y="596" class="rd">Customer brief, guided beats, warmup scenarios: the story is content too</text>
+
+  <!-- FOUR PUZZLE SOCKETS (center) -->
+  <!-- socket 1: green -->
+  <g>
+    <rect x="540" y="140" width="100" height="96" rx="10" fill="#24a148"/>
+    <rect x="640" y="140" width="100" height="96" rx="10" fill="#defbe6" stroke="#24a148" stroke-width="2"/>
+    <circle cx="652" cy="188" r="15" fill="#24a148"/>
+    <text x="554" y="166" class="ct">Package</text>
+    <text x="554" y="182" class="ct">socket</text>
+    <text x="676" y="170" font-size="10.5" font-weight="600" fill="#0e6027">agent-package.v1</text>
+    <text x="676" y="186" font-size="9.5" fill="#0e6027">compiled + signed</text>
+    <text x="676" y="200" font-size="9.5" fill="#0e6027">by adpc; loaded +</text>
+    <text x="676" y="214" font-size="9.5" fill="#0e6027">verified at runtime</text>
+  </g>
+
+  <!-- socket 2: orange -->
+  <g>
+    <rect x="640" y="278" width="100" height="96" rx="10" fill="#ff832b"/>
+    <rect x="540" y="278" width="100" height="96" rx="10" fill="#fff2e8" stroke="#ff832b" stroke-width="2"/>
+    <circle cx="628" cy="326" r="15" fill="#ff832b"/>
+    <text x="654" y="304" class="ct">Corpus</text>
+    <text x="654" y="320" class="ct">socket</text>
+    <text x="554" y="308" font-size="10.5" font-weight="600" fill="#8a3800">corpusBinding</text>
+    <text x="554" y="324" font-size="9.5" fill="#8a3800">arrayKey + subject</text>
+    <text x="554" y="338" font-size="9.5" fill="#8a3800">id field: queue, intake</text>
+    <text x="554" y="352" font-size="9.5" fill="#8a3800">+ portals derive here</text>
+  </g>
+
+  <!-- socket 3: blue -->
+  <g>
+    <rect x="540" y="416" width="100" height="96" rx="10" fill="#1192e8"/>
+    <rect x="640" y="416" width="100" height="96" rx="10" fill="#e5f6ff" stroke="#1192e8" stroke-width="2"/>
+    <circle cx="652" cy="464" r="15" fill="#1192e8"/>
+    <text x="554" y="442" class="ct">Grounding</text>
+    <text x="554" y="458" class="ct">socket</text>
+    <text x="676" y="446" font-size="10.5" font-weight="600" fill="#00539a">sourceBindings +</text>
+    <text x="676" y="462" font-size="9.5" fill="#00539a">docId / acl:* tags:</text>
+    <text x="676" y="476" font-size="9.5" fill="#00539a">each step declares</text>
+    <text x="676" y="490" font-size="9.5" fill="#00539a">which IQ fires</text>
+  </g>
+
+  <!-- socket 4: purple -->
+  <g>
+    <rect x="640" y="554" width="100" height="96" rx="10" fill="#8a3ffc"/>
+    <rect x="540" y="554" width="100" height="96" rx="10" fill="#f6f2ff" stroke="#8a3ffc" stroke-width="2"/>
+    <circle cx="628" cy="602" r="15" fill="#8a3ffc"/>
+    <text x="654" y="580" class="ct">Tooling</text>
+    <text x="654" y="596" class="ct">socket</text>
+    <text x="554" y="584" font-size="10.5" font-weight="600" fill="#491d8b">IToolRegistry</text>
+    <text x="554" y="600" font-size="9.5" fill="#491d8b">one registration line</text>
+    <text x="554" y="614" font-size="9.5" fill="#491d8b">per industry; every</text>
+    <text x="554" y="628" font-size="9.5" fill="#491d8b">call journaled</text>
+  </g>
+
+  <!-- bottom: runtime integration flow -->
+  <rect x="40" y="676" width="1200" height="100" rx="12" fill="#161616"/>
+  <text x="58" y="702" font-size="12" font-weight="700" letter-spacing=".08em" fill="#c6c6c6">HOW THE INTEGRATION HAPPENS AT RUNTIME</text>
+  <text x="58" y="726" font-size="12.5" fill="#ffffff">1. adpc validates + signs the package &#8594; 2. the loader verifies it and the queue renders its stages &#8594; 3. each step grounds via its declared sourceBindings &#8594;</text>
+  <text x="58" y="746" font-size="12.5" fill="#ffffff">4. tools resolve from the industry kit &#8594; 5. every execution journals with citations. Proof of the contract: banking went live as ONE package + ONE registry line, zero platform edits.</text>
+  <text x="58" y="766" font-size="10.5" fill="#a8a8a8">Change the domain: touch only the right stack. Change the engine: touch only the left. The journal proves behavior held on both sides of any change.</text>
+</svg>

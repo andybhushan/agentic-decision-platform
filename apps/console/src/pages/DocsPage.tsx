@@ -1,4 +1,4 @@
-import { Button, Tag, Tile } from "@carbon/react";
+import { Accordion, AccordionItem, Button, Tag, Tile } from "@carbon/react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -19,6 +19,7 @@ import {
 const TOC = [
   { id: "why", label: "What & why" },
   { id: "architecture", label: "Architecture" },
+  { id: "integration", label: "Use-case integration" },
   { id: "flow", label: "Process flow" },
   { id: "grounding", label: "IQ federation" },
   { id: "chat", label: "Conversational AI" },
@@ -27,6 +28,7 @@ const TOC = [
   { id: "governance", label: "Governance" },
   { id: "operations", label: "Deployment & ops" },
   { id: "roadmap", label: "Roadmap" },
+  { id: "faq", label: "FAQ" },
 ];
 
 const PILLARS = [
@@ -77,6 +79,77 @@ const DIAGRAMS = [
     title: "Conversational AI: two chat surfaces, two entitlements",
     blurb:
       "The member assistant lives in both branded portals and answers only from the signed-in member's own records, with fraud detail excluded from its context by construction. The operator copilot is a real Microsoft Agent Framework agent on the console with three governed tools: the decision journal, subject records, and the Fabric IQ Data Agent. Both return contextual follow-up questions in the same structured response.",
+  },
+  {
+    src: "/docs/adp-platform-usecase-integration.svg",
+    id: "integration",
+    Icon: Network_3,
+    title: "Platform stack and use-case stack: the four sockets",
+    blurb:
+      "The platform ships zero domain logic; the use case ships zero infrastructure. They interlock at exactly four typed contracts: the signed package (agent-package.v1), the corpus binding, the grounding declarations (source bindings plus ontology-tagged knowledge), and the industry tool registry. Proof of the contract: the banking use case went live as one package plus one registry line, with zero platform edits.",
+  },
+];
+
+const FAQ: { q: string; a: string }[] = [
+  {
+    q: "What is ADP in one sentence?",
+    a: "A governed decision platform: any regulated operational decision (claims, loans, and beyond) executed by grounded AI agents, gated by confidence, escalated to humans when uncertain, and journaled immutably for the regulator, where each use case is a signed package the platform runs.",
+  },
+  {
+    q: "Is this a chatbot?",
+    a: "No. The chat surfaces are conveniences on top; the product is the decision engine underneath: lifecycle orchestration, evidence-grounded agent steps, human gates, and an audit journal. A chatbot answers questions; this platform decides cases and can prove how it decided each one.",
+  },
+  {
+    q: "What is real and what is synthetic?",
+    a: "Real: the GPT-4o reasoning and photo vision, the Microsoft Fabric lakehouse and published Data Agent, the Foundry persistent agents under Entra RBAC, the immutable journal, and every number on the Outcomes page. Synthetic by policy: all people, policies, claims, and amounts. Nothing is scripted; runs can surprise the presenter.",
+  },
+  {
+    q: "Does this work for any insurance company, bank, or other domain?",
+    a: "It generalizes to subject-centric, staged, evidence-based, regulated decisions: most of insurance (claims across lines, underwriting), banking origination and operations (loans, KYC alert disposition, disputes), and analogues like prior authorization or eligibility. The proof is empirical: banking went live as one signed package plus one tool-kit registration line with zero platform changes. Honest boundaries: linear stage lifecycles today (branching flows need orchestrator work), seconds-to-minutes latency class (not sub-second inline scoring), and demo-scale read aggregation with a designed v1 swap.",
+  },
+  {
+    q: "How does the platform adapt to changes or new use cases?",
+    a: "Three tiers. Changing an existing use case (thresholds, prompts, gates, SLOs) is a package edit: hours, no code. Adding a use case in a known industry is packages plus corpus plus knowledge docs: days, no platform code; every surface renders it automatically because it reads declarations. What still costs code, deliberately: a new industry's tool implementations, a new branded portal, and real core-system connectors.",
+  },
+  {
+    q: "How are policy documents used in decisions?",
+    a: "The knowledge base holds the carrier's operating rules (coverage sections, damage and total-loss rules, fraud formulas, settlement and regulatory references), embedded in Azure AI Search, retrieved per step, and cited in the journal so the Decision Record shows which document backed which step. Agent prompts reference documents by id, and each document is tagged with the ontology entities it governs.",
+  },
+  {
+    q: "What about full 50-60 page policy wordings?",
+    a: "A designed next phase, deliberately not dumped in raw: Azure AI Document Intelligence parses the form into sections, chunks are indexed with form number, state, and edition-date metadata, and retrieval filters per subject so a Texas claim cites the Texas edition, section by section. Unfiltered wording chunks would degrade retrieval quality today, which is why ingestion and filtering land together.",
+  },
+  {
+    q: "Can the ontology be built from documents?",
+    a: "Documents bind to the ontology and can propose extensions to it, but the ontology stays a governed, versioned artifact. Ingested sections become document nodes in the Fabric ontology graph linked to the entities they govern; LLM-assisted extraction can propose new entities and relationships (endorsement, exclusion, condition) as candidates a human curates before publish.",
+  },
+  {
+    q: "Why support both Microsoft Agent Framework and Foundry Agent Service?",
+    a: "Portability is a claim until you can demonstrate it. Decision semantics live in one PromptContract; the runtime is chosen per run from a dropdown. Agent Framework runs in-process with key auth; Foundry hosts the same agents as persistent, portal-visible agents under Entra RBAC. Run the same subject on both and diff the journal: same grounding, same gates, same decision shape.",
+  },
+  {
+    q: "How does this relate to Microsoft 365 Copilot or Copilot Studio?",
+    a: "Complementary, not competing. Copilot Studio builds conversational agents on M365; ADP is a decision engine with a regulator-grade journal in the client's tenant. The operator copilot's API contract is the natural declarative-agent action for surfacing ADP inside M365 Copilot once tenant licensing and consent land; that step is on the roadmap.",
+  },
+  {
+    q: "Can members see fraud information through the chat?",
+    a: "No, by construction rather than by instruction. The member assistant's grounding is assembled server-side from that member's records only; fraud stages enter its context solely as 'routine review' and their outputs are never included, so they cannot leak even under prompt injection. The operator copilot has the inverse entitlement and cites its sources.",
+  },
+  {
+    q: "Is it production-ready? What would production take?",
+    a: "It is a demonstration asset in deliberate demo posture: synthetic data, open API, cosmetic share gate. It is production-shaped where it matters: immutable journal, managed identity, Entra RBAC on the Foundry data plane, signed packages, exit-code-gated deploys, and a written recreate-from-zero migration guide. Production is hardening posture (private networking, Key Vault everywhere, Entra on the API) plus real core-system connectors at the existing tool seam; the engine does not change.",
+  },
+  {
+    q: "What does it cost to run, and how fast are decisions?",
+    a: "Roughly 3 to 5 USD per day idle on serverless SKUs; the material cost is per-decision tokens, which the run and cycle-time metrics let you price per use case. Decision latency on the intake stage runs about 8 seconds median and 12 seconds at the 90th percentile; where a percentile looks slow, the journal shows a human was deciding at a gate, on purpose.",
+  },
+  {
+    q: "Can this run in our subscription and tenant?",
+    a: "Yes. The full environment is captured as infrastructure code plus a phased migration guide (docs/MIGRATION.md): resource inventory, RBAC grants with the exact role caveats, knowledge-index seeding, Fabric steps including the manual portal items, the complete backend configuration table, and an eleven-point verification checklist.",
+  },
+  {
+    q: "What happens when the model is wrong?",
+    a: "Three defenses, all visible. Calibrated confidence gates the run to a human before a doubtful decision stands; the journal records every step immutably so wrongness is findable and attributable; and the Outcomes page shows the agreement rate between humans and agents at gates, so drift becomes a measured trend, and overrides feed threshold tuning rather than disappearing.",
   },
 ];
 
@@ -250,6 +323,11 @@ export default function DocsPage() {
 
           <section className="adp-docs__section">
             <DiagramCard d={DIAGRAMS[0]} />
+          </section>
+
+          <section id="integration" className="adp-docs__section">
+            <h3 className="adp-section-title">How a use case plugs in</h3>
+            <DiagramCard d={DIAGRAMS[5]} />
           </section>
 
           <section id="flow" className="adp-docs__section">
@@ -457,6 +535,21 @@ export default function DocsPage() {
                 </tbody>
               </table>
             </div>
+          </section>
+
+          <section id="faq" className="adp-docs__section">
+            <h3 className="adp-section-title">Frequently asked questions</h3>
+            <p className="adp-queue__dim">
+              The questions architects, executives, and domain experts actually ask about this platform, answered
+              honestly. Every answer is demonstrable on the live instance.
+            </p>
+            <Accordion className="adp-docs__faq">
+              {FAQ.map((f) => (
+                <AccordionItem key={f.q} title={f.q}>
+                  <p>{f.a}</p>
+                </AccordionItem>
+              ))}
+            </Accordion>
             <p className="adp-queue__dim adp-docs__closing">
               IBM Consulting: Data Transformation on Microsoft Cloud. Demonstration asset, all data synthetic.
             </p>
