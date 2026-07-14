@@ -187,7 +187,17 @@ The banking flow is the same platform verbatim: borrower applies at `/bank`, the
 - Dual-brand convention shared with the DT offering website and collateral
 - Playwright screenshot verification loop (`scripts/shot.mjs`) as part of the definition of done
 
-### 4.4 The package model (how a use case ships)
+### 4.4 Digital workers: agents, skills, and tools
+
+A digital worker is one lifecycle stage, shipped as a signed package. Its anatomy follows one clean distinction:
+
+- **Agents are who decides.** Each agent has its own instructions, confidence calibration (low/high thresholds), gate policy, and ontology bindings. Example: Settlement Handler runs `settlement-intake`, `settlement-calculation`, `settlement-disclosure`, `settlement-disbursement`.
+- **Skills are what they know.** A skill is a named, versioned unit of domain method (`skills/<name>/SKILL.md`) attached to specific agents via `skillRefs` and compiled into the artifact. Skills shape reasoning and have no side effects: `deductible-application` is the carrier's deductible procedure as a governed asset, not prose buried in a prompt. Settlement Handler carries 11 skills across its 4 agents.
+- **Tools are what they can do.** A tool is an executable MCP capability the agent calls at runtime via function calling; every invocation is journaled with arguments, result, duration, and success. Settlement Handler declares 4: `claim-store` (Cosmos), `policy-store` and `vehicle-lookup` (core-system stubs: the seam where a real Guidewire/Duck Creek connects), and `decision-journal`.
+
+Why the counts appear on every trace ("4 agents · 11 skills · 4 tools"): **provenance**. A decision is permanently attributable to the exact signed version of the worker that made it; changing any skill or tool changes the version, and old decisions keep pointing at the version that produced them. The live, always-current reference for every worker (agents, skills, gates, tools, SLOs, observed behavior) renders on the console's Docs page and the Agents page from the registry itself.
+
+### 4.5 The package model (how a use case ships)
 
 `agent-package.v1.schema.json` declares: package identity + version, industry + use case, lifecycle `stage` + `stageOrder`, the digital worker (name, Entra Agent ID declaration, corpus binding), agents (model, instructions, skills, calibration), tools, HITL gate policy, SLOs. Packages are compiled and signed by `adpc` into `platform/src/TracesApi/Resources/*.zip` and validated at load.
 

@@ -53,6 +53,7 @@ public sealed class GetAgents(DwStateReader reader, Adp.Agents.AdapterRegistry a
                     Capability: a.Capability,
                     Model: a.FoundryModel ?? "gpt-4o",
                     SkillCount: a.SkillRefs.Count,
+                    Skills: a.SkillRefs,
                     OntologyBindings: a.OntologyBinding,
                     LowThreshold: a.ConfidenceCalibration?.LowThreshold,
                     HighThreshold: a.ConfidenceCalibration?.HighThreshold,
@@ -74,8 +75,10 @@ public sealed class GetAgents(DwStateReader reader, Adp.Agents.AdapterRegistry a
                 StageOrder: pkg.Package.StageOrder,
                 WorkerId: pkg.DigitalWorker.Id,
                 WorkerName: pkg.DigitalWorker.Name,
+                Description: pkg.DigitalWorker.Description,
                 EntraAgentId: pkg.DigitalWorker.EntraAgentId,
                 Capabilities: pkg.DigitalWorker.Capabilities,
+                Tools: pkg.Tools.Select(t => new ToolView(t.Id, t.Name, t.BackendComponent)).ToList(),
                 Slos: pkg.DigitalWorker.Slos
                     .Select(s => new SloView(s.Metric, $"{s.Comparator} {s.Target.ToString(System.Globalization.CultureInfo.InvariantCulture)}", s.Window))
                     .ToList(),
@@ -140,13 +143,17 @@ public sealed record WorkerGovernance(
     int? StageOrder,
     string WorkerId,
     string WorkerName,
+    string? Description,
     string? EntraAgentId,
     IReadOnlyList<string> Capabilities,
+    IReadOnlyList<ToolView> Tools,
     IReadOnlyList<SloView> Slos,
     IReadOnlyList<AgentGovernance> Agents,
     WorkerStats? Stats);
 
 public sealed record SloView(string Metric, string Target, string Window);
+
+public sealed record ToolView(string Id, string Name, string? BackendComponent);
 
 public sealed record AgentGovernance(
     string AgentId,
@@ -154,6 +161,7 @@ public sealed record AgentGovernance(
     string Capability,
     string Model,
     int SkillCount,
+    IReadOnlyList<string> Skills,
     IReadOnlyList<string>? OntologyBindings,
     double? LowThreshold,
     double? HighThreshold,

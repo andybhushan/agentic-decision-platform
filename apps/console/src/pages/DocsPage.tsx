@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { Accordion, AccordionItem, Button, Tag, Tile } from "@carbon/react";
 import { Link } from "react-router-dom";
+import { fetchAgents, type AgentsResponse } from "../services/agentsClient";
+import { pct } from "../lib/format";
 import {
   ArrowRight,
   Chat,
@@ -22,6 +25,7 @@ const TOC = [
   { id: "integration", label: "Use-case integration" },
   { id: "flow", label: "Process flow" },
   { id: "grounding", label: "IQ federation" },
+  { id: "workers", label: "Digital workers" },
   { id: "chat", label: "Conversational AI" },
   { id: "stack", label: "Technology stack" },
   { id: "api", label: "API surface" },
@@ -253,6 +257,16 @@ function DiagramCard({ d }: { d: (typeof DIAGRAMS)[number] }) {
 }
 
 export default function DocsPage() {
+  const [registry, setRegistry] = useState<AgentsResponse | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchAgents("30d")
+      .then((a) => { if (!cancelled) setRegistry(a); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="adp-docs">
       <section className="adp-docs__hero">
@@ -272,7 +286,7 @@ export default function DocsPage() {
             Download full documentation (.md)
           </Button>
           <Button kind="tertiary" as={Link} to="/docs/diagrams" renderIcon={FlowData}>
-            Diagram library (12 views)
+            Diagram library (14 views)
           </Button>
           <Button kind="ghost" as={Link} to="/" renderIcon={ArrowRight}>
             Open the live platform
@@ -371,6 +385,82 @@ export default function DocsPage() {
                 </tbody>
               </table>
             </div>
+          </section>
+
+          <section id="workers" className="adp-docs__section">
+            <h3 className="adp-section-title">Digital workers: agents, skills, and tools</h3>
+            <p className="adp-docs__lede">
+              A digital worker is one stage of a use case's lifecycle, shipped as a signed package. Inside it, three
+              kinds of parts with one clean distinction: <strong>agents are who decides</strong> (each with its own
+              instructions, calibration, and gate thresholds), <strong>skills are what they know</strong> (named,
+              versioned units of domain method that shape reasoning and have no side effects), and{" "}
+              <strong>tools are what they can do</strong> (MCP capabilities invoked at runtime, every call journaled
+              with arguments, result, and duration). Change any skill or tool and the worker's version changes, so
+              every past decision permanently points at the exact competency surface that produced it.
+            </p>
+            <p className="adp-queue__dim">
+              The reference below renders live from the platform's own registry (the signed packages joined with the
+              journal), so it cannot drift from reality.
+            </p>
+            {!registry && <p className="adp-queue__dim">Loading the live registry...</p>}
+            {registry?.workers.map((w) => (
+              <Tile key={w.packageId} className="adp-docs__worker">
+                <div className="adp-docs__worker-head">
+                  <h4>{w.workerName}</h4>
+                  <Tag type="outline" size="sm">{w.packageId} v{w.version}</Tag>
+                  {w.stage && <Tag type="teal" size="sm">{w.stage}</Tag>}
+                  <Tag type={w.industry === "banking" ? "purple" : "blue"} size="sm">{w.useCase}</Tag>
+                </div>
+                {w.description && <p className="adp-queue__dim adp-docs__worker-desc">{w.description}</p>}
+                <div className="adp-docs__table-wrap">
+                  <table className="adp-docs__table adp-docs__table--compact">
+                    <thead>
+                      <tr>
+                        <th>Agent (who)</th>
+                        <th>Decides</th>
+                        <th>Gate</th>
+                        <th>Skills (know-how)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {w.agents.map((a) => (
+                        <tr key={a.agentId}>
+                          <td className="adp-docs__mono">{a.agentId}</td>
+                          <td>{a.capability.replaceAll("-", " ")}</td>
+                          <td className="adp-docs__mono">{a.lowThreshold != null ? `< ${pct(a.lowThreshold)}` : "-"}</td>
+                          <td>
+                            <span className="adp-docs__chips">
+                              {a.skills.map((s) => (
+                                <Tag key={s} type="cool-gray" size="sm">{s.replace("skill.", "")}</Tag>
+                              ))}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="adp-docs__worker-tools">
+                  <span className="adp-docs__worker-tools-label">Tools (hands)</span>
+                  <span className="adp-docs__chips">
+                    {(w.tools ?? []).map((t) => (
+                      <Tag key={t.id} type="blue" size="sm" title={t.name}>
+                        {t.id.replace("tool.", "")}
+                        {t.backendComponent ? ` → ${t.backendComponent}` : ""}
+                      </Tag>
+                    ))}
+                  </span>
+                  <span className="adp-queue__dim adp-docs__worker-tools-note">
+                    invoked at runtime via function calling; every call journaled with arguments, result, and duration
+                  </span>
+                </div>
+                {w.slos.length > 0 && (
+                  <p className="adp-queue__dim adp-docs__worker-tools">
+                    <strong>Declared SLOs:</strong> {w.slos.map((s) => `${s.metric} ${s.target} over ${s.window}`).join(" · ")}
+                  </p>
+                )}
+              </Tile>
+            ))}
           </section>
 
           <section id="chat" className="adp-docs__section">

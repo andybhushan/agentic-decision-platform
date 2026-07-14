@@ -15,12 +15,19 @@ export interface AgentStats {
   gatesFired: number;
 }
 
+export interface ToolView {
+  id: string;
+  name: string;
+  backendComponent?: string | null;
+}
+
 export interface AgentGovernance {
   agentId: string;
   kind: string;
   capability: string;
   model: string;
   skillCount: number;
+  skills: string[];
   ontologyBindings?: string[] | null;
   lowThreshold?: number | null;
   highThreshold?: number | null;
@@ -45,8 +52,10 @@ export interface WorkerGovernance {
   stageOrder?: number | null;
   workerId: string;
   workerName: string;
+  description?: string | null;
   entraAgentId?: string | null;
   capabilities: string[];
+  tools: ToolView[];
   slos: SloView[];
   agents: AgentGovernance[];
   stats?: WorkerStats | null;

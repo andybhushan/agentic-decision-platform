@@ -1646,6 +1646,64 @@ body {
   margin-block-start: 1.5rem;
 }
 
+// Digital workers reference cards on the docs page.
+.adp-docs__worker {
+  margin-block-end: 1.25rem;
+  border-block-start: 3px solid #1192e8;
+}
+
+.adp-docs__worker-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-block-end: 0.5rem;
+
+  h4 {
+    font-size: 1.0625rem;
+    margin-inline-end: 0.25rem;
+  }
+}
+
+.adp-docs__worker-desc {
+  max-width: 56rem;
+  margin-block-end: 0.75rem;
+}
+
+.adp-docs__worker-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-block-start: 0.875rem;
+  font-size: 0.8125rem;
+}
+
+.adp-docs__worker-tools-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #0f62fe;
+  border-radius: 0.625rem;
+  padding: 0.0625rem 0.625rem;
+}
+
+.adp-docs__worker-tools-note {
+  font-size: 0.75rem;
+}
+
+.adp-docs__chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.adp-docs__table--compact td {
+  padding-block: 0.5rem;
+}
+
 .adp-docs__faq {
   max-width: 58rem;
   margin-block-start: 1rem;
