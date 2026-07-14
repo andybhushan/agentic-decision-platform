@@ -32,6 +32,12 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
     private readonly TokenCredential _credential = credential ?? new DefaultAzureCredential();
     private static readonly TokenRequestContext _tokenContext = new(["https://database.windows.net/.default"]);
 
+    // Runtime-intake rows synced into the lakehouse legitimately carry NULLs (no severity
+    // hint, no vin), so every reader access is null-safe: a runtime-filed subject must be
+    // queryable exactly like a corpus one.
+    private static string Str(SqlDataReader r, int i, string fallback = "unspecified") => r.IsDBNull(i) ? fallback : r.GetString(i);
+    private static DateTime Date(SqlDataReader r, int i) => r.IsDBNull(i) ? DateTime.MinValue : r.GetDateTime(i);
+
     public static FabricLakehouseSource FromEnvironment()
     {
         var conn = Environment.GetEnvironmentVariable("FABRIC_LAKEHOUSE_CONNECTION");
@@ -130,7 +136,7 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             while (await reader.ReadAsync(ct))
             {
                 var n = reader.GetInt32(1);
-                buckets.Add((reader.GetString(0), n));
+                buckets.Add((Str(reader, 0), n));
                 total += n;
             }
         }
@@ -282,8 +288,8 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             cmd.Parameters.AddWithValue("@cn", claimNumber);
             using var reader = await cmd.ExecuteReaderAsync(ct);
             if (!await reader.ReadAsync(ct)) return [];
-            state = reader.GetString(0);
-            incidentType = reader.GetString(1);
+            state = Str(reader, 0, "");
+            incidentType = Str(reader, 1, "");
         }
         if (string.IsNullOrEmpty(state)) return [];
 
@@ -303,7 +309,7 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             while (await reader.ReadAsync(ct))
             {
                 var n = reader.GetInt32(1);
-                rows.Add((reader.GetString(0), n));
+                rows.Add((Str(reader, 0), n));
                 total += n;
             }
         }
@@ -372,7 +378,7 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             while (await reader.ReadAsync(ct))
             {
                 rows.Add((
-                    reader.GetString(0), reader.GetDateTime(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                    Str(reader, 0), Date(reader, 1), Str(reader, 2), Str(reader, 3), Str(reader, 4),
                     reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
                     reader.IsDBNull(6) ? "?" : reader.GetString(6),
                     reader.IsDBNull(7) ? "?" : reader.GetString(7)));
@@ -597,14 +603,14 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             while (await reader.ReadAsync(ct))
             {
                 rows.Add((
-                    reader.GetString(0),
-                    reader.GetString(1),
-                    reader.GetString(2),
-                    reader.GetString(3),
-                    reader.GetDateTime(4),
-                    reader.GetString(5),
-                    reader.GetString(6),
-                    reader.GetString(7)));
+                    Str(reader, 0),
+                    Str(reader, 1),
+                    Str(reader, 2),
+                    Str(reader, 3),
+                    Date(reader, 4),
+                    Str(reader, 5),
+                    Str(reader, 6),
+                    Str(reader, 7)));
             }
         }
 
@@ -671,8 +677,8 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
                     Origin: "GROUNDED",
                     Dimensions: SupportedDimensions)];
             }
-            incidentType = reader.GetString(0);
-            state = reader.GetString(1);
+            incidentType = Str(reader, 0, "");
+            state = Str(reader, 1, "");
         }
 
         // Round 2: 10 most-recent similar claims.
@@ -695,9 +701,9 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             {
                 examples.Add(string.Format(inv,
                     "- {0} on {1:yyyy-MM-dd}: severity={2} (vehicle {3} {4} {5})",
-                    reader.GetString(0),
-                    reader.GetDateTime(1),
-                    reader.GetString(2),
+                    Str(reader, 0),
+                    Date(reader, 1),
+                    Str(reader, 2),
                     reader.IsDBNull(3) ? "?" : reader.GetString(3),
                     reader.IsDBNull(4) ? "?" : reader.GetString(4),
                     reader.IsDBNull(5) ? 0 : reader.GetInt32(5)));
@@ -719,7 +725,7 @@ public sealed class FabricLakehouseSource(string connectionString, TokenCredenti
             using var reader = await cmd.ExecuteReaderAsync(ct);
             while (await reader.ReadAsync(ct))
             {
-                distribution.Add($"{reader.GetString(0)}: {reader.GetInt32(1)}");
+                distribution.Add($"{Str(reader, 0)}: {reader.GetInt32(1)}");
             }
         }
 
