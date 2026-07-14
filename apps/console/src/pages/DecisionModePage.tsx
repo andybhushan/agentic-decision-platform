@@ -145,6 +145,7 @@ export default function DecisionModePage() {
   const [evidenceAssessment, setEvidenceAssessment] = useState<string | null>(null);
   const [runtimes, setRuntimes] = useState<string[]>([]);
   const [runtime, setRuntime] = useState<string>("");
+  const [registry, setRegistry] = useState<import("../services/agentsClient").AgentsResponse | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -153,6 +154,7 @@ export default function DecisionModePage() {
         if (cancelled) return;
         setRuntimes(a.availableRuntimes ?? []);
         setRuntime(a.runtime);
+        setRegistry(a);
       }),
     ).catch(() => {});
     return () => { cancelled = true; };
@@ -476,7 +478,15 @@ export default function DecisionModePage() {
                   ? "Starting orchestration"
                   : runState.openGate
                     ? "Paused: waiting for your judgment (right rail)"
-                    : "Agents working"
+                    : (() => {
+                        // Which agent is at work right now: the worker's next undone step.
+                        const worker = registry?.workers.find((w) => w.packageId === activePackage);
+                        const idx = runState.liveSteps.length;
+                        const current = worker?.agents[idx];
+                        return current
+                          ? `${worker!.workerName} · ${current.agentId} working (step ${idx + 1} of ${worker!.agents.length})`
+                          : "Agents working";
+                      })()
               }
             />
           )}

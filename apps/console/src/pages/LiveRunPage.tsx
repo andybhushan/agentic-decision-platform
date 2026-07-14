@@ -13,7 +13,7 @@ import {
 import { resolveApiBase } from "../services/config";
 import { fetchHealth, type HealthStatus } from "../services/healthClient";
 import { fetchDecisions, type PackageSummary } from "../services/decisionsClient";
-import { fetchAgents, RUNTIME_LABELS } from "../services/agentsClient";
+import { fetchAgents, RUNTIME_LABELS, type AgentsResponse } from "../services/agentsClient";
 import { useDecisionRun } from "../hooks/useDecisionRun";
 import { pct, secs } from "../lib/format";
 
@@ -29,6 +29,7 @@ export default function LiveRunPage() {
   const [packages, setPackages] = useState<PackageSummary[]>([]);
   const [runtimes, setRuntimes] = useState<string[]>([]);
   const [runtime, setRuntime] = useState<string>("");
+  const [registry, setRegistry] = useState<AgentsResponse | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,6 +41,7 @@ export default function LiveRunPage() {
         if (cancelled) return;
         setRuntimes(a.availableRuntimes ?? []);
         setRuntime(a.runtime);
+        setRegistry(a);
       })
       .catch(() => {});
     return () => { cancelled = true; };
@@ -124,7 +126,14 @@ export default function LiveRunPage() {
             </Button>
             {busy && (
               <InlineLoading
-                description={runState.phase === "starting" ? "Starting orchestration" : `Streaming (${runState.runStatus?.status ?? "Running"})`}
+                description={(() => {
+                  if (runState.phase === "starting") return "Starting orchestration";
+                  const worker = registry?.workers.find((w) => w.packageId === packageId);
+                  const current = worker?.agents[runState.liveSteps.length];
+                  return current
+                    ? `${current.agentId} working (step ${runState.liveSteps.length + 1} of ${worker!.agents.length})`
+                    : `Streaming (${runState.runStatus?.status ?? "Running"})`;
+                })()}
               />
             )}
           </div>
