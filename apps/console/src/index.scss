@@ -1655,14 +1655,44 @@ body {
 .adp-docs__worker-head {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  margin-block-end: 0.5rem;
+  margin-block-end: 0.75rem;
 
   h4 {
     font-size: 1.0625rem;
     margin-inline-end: 0.25rem;
   }
+}
+
+// Large tinted icon badge per worker card, matching the stat-tile badge language.
+.adp-docs__worker-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 3rem;
+  block-size: 3rem;
+  border-radius: 0.625rem;
+  flex-shrink: 0;
+
+  &--insurance {
+    background: rgba(17, 146, 232, 0.14);
+    color: #1192e8;
+  }
+
+  &--banking {
+    background: rgba(138, 63, 252, 0.14);
+    color: #8a3ffc;
+  }
+
+  &--humans {
+    background: rgba(0, 157, 154, 0.14);
+    color: #009d9a;
+  }
+}
+
+.adp-docs__worker--humans {
+  border-block-start-color: #009d9a;
 }
 
 .adp-docs__worker-desc {

@@ -5,6 +5,7 @@ import { fetchAgents, type AgentsResponse } from "../services/agentsClient";
 import { pct } from "../lib/format";
 import {
   ArrowRight,
+  Bot,
   Chat,
   Document,
   Download,
@@ -13,6 +14,7 @@ import {
   Network_3,
   Rocket,
   Security,
+  UserMultiple,
 } from "@carbon/icons-react";
 
 // Solution documentation: the whole platform captured as built, on the platform itself.
@@ -150,6 +152,10 @@ const FAQ: { q: string; a: string }[] = [
   {
     q: "Can this run in our subscription and tenant?",
     a: "Yes. The full environment is captured as infrastructure code plus a phased migration guide (docs/MIGRATION.md): resource inventory, RBAC grants with the exact role caveats, knowledge-index seeding, Fabric steps including the manual portal items, the complete backend configuration table, and an eleven-point verification checklist.",
+  },
+  {
+    q: "Who are ADJ-1204 or SIU-INV-436 in the traces?",
+    a: "The carrier's human workforce, not AI agents. Adjusters, SIU investigators, and repair shops exist as governed rosters in the Fabric lakehouse with state, certification, tenure, and live workload; routing agents select among them under declared policy (certification matches severity tier, state matches, lowest workload wins, hard exclusions honored). The AI's output is often a decision about which human should act: the platform routes work to the workforce rather than replacing it, and the routing reasoning is journaled like every other step.",
   },
   {
     q: "What happens when the model is wrong?",
@@ -406,6 +412,9 @@ export default function DocsPage() {
             {registry?.workers.map((w) => (
               <Tile key={w.packageId} className="adp-docs__worker">
                 <div className="adp-docs__worker-head">
+                  <span className={`adp-docs__worker-icon adp-docs__worker-icon--${w.industry === "banking" ? "banking" : "insurance"}`}>
+                    <Bot size={28} />
+                  </span>
                   <h4>{w.workerName}</h4>
                   <Tag type="outline" size="sm">{w.packageId} v{w.version}</Tag>
                   {w.stage && <Tag type="teal" size="sm">{w.stage}</Tag>}
@@ -461,6 +470,25 @@ export default function DocsPage() {
                 )}
               </Tile>
             ))}
+            <Tile className="adp-docs__worker adp-docs__worker--humans">
+              <div className="adp-docs__worker-head">
+                <span className="adp-docs__worker-icon adp-docs__worker-icon--humans">
+                  <UserMultiple size={28} />
+                </span>
+                <h4>The humans in the loop: who ADJ-*, SIU-*, and shop ids are</h4>
+              </div>
+              <p className="adp-queue__dim adp-docs__worker-desc">
+                Ids like <span className="adp-docs__mono">ADJ-1204</span> or{" "}
+                <span className="adp-docs__mono">SIU-INV-436</span> in traces are not AI agents: they are the
+                carrier's human workforce. Adjusters, SIU investigators, and network repair shops live as governed
+                rosters in the Fabric lakehouse (state, certification tier, tenure, current workload), and routing
+                agents select among them under declared policy: certification must match the claim's severity tier,
+                state must match, then the lowest current workload wins, with hard exclusions honored. This is a
+                deliberate design point: the AI's output is very often a decision about <em>which human should act</em>.
+                The platform does not replace the workforce; it routes work to it, with the routing reasoning
+                journaled and auditable like every other step.
+              </p>
+            </Tile>
           </section>
 
           <section id="chat" className="adp-docs__section">
