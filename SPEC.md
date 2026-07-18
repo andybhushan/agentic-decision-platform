@@ -12,6 +12,16 @@ A robust, modern, Azure-native agentic decision platform — the use case is a p
 
 Regulated industries run high-volume operational decisions — claim triage, damage estimation, fraud screening, settlement, loan origination — on manual process, brittle rule engines, or single-purpose AI pilots with no governance story. ADP proves a different model: one governed engine, grounded in the organization's own data, that can run *any* regulated decision. The fastest way to know whether an architecture survives contact with reality is to build it end to end on more than one industry — that's what this repo does.
 
+## Methodology: spec-driven development
+
+ADP was built spec-first at every layer: write the PRD/ADR, get it approved, then build against it — never code first and document after.
+
+- **Platform layer** — 16 ADRs in `docs/adr/` (`0001`–`0016`), each in the same format: Context → Options → Decision → Consequences → Trade-offs accepted → Validation. Per `docs/adr/README.md`: *"ADRs are written before the corresponding code lands, not as backfill. If a future change violates an ADR, write a new ADR that supersedes it — never silently drift."* These cover the decisions that shape the whole platform: package format (ADR-0002), compile pipeline (ADR-0003), state/bus/trace stores (ADR-0004), agent runtime stack (ADR-0007), identity/governance (ADR-0008), context layer (ADR-0009), semantic layer (ADR-0011, ADR-0014), Work IQ (ADR-0012, ADR-0015).
+- **Use-case layer** — every use case follows the standard flow documented in `docs/USECASE-STRUCTURE.md`: *"Write `spec/PRD.md` + ADRs; get the PRD approved (spec-driven gate)"* — only then define ontology, generate data, and author agent packages/tools. `meridian-pnc-auto-claims/spec/PRD.md` sets the thesis, customer brief, the full 13-stage standard claims lifecycle, and MVP scope; `meridian-pnc-auto-claims/spec/adr/ADR-set.md` layers use-case-specific decisions (e.g. standalone infra, no shared dependencies) on top of the platform ADRs.
+- **This file** is the third tier — the platform's current-state spec, kept honest against the ADRs and the PRD as the build actually progressed, not a fixed-in-time wishlist (see the date note at the top: this supersedes an earlier pre-code draft).
+
+The result: every major architectural choice in this repo traces back to a written decision record with the alternatives it rejected, not a retrofitted explanation.
+
 ## What's built (current, not planned)
 
 | Use case | Industry | Digital workers | Lifecycle |
