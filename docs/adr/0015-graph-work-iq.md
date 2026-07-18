@@ -7,7 +7,7 @@
 
 ## Context
 
-ADR-0012 documented the synthetic Work IQ source as a v0 stand-in and called out the v1 migration to Microsoft Graph. The banking stress test (FINDINGS.md) confirmed Work IQ was the last L5 source not anchored on a real service. Track 3 closes that loop with one important constraint: the deployer's tenant (`anand.bhushan@ibmalliance.onmicrosoft.com`) is IBM-managed; admin consent for app-only Chat/Mail/Files scopes will not be granted, and IBM-internal automation is broadly sensitive (see `feedback_ibm_security_no_automation` memory).
+ADR-0012 documented the synthetic Work IQ source as a v0 stand-in and called out the v1 migration to Microsoft Graph. The banking stress test (FINDINGS.md) confirmed Work IQ was the last L5 source not anchored on a real service. Track 3 closes that loop with one important constraint: the deployer's tenant (`anand.bhushan@ibmalliance.onmicrosoft.com`) is IBM-managed; admin consent for app-only Chat/Mail/Files scopes will not be granted, and automation against IBM-internal systems is a hard no under IBM security policy.
 
 ## Decision
 

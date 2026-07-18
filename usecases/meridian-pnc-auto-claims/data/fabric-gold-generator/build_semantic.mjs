@@ -79,7 +79,7 @@ const bim = {
 const b64 = s => Buffer.from(s, "utf8").toString("base64");
 const body = {
   displayName: "gold_claims_semantic", type: "SemanticModel",
-  description: "IMAGINE claims semantic model (Direct Lake over gold_claims) with ontology relationships. Ontology-equivalent layer pending Fabric IQ enablement.",
+  description: "ADP claims semantic model (Direct Lake over gold_claims) with ontology relationships.",
   definition: { parts: [
     { path: "definition.pbism", payload: b64(JSON.stringify({ version: "4.0", settings: {} })), payloadType: "InlineBase64" },
     { path: "model.bim", payload: b64(JSON.stringify(bim)), payloadType: "InlineBase64" }

@@ -1,6 +1,6 @@
 # Agentic Decision Platform (ADP) — Full Brief for Infographic Generation
 
-*Prepared 2026-07-15. Source of truth: `apps/console/public/docs/ADP-SOLUTION.md` (2026-07-13), `docs/CTO-DEMO-PLAYBOOK.md`, live resource group `rg-adp-v1`. All facts below are current and verified against the live system — nothing here is aspirational.*
+*Prepared 2026-07-15. Source of truth: `apps/console/public/docs/ADP-SOLUTION.md` (2026-07-13), live resource group `rg-adp-v1`. All facts below are current and verified against the live system — nothing here is aspirational.*
 
 **How to use this document:** paste the whole thing into ChatGPT (or hand it section by section) with an instruction like *"Using the facts in this brief only, design an infographic on [section name]. Use the exact numbers, names, and structure given — do not invent data."* A ready-made list of suggested infographics with their source sections is at the very end.
 

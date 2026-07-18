@@ -4,7 +4,7 @@
 // Run: az deployment group create --resource-group rg-adp-v1 \
 //      --template-file main.bicep --parameters parameters/dev.bicepparam
 //
-// IMPORTANT: per feedback_adp_portal_local_first, do NOT deploy without explicit user signal.
+// IMPORTANT: do NOT deploy without explicit user signal.
 
 targetScope = 'resourceGroup'
 

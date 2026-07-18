@@ -42,3 +42,15 @@ out/
 docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md
 docs/TECHNICAL-WALKTHROUGH-SCRIPT.md
 docs/ADP-W3-BLOG-POST.html
+docs/CTO-DEMO-PLAYBOOK.md
+ADP-CONSOLE-INTEGRATION-BRIEF.md
+
+# --- reference-only harvested copy of Richard Hogan's client-demo repo.
+# --- Never sanitized: still titled "PROJECT IMAGINE", links a live IMAGINE
+# --- Azure deployment, and contains real "Chubb" references. Not part of
+# --- ADP's own build; local reference only, never tracked or shared.
+apps/_harvest-client-demo/
+
+# --- dead, superseded console scaffold (pre-2026-07-10 rebuild).
+# --- Untouched since the initial commit; apps/console/ is the real one.
+platform/console/

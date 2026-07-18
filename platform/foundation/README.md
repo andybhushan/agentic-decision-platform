@@ -32,6 +32,6 @@ platform/foundation/
 ## Rewiring TODO (build phase)
 - `services/data-access/seed-input-data.mjs` generates claims-shaped input — its schema path points at the use-case input contracts (`usecases/meridian-pnc-auto-claims/ontology/contracts-input/schemas`); wire that path (it's claims-specific, so it may move into the use case).
 - Wire the **C# agents** (platform/src) to **consume the Fabric data-agent / ontology-mcp** per the ICA-aligned MCP pattern (ADR-U7).
-- Provision a **fresh Fabric workspace + event-store on the DT subscription** (do not reuse IMAGINE infra).
+- Provision a **fresh Fabric workspace + event-store on the DT subscription** (standalone, no shared infrastructure with other engagements).
 
 > Provenance: the Fabric ontology (23 entities incl. the multimodal evidence/consent set), the gold generator, and these contracts/services were proven live before migration. See each use case's `ontology/` + `data/fabric-gold-generator/`.

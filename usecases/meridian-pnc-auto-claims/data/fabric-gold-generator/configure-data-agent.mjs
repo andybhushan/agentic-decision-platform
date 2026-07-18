@@ -1,5 +1,4 @@
 // Configure the ADP claims_data_agent (data sources + instructions) via updateDefinition.
-// Mirrors the working IMAGINE claims_data_agent definition, repointed to the adp workspace items.
 import { readFileSync } from "node:fs";
 
 const WS = "12b39202-bbf7-4985-8eb1-541b3cde0071";
@@ -10,9 +9,9 @@ const GRAPH = "d77214e6-bd0a-4a5a-bfe9-dac2b2e6a7bc";       // claims_ontology_g
 const FAB = process.env.FAB_TOKEN;
 const FH = { Authorization: `Bearer ${FAB}`, "Content-Type": "application/json" };
 
-// reuse the governed instructions from the IMAGINE template (already generic / de-branded)
 let aiInstructions = "You are the governed claims data agent over the auto-claims gold data product, the claims_semantic semantic model, and the claims ontology graph. Apply these policies directly so consuming agents get policy-correct, relationship-aware data.\n\nGate rules (versioned business policy):\n- Total loss: total_loss_probability >= 0.70 is a probable total loss (gate G3 -> licensed-adjuster approval). Use the semantic-model total-loss measures for rates.\n- Fraud: fraud_score >= 0.30 raises a soft gate (G1 -> adjuster review).\n- Coverage: an adverse coverage determination is a hard gate (G2 -> adjuster + supervisor).\n\nPII: never return party_person.date_of_birth or driver_license_number (object-level security).\nRouting: use the lakehouse for raw row lookups/filters/counts; the semantic model for rule-aware aggregates + glossary; the graph for relationship/traversal questions (Claim -> Exposure -> Coverage -> Policy; Claim -> LossEvent -> Vehicle).";
-try { const j = JSON.parse(readFileSync("c:/Users/AnandBhushan/Desktop/MS DT/agentic-decision-platform/build/im-da-def.json", "utf8")); const sc = (j.definition.parts || []).find(p => p.path === "Files/Config/draft/stage_config.json"); if (sc) aiInstructions = JSON.parse(Buffer.from(sc.payload, "base64").toString()).aiInstructions; } catch {}
+// Optional local override file for iterating on instructions without editing this script (gitignored, not required):
+try { const j = JSON.parse(readFileSync("build/data-agent-instructions-override.json", "utf8")); const sc = (j.definition.parts || []).find(p => p.path === "Files/Config/draft/stage_config.json"); if (sc) aiInstructions = JSON.parse(Buffer.from(sc.payload, "base64").toString()).aiInstructions; } catch {}
 
 const b64 = (o) => Buffer.from(typeof o === "string" ? o : JSON.stringify(o, null, 2)).toString("base64");
 const ds = (type, name, artifactId, instr) => ({

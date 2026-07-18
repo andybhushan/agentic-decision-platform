@@ -1,6 +1,6 @@
 # platform/infra/
 
-Bicep modules for the v0 Azure resource group `rg-adp-v1`. Authored locally; **not yet deployed** (per `feedback_adp_portal_local_first`).
+Bicep modules for the Azure resource group `rg-adp-v1`. The live environment has since been provisioned and extended beyond what these modules originally covered — see root `README.md` / `SPEC.md` for current deployed state. These modules remain the source of truth for the base infrastructure shape.
 
 ## Files
 

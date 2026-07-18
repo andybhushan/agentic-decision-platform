@@ -28,8 +28,8 @@
 **Consequence:** + one platform → many deals; − requires disciplined config/data separation.
 
 ## ADR-U6 — Deploy clean to the DT subscription
-**Decision:** Provision **fresh** Azure (Fabric workspace, event backbone, console) on `Project-IBMMSOFFERINGSPOC`, under the offering GitHub account. **No IMAGINE infra, branding, or confidential design** carried over.
-**Why:** this is a DT asset that may be shown widely (incl. disaster-recovery); it must be unambiguously clean of IMAGINE/Chubb IP. Alternatives: reuse IMAGINE infra (confidentiality risk).
+**Decision:** Provision **fresh** Azure (Fabric workspace, event backbone, console) on `Project-IBMMSOFFERINGSPOC`, under the offering GitHub account. No infrastructure, branding, or design carried over from any other engagement.
+**Why:** this is a DT asset that may be shown widely; it must be unambiguously clean, standalone, and carrier-agnostic. Alternatives considered: reusing existing infrastructure (rejected — confidentiality and independence risk).
 **Consequence:** + freely demoable, no exposure; − a fresh provisioning pass (one-time).
 
 ## ADR-U7 — Align to ICA 2.0 at the pattern level; differentiate on Microsoft-native depth

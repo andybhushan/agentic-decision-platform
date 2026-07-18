@@ -27,7 +27,7 @@
 - Carriers can't put ungoverned AI on **coverage decisions** — the **NAIC AI Model Bulletin** (24 states) requires a documented AIS Program, validation, bias controls, and a human in the loop on consequential decisions. No audit trail = no go-live.
 
 ## 6. Solution (what we show)
-An **agentic claims platform** on Microsoft-native Azure: digital-worker agents run the FNOL→triage→coverage→routing lifecycle, **grounded** on a governed data + semantic foundation (Fabric Lakehouse + AI Search), every step **explainable** (GROUNDED vs DERIVED + citations), with **architectural HITL gates** that fire on genuine model uncertainty — not scripted. Carrier-agnostic; Meridian today, Chubb/Progressive tomorrow by reskin.
+An **agentic claims platform** on Microsoft-native Azure: digital-worker agents run the FNOL→triage→coverage→routing lifecycle, **grounded** on a governed data + semantic foundation (Fabric Lakehouse + AI Search), every step **explainable** (GROUNDED vs DERIVED + citations), with **architectural HITL gates** that fire on genuine model uncertainty — not scripted. Carrier-agnostic; Meridian today, any P&C carrier tomorrow by reskin.
 
 ## 7. Outcome (the value story)
 - **Leakage down** via consistent, grounded coverage/severity decisions + surfaced subrogation.

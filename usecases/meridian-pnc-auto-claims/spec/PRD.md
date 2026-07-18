@@ -2,7 +2,7 @@
 
 **Status:** draft (own-track, spec-driven) · **Owner:** Anand Bhushan · **Date:** 2026-06-19
 **Product:** Agentic Decision Platform (ADP) · use case `meridian-pnc-auto-claims`
-**Positioning:** a DT live-demo use case (UC4). A **superset, carrier-agnostic** reference implementation of end-to-end auto-claims processing on a governed agentic data foundation — built so any P&C carrier (Chubb, Progressive, GEICO, Travelers…) instantly relates and can pursue a deal. Doubles as a disaster-recovery showcase if other timelines slip.
+**Positioning:** a DT live-demo use case (UC4). A **superset, carrier-agnostic** reference implementation of end-to-end auto-claims processing on a governed agentic data foundation — built so any P&C carrier (Progressive, GEICO, Travelers…) instantly relates and can pursue a deal.
 **Evidence base:** `RESEARCH-NOTES.md` (figures indicative, verification pending).
 
 ---
@@ -73,7 +73,7 @@ Headline value (verified): **leakage ≈ 7–14% of claims spend** (EY) is the p
 
 ## 10. Non-functional
 - **Security:** managed identity, no secrets, PII minimization, prompt-injection validation (see `guardrails/security.md`).
-- **Deployment:** Azure on the **DT subscription** (`Project-IBMMSOFFERINGSPOC`), own GitHub (offering account), Fabric workspace + event backbone provisioned fresh for ADP (not the IMAGINE infra).
+- **Deployment:** Azure on the **DT subscription** (`Project-IBMMSOFFERINGSPOC`), own GitHub, Fabric workspace + event backbone provisioned fresh and standalone for ADP.
 - **Carrier-agnostic:** brand, data, coverages, rules all config-driven per use-case package; a second package (`banking-loan-origination`) proves the platform is domain-general.
 
 ## 10a. Platform positioning — ICA 2.0 alignment
@@ -93,4 +93,4 @@ Real carrier-system integration (ClaimCenter/CCC live), commercial/non-auto line
 1. Final carrier persona name + brand kit for the reskin demo (Meridian Mutual placeholder).
 2. Which 1–2 KPIs to headline for the COO buyer (recommend cycle-time + leakage-proxy).
 3. Re-run verified research for the figure set before any external deck.
-4. Confirm clean-room: no IMAGINE-confidential design carried into ADP docs (branding already zeroed).
+4. Confirm clean-room: ADP docs are standalone and carrier-agnostic, no external engagement branding or design.

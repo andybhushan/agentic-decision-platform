@@ -56,4 +56,4 @@ Dual-brand system per the offering-demo-website and DT collateral conventions (w
 
 ## 3. Rules unchanged
 
-Local-only repo (no GitHub push), never the "imagine" name, DT sub only, boundary check green on every backend change, no em dashes in docs.
+Standalone, carrier-agnostic naming throughout, DT sub only, boundary check green on every backend change, no em dashes in docs.

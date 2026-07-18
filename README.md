@@ -17,7 +17,6 @@ Not a chatbot. Not a single-use-case AI pilot. The core bet: **a use case is a p
 - **[`docs/ADP-SOLUTION.md`](apps/console/public/docs/ADP-SOLUTION.md)** (also rendered live on the console's `/docs` page) — the full solution document: what/why/how, architecture, tech stack, API surface, governance, roadmap. Start here for the complete picture.
 - **[`SPEC.md`](SPEC.md)** — current scope, pinned stack, honest stubbed-vs-real list, success criteria.
 - **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — platform / use-case / integration views.
-- **[`docs/CTO-DEMO-PLAYBOOK.md`](docs/CTO-DEMO-PLAYBOOK.md)** — the live-demo script and thesis.
 - **[`docs/MIGRATION.md`](docs/MIGRATION.md)** — recreate-from-zero runbook (every Azure resource, every config).
 
 ## What's actually built

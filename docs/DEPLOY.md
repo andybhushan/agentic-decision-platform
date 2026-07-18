@@ -2,7 +2,7 @@
 
 This document describes the local-to-cloud deploy path for adp-v1.
 
-> Per `feedback_adp_portal_local_first`: **never** auto-deploy. The exact commands below are run only on explicit user signal ("deploy", "go live", "ship it").
+> **Never** auto-deploy. The exact commands below are run only on explicit user signal ("deploy", "go live", "ship it").
 
 ## Subscription + region
 

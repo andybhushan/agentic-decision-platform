@@ -50,4 +50,4 @@ dotnet ...adpc.dll execute --artifact build/fnol.zip --claim usecases/meridian-p
 - **Note:** `func-adp-v1-fnol` (Bicep Functions app) is unused — replaced by `ca-tracesapi` on Container Apps because the sub lacks `roleAssignments/write` for MI-storage Functions. See memory `project_uc4_agentic_decision_platform`.
 
 ## Not in MVP (state honestly)
-Estimatics / payments / subrogation are simulated; full settlement/recovery lifecycle + the multimodal evidence/consent layer (built in the IMAGINE WS2 track) are roadmap. The platform is carrier-agnostic and reskinnable.
+Estimatics / payments / subrogation are simulated; full settlement/recovery lifecycle beyond the current stages is roadmap. The platform is carrier-agnostic and reskinnable. (Note: multimodal evidence intake — damage photos + document upload with GPT-4o vision — has since shipped and is live; see `SPEC.md` for current status.)
