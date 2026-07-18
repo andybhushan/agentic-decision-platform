@@ -37,3 +37,8 @@ build/
 out/
 **/out/
 *.tsbuildinfo
+
+# --- private prep material, never share ---
+docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md
+docs/TECHNICAL-WALKTHROUGH-SCRIPT.md
+docs/ADP-W3-BLOG-POST.html

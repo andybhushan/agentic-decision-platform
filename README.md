@@ -18,7 +18,6 @@ Not a chatbot. Not a single-use-case AI pilot. The core bet: **a use case is a p
 - **[`SPEC.md`](SPEC.md)** — current scope, pinned stack, honest stubbed-vs-real list, success criteria.
 - **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — platform / use-case / integration views.
 - **[`docs/CTO-DEMO-PLAYBOOK.md`](docs/CTO-DEMO-PLAYBOOK.md)** — the live-demo script and thesis.
-- **[`docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md`](docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md)** and **[`docs/TECHNICAL-WALKTHROUGH-SCRIPT.md`](docs/TECHNICAL-WALKTHROUGH-SCRIPT.md)** — infrastructure-focused walkthrough of Fabric, Foundry, the IQ federation, and the MCP tools, with real file references throughout.
 - **[`docs/MIGRATION.md`](docs/MIGRATION.md)** — recreate-from-zero runbook (every Azure resource, every config).
 
 ## What's actually built
