@@ -1,101 +1,76 @@
-# adp-v1 — Spec (v0)
+# ADP — Spec
 
-**Date:** 2026-05-26 (revised — drops PDF/IBM-IQ anchoring; full stack re-optimised)
-**Author:** Anand Bhushan (Anand-track, local-only)
-**Status:** v0 draft, pre-code
+**Date:** 2026-07-18 (current state — supersedes the 2026-05-26 pre-code v0 draft this file originally held)
+**Author:** Anand Bhushan, with Vibhaanshu and Pinaki
+**Status:** Live. Both use cases fully functional. All data synthetic.
 
 ## Thesis (one sentence)
 
-A robust, modern, Azure-native agentic application platform — Microsoft-first where Microsoft has genuinely best-in-class tools (IQ series, Foundry, Agent 365, Aspire, Entra Agent ID, Defender for AI, Purview), IBM / Red Hat / HashiCorp where they are genuinely best (Terraform, Ansible, Confluent), every choice defensible on technical merit. The Meridian P&C Auto Claims use case is the first test package, not the platform's purpose.
+A robust, modern, Azure-native agentic decision platform — the use case is a package the platform runs, not a product the platform becomes. The engine ships with zero domain logic; P&C Auto Claims (Meridian Mutual) and Consumer Loan Origination (Northwind Bank) are the first two test packages, not the platform's purpose.
 
 ## Why this exists
 
-The fastest way to know whether an architecture survives contact with code is to build it. v0 stands the platform up end-to-end with one real use case running on it. ADRs are written *before* code, not as backfill — every substantive decision is reasoned out in [`docs/adr/`](docs/adr/) with options weighed and trade-offs named. Won't be pushed to `github.com/IBM-Project-Adp`. Local-only until it runs end-to-end.
+Regulated industries run high-volume operational decisions — claim triage, damage estimation, fraud screening, settlement, loan origination — on manual process, brittle rule engines, or single-purpose AI pilots with no governance story. ADP proves a different model: one governed engine, grounded in the organization's own data, that can run *any* regulated decision. The fastest way to know whether an architecture survives contact with reality is to build it end to end on more than one industry — that's what this repo does.
 
-## Reference inputs
+## What's built (current, not planned)
 
-- **Ten-layer reference architecture** — [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) View 1.
-- **Six pinned tech decisions** — [`docs/adr/`](docs/adr/) (ADR-0001 boundary, ADR-0002 package format, ADR-0003 compile pipeline, ADR-0004 state/bus/trace, ADR-0005 Bicep+Terraform, ADR-0006 console).
-- **Four new pinned tech decisions** — ADR-0007 agent runtime, ADR-0008 identity/governance/security, ADR-0009 context layer, ADR-0010 compute/edge hosting.
-- **Test use case** — Meridian P&C Auto Claims, FNOL Handler DW only, single happy path on synthetic data ([`usecases/meridian-pnc-auto-claims/`](usecases/meridian-pnc-auto-claims/)).
-
-## MVP scope (what v0 must do)
-
-1. **Accept** an agent package (typed C# DSL → JSON, validated against `agent-package.v1.schema.json`) declaring the FNOL Handler DW — 4 agents, 9 skills, 5 tools.
-2. **Compile** the package through 4 stages (validate · semantic-check · plan · sign) into Foundry agent definitions + Durable Function code + MCP tool registrations.
-3. **Execute** one P&C Auto claim end-to-end on synthetic Meridian-shaped data.
-4. **Emit** a decision journal tagged GROUNDED/DERIVED into Event Hubs → Fabric RTI (live) → Fabric Bronze (cold).
-5. **Render** a generic operator console showing trace + confidences + one HITL hook.
-
-**Out of v0:** Damage/Fraud/Settlement DWs, multi-claim concurrency, Duck Creek/Guidewire integration, real Meridian data, Engineering/Operations IQ, Agent 365 lifecycle UI, Sentinel SIEM, Foundry Local edge agents, Confluent streaming.
-
-## Pinned stack (every layer; see ADRs for *why*)
-
-| L | Layer | Choice | ADR |
+| Use case | Industry | Digital workers | Lifecycle |
 |---|---|---|---|
-| L1 | Identity & Governance | Entra ID + Entra Agent ID + Defender for AI + Purview; Sentinel deferred | 0008 |
-| L2 | Experience | Vite + React 19 + Fluent UI v9 (Operator Console); Teams + M365 deferred | 0006 |
-| L3 | Agent Runtime | Microsoft Agent Framework + Foundry Agent Service + Agent 365 + MCP + A2A; Foundry Local door-open for v1 | 0007 |
-| L4 | Orchestration | .NET Aspire (dev-time) + Azure Durable Functions (inter-DW); Logic Apps deferred | 0003 |
-| L5 | Context Layer | Fabric IQ + Foundry IQ + Work IQ (stub) + AI Search; Cosmos Gremlin deferred to v1 | 0009 |
-| L6 | State & Events | Cosmos DB (state) + Event Hubs Kafka API (decision bus) + Event Grid (fan-out) + SignalR (D9 stretch) | 0004 |
-| L7 | Data Substrate | Fabric Bronze + Silver + Gold + RTI (KQL eventhouse); Databricks deferred; Azure OpenAI gpt-4o reused | 0004 + 0009 |
-| L8 | Compute & Hosting | Container Apps (Aspire services) + Functions (Durable) + Static Web Apps (console); AKS deferred; Foundry Local v1+ | 0010 |
-| L9 | IaC & Automation | Bicep (resources) + Terraform (D9 ring module — HashiCorp/IBM); Ansible deferred | 0005 |
-| L10 | Optional Integration | Confluent Kafka / HashiCorp Vault / ARO / watsonx.data — all door-open, none in v0 | — |
-| — | Package authoring | Typed C# DSL → JSON Schema-validated artifact | 0002 |
-| — | Use case | Meridian P&C Auto Claims (FNOL Handler DW); first test package | — |
+| `p-and-c-auto-claims` (Meridian Mutual) | Insurance | FNOL Handler, Damage Handler, Fraud Handler, Settlement Handler (4 agents each) | Intake & Routing → Damage & Estimation → Fraud Screen → Settlement & Payment |
+| `consumer-loan-origination` (Northwind Bank) | Banking | Consumer Loan Handler (3 agents) | Origination Decision |
 
-**Explicitly NOT in v0:** Neo (Neudesic framework), LangChain, LangGraph, watsonx, Bob, Orchestrate, Copilot Studio drag-drop. (Door open for LangGraph in v1 if the Fraud DW's cyclic-graph need beats Agent Framework's expressiveness — see ADR-0007.)
+Both run on the same runtime, same immutable decision journal (Cosmos DB), same governance surfaces, zero code forked between them. Full operator console, member portal, and borrower portal are live and functional (see root `README.md`).
 
-## Success criteria (measurable, binary)
+## Pinned stack (current)
 
-- [ ] One synthetic claim flows FNOL → triage decision in ≤ 60s end-to-end.
-- [ ] Package authoring: C# fluent API produces JSON that validates against `agent-package.v1.schema.json`.
-- [ ] Compile pipeline: 4 stages run from CLI; outputs registered (stub) in Agent 365.
-- [ ] Decision journal: per-event GROUNDED/DERIVED tag, lands in Event Hubs → RTI within 5s, Bronze within 24h, with `decisionId`-based idempotency.
-- [ ] Operator console renders the trace from a live source (REST on D8, SignalR on D9 if stretch lands).
-- [ ] Reproducible: `azd up` + `dotnet run` brings the whole thing up in ≤ 10 minutes on a fresh checkout.
-- [ ] Boundary check (`node scripts/check-boundary.mjs`) passes on every commit.
+| Layer | Choice | Status |
+|---|---|---|
+| Identity & Governance | Entra ID + Entra Agent ID; Purview/Sentinel/Defender for AI referenced in the governance model | Entra Agent ID declared per package; broader governance surfaces documented, not all wired live |
+| Experience | React 19 + Carbon v11 + Fluent 2, Azure Static Web Apps | **Live** — console, member portal, borrower portal, docs |
+| Agent Runtime | Microsoft Agent Framework 1.13 (active), Azure AI Foundry Agent Service (live, switchable per run), direct Azure OpenAI (legacy fallback) — one shared contract, `IAgentAdapter` + `PromptContract` | **Live**, all three backends working |
+| Orchestration | .NET 10 isolated Azure Functions + Durable Functions, hosted on Azure Container Apps | **Live** |
+| Context Layer | Fabric IQ (Lakehouse SQL + published Data Agent) + Foundry IQ (Azure AI Search) + Work IQ | **Live** except Work IQ, which is synthetic-but-deterministic pending Microsoft Graph tenant admin consent |
+| State & Events | Cosmos DB (immutable decision journal + runtime intake) + Event Hubs + Azure SignalR (live console tail) | **Live** |
+| Data Substrate | Microsoft Fabric — Lakehouse (24 gold tables), Ontology, GraphModel, published Data Agent; Azure OpenAI GPT-4o for reasoning + vision | **Live** |
+| Package model | `agent-package.v1.schema.json`, compiled and signed by `adpc` | **Live** |
 
-## Stubbed vs real (honest list)
+## Honest stubbed vs real
 
-| Element | v0 state |
+| Element | State |
 |---|---|
-| Agent package format | Real (`platform/schemas/agent-package.v1.schema.json`). Designed by us; not waiting on external dependencies |
-| Meridian data | Synthetic ~1K corpus, Duck-Creek-shaped (public docs) |
-| Fabric IQ entity graph | Real Fabric workspace + minimal P&C ontology (~10 entities) |
-| Foundry IQ | Real Foundry knowledge base, 5–10 seed policy/regulatory docs, AI Search backing |
-| Work IQ | Stubbed — returns empty collaboration context |
-| Cosmos Gremlin entity graph | Deferred to v1 (Fabric SQL queries suffice at v0 scale) |
-| Foundry Local edge agents | Deferred to v1 (door open via package schema's `deploymentTarget`) |
-| Fraud / Damage / Settlement DWs | Out of v0 |
-| Duck Creek / Guidewire integration | Out of v0 (synthetic only) |
-| Agent 365 registry | Stub (writes to local JSON); real Agent 365 hook on D9+ |
-| Sentinel SIEM | Deferred to v1 (Log Analytics in v0) |
-| Confluent / HashiCorp Vault / ARO / watsonx.data | All door-open, none in v0 |
+| Agent package format | Real — `platform/schemas/agent-package.v1.schema.json` |
+| Corpus data | Synthetic (~1,000 claims + 30 borrowers), Duck-Creek-shaped patterns |
+| Fabric Lakehouse + Ontology + GraphModel + Data Agent | Real, published, live-queried |
+| Foundry IQ (Azure AI Search) | Real, vector + semantic index over policy/regulatory documents |
+| Work IQ | Synthetic-but-deterministic — real Microsoft Graph integration is built and ready, pending tenant admin consent |
+| Agent runtime (3 backends) | All real — Agent Framework active, Foundry Agent Service live and switchable, legacy Azure OpenAI as fallback |
+| `policy-store` / `vehicle-lookup` tools | Deliberate stubs — the exact seam where a real Guidewire or Duck Creek connector plugs in; the platform doesn't change when that happens, only the tool implementation does |
+| `claim-store` / `decision-journal` tools | Real, backed by Cosmos DB |
+| Evidence vision (GPT-4o) | Real — reads damage photos and documents at intake |
+| Production hardening (private networking, Key Vault everywhere, Entra on the API) | Not yet done — demo posture is deliberately open (cosmetic access key), production-shaped where it matters (immutable journal, managed identity, signed packages) |
+| M365 Copilot surface for the operator copilot | Positioned, not built — the `/api/copilot` contract is the natural declarative-agent action once tenant licensing/consent land |
 
-## Build cadence (Anand-track, ~10 working days)
+## Success criteria — status
 
-- **D1–D2 [DONE]:** Repo skeleton, schemas, synthetic corpus, console scaffold, **6 ADRs reset** (this turn), 4 new ADRs added.
-- **D3–D5:** .NET Aspire solution, C# package model + fluent DSL, `adpc` CLI (4 compile stages), Bicep modules for the 11 v0 resources, 2 of 4 agents registered with Foundry.
-- **D6–D7:** Remaining 2 agents, Durable Function FNOL orchestrator, MCP servers (5), Decision-Ingest service to Event Hubs + RTI.
-- **D8–D9:** REST endpoint for trace fetch, console fetches live, Purview labels on Bronze, D9 Terraform ring module, Defender for AI enabled on Foundry resource.
-- **D10:** End-to-end demo recording + retro on ADRs (do any need superseding?).
-
-Per [`feedback_adp_portal_local_first`]: build + verify locally first. No deploy to shared Azure subscription until full run-through works against the Aspire dashboard.
+- [x] Full claim lifecycle (4 stages) runs end to end on live Azure infrastructure.
+- [x] Package authoring produces artifacts that validate against `agent-package.v1.schema.json`, compiled and signed by `adpc`.
+- [x] Decision journal: every step lands in Cosmos DB immutably, fans out to Event Hubs + SignalR for live console tail.
+- [x] Operator console renders live traces via REST + SignalR, not a static fixture.
+- [x] A second, unrelated industry (banking) runs on the identical platform with zero platform code changes.
+- [x] Runtime is portable across three agent backends, switchable per run.
+- [x] Decision Record (print-ready regulator artifact) reconstructs entirely from the journal.
+- [ ] Production hardening (private networking, Entra on the API, Key Vault everywhere) — not yet done, documented as the known gap.
+- [ ] Real Work IQ via Microsoft Graph — pending tenant admin consent.
+- [ ] Real core-system connectors (Guidewire/Duck Creek) at the `policy-store`/`vehicle-lookup` seam — stubbed by design until a real integration target exists.
 
 ## Risks (named, not hidden)
 
-1. **Stack breadth.** Ten layers, ten ADRs. Real coverage cost. Mitigation: ruthless v0 scope on each layer; door-opens documented for v1.
-2. **Foundry rough edges.** Agent 365 GA was 2026-05-01; Foundry Agent Service is brand new. Mitigation: isolate behind a thin adapter (ADR-0007).
-3. **RTI learning curve.** KQL is unfamiliar muscle. Mitigation: canned query helpers in `platform/src/Tools/RtiQueryHelpers/`; basic KQL skill investment.
-4. **Synthetic data oversimplifies.** Fine for v0 demo; must be replaced before any external showcase.
-5. **Cost.** 11+ Azure resources is real. Mitigation: scale-to-zero for Container Apps; cost dashboard alerts when daily idle > $50.
-6. **Lock-in.** Microsoft-first at L1/L3/L5/L7 is deep lock-in. Acceptable because the mission is Azure-only by design. Lever for portability: the agent package format is vendor-neutral (ADR-0002), so the runtime is replaceable in principle.
+1. **Demo-scale data.** Fine for proving the architecture; a real client's data volume and messiness haven't been tested against it yet.
+2. **Work IQ is synthetic.** Honest gap, not a hidden one — blocked on tenant admin consent for Graph, not a platform limitation.
+3. **No real core-system connector yet.** The seam is designed and stubbed cleanly; a production engagement needs a real Guidewire/Duck Creek/policy-admin integration built at that point.
+4. **Production hardening is not yet done.** Immutable journal, managed identity, and signed packages are production-shaped; network isolation, full Key Vault usage, and API-level Entra auth are not yet in place. There is a written migration runbook (`docs/MIGRATION.md`) that covers what a hardened deployment requires.
+5. **Cost.** Estimated ~USD 3-5/day idle on current serverless SKUs at demo scale.
 
-## What I share, and when
+## Sharing status (current, replaces the earlier "not announced" note)
 
-- v0 is not announced. No status email, no Slack, no formal recap (per [`feedback_adp_no_formal_recaps`]).
-- When v0 runs end-to-end → 1:1 demo to Satish first, before team.
-- ADRs are front-loaded reasoning, not backfilled justification. If the build deviates, the deviating ADR gets superseded explicitly.
+This repository is shared with the Project IMAGINE working team (Chad Thomas, Richard Hogan, Josh Scriven, Miha Kralj) for review, alongside a live, explorable demo. See root `README.md` for links. Full detail on the platform, the two use cases, and the API surface is in `apps/console/public/docs/ADP-SOLUTION.md`.

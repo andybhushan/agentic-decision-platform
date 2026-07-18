@@ -1,92 +1,86 @@
-# adp-v1
+# Agentic Decision Platform (ADP)
 
-Anand-track local proving ground for Project ADP. Built to test the platform thesis in code, parallel to the IBM-Project-Adp team.
+**A governed decision platform: one engine that runs any regulated operational decision, grounded in an organization's own data, gated by confidence, and journaled immutably for the regulator.**
 
-**Local-only.** Not pushed to `github.com/IBM-Project-Adp`. Per memory rules: see `feedback_adp_no_github_pushes` and `feedback_adp_folder_canonical`.
+Not a chatbot. Not a single-use-case AI pilot. The core bet: **a use case is a package the platform runs, not a product the platform becomes** — the engine ships with zero domain logic; a use case arrives as a signed package (digital workers, agents, skills, tools, HITL policy, data binding) and the same runtime, console, and journal execute it.
+
+**Status:** live, working, both use cases fully functional. All data synthetic.
+
+- **Live console:** https://lemon-water-065e3e40f.7.azurestaticapps.net/?key=meridian-adp-2026
+- **Member portal (insurance):** `/member` · **Borrower portal (banking):** `/bank`
+- **Backend API:** `https://ca-tracesapi.thankfulriver-6516e81f.eastus2.azurecontainerapps.io`
+
+---
 
 ## Read this first
 
-- [SPEC.md](SPEC.md) — one-page thesis, scope, pinned stack, success criteria, honest stub list.
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — three views: platform, Meridian use case, integration.
-- [docs/adr/](docs/adr/) — architecture decision records (one per substantive choice).
+- **[`docs/ADP-SOLUTION.md`](apps/console/public/docs/ADP-SOLUTION.md)** (also rendered live on the console's `/docs` page) — the full solution document: what/why/how, architecture, tech stack, API surface, governance, roadmap. Start here for the complete picture.
+- **[`SPEC.md`](SPEC.md)** — current scope, pinned stack, honest stubbed-vs-real list, success criteria.
+- **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — platform / use-case / integration views.
+- **[`docs/CTO-DEMO-PLAYBOOK.md`](docs/CTO-DEMO-PLAYBOOK.md)** — the live-demo script and thesis.
+- **[`docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md`](docs/TECHNICAL-WALKTHROUGH-CHAD-RICHARD.md)** and **[`docs/TECHNICAL-WALKTHROUGH-SCRIPT.md`](docs/TECHNICAL-WALKTHROUGH-SCRIPT.md)** — infrastructure-focused walkthrough of Fabric, Foundry, the IQ federation, and the MCP tools, with real file references throughout.
+- **[`docs/MIGRATION.md`](docs/MIGRATION.md)** — recreate-from-zero runbook (every Azure resource, every config).
 
-## Layout
+## What's actually built
+
+| Use case | Industry | Digital workers | Lifecycle |
+|---|---|---|---|
+| `p-and-c-auto-claims` (Meridian Mutual) | Insurance | FNOL Handler, Damage Handler, Fraud Handler, Settlement Handler | Intake & Routing → Damage & Estimation → Fraud Screen → Settlement & Payment |
+| `consumer-loan-origination` (Northwind Bank) | Banking | Consumer Loan Handler | Origination Decision |
+
+Both run on the same runtime, same immutable Cosmos DB decision journal, same governance surfaces — zero code forked between them.
+
+**Five architectural pillars:** grounded (every step cites its source with a relevance score, via a federation of Foundry IQ, Fabric IQ, a published Fabric Data Agent, and Work IQ), governed (confidence-gated human-in-the-loop), explainable (immutable journal reconstructs into a print-ready Decision Record), multimodal (GPT-4o vision reads evidence at intake), and portable (the agent runtime is adapter-based — Microsoft Agent Framework, Azure AI Foundry Agent Service, or direct Azure OpenAI, switchable per run behind one shared contract).
+
+## Repo layout
 
 ```
-adp-v1/
-├── SPEC.md
-├── README.md
-├── platform/                              # use-case agnostic — the engine
-│   ├── README.md
-│   ├── schemas/ea-package.v0.schema.json  # the contract
-│   ├── console/                           # generic trace renderer (Vite + Fluent UI v9)
-│   └── (D3+) src/, infra/                 # Aspire host, compiler, orchestrator, agents, Bicep
+agentic-decision-platform/
+├── apps/
+│   └── console/                 React 19 + TypeScript + Vite + Carbon v11 — the platform console,
+│                                 member portal (/member), borrower portal (/bank), docs (/docs)
+├── platform/
+│   ├── src/
+│   │   ├── TracesApi/            .NET 10 isolated Azure Functions + Durable Functions — the whole backend API
+│   │   │   └── Functions/        one file per REST endpoint (RunFnol, ResolveHitl, GetTrace, GetAgents, ...)
+│   │   ├── Agents/                the adapter pattern — IAgentAdapter, PromptContract, and the 3 backends
+│   │   │   (AgentFrameworkAdapter, FoundryAdapter, LegacyOpenAIAdapter) + AdapterRegistry (the runtime switch)
+│   │   ├── ContextLayer/          the IQ federation — ContextRouter + one IContextSource per source
+│   │   │   (Foundry IQ, Fabric IQ x2 tiers, Work IQ) + EvidenceStore/EvidenceVision (GPT-4o vision)
+│   │   ├── Orchestration/         PlanExecutor, StepRunner, HitlGateEvaluator — the step-execution loop
+│   │   ├── DecisionIngest/        journal read/write, runtime intake
+│   │   ├── PackageModel/          the agent-package schema + serializer
+│   │   ├── PackageCompiler/       `adpc` — compiles + signs a package into a deployable artifact
+│   │   └── ToolRuntime/           IMcpTool contract + the tool registry
+│   └── schemas/
+│       └── agent-package.v1.schema.json   the package contract
 ├── usecases/
-│   └── meridian-pnc-auto-claims/             # use-case specific — never imported from platform/
-│       ├── README.md
-│       ├── packages/fnol-handler.json     # the EA package
-│       ├── data/                          # synthetic claim corpus + generator
-│       └── (D3+) skills/, ontology/
-├── scripts/
-│   └── check-boundary.mjs                 # CI rule: platform/ must not import usecases/
-└── docs/
-    ├── ARCHITECTURE.md
-    └── adr/
-        ├── 0001-platform-usecase-boundary.md
-        ├── 0002-ea-package-format.md            (agent package format)
-        ├── 0003-compile-pipeline-shape.md
-        ├── 0004-state-decision-bus-trace-stores.md
-        ├── 0005-bicep-vs-terraform.md
-        ├── 0006-console-framework-and-state-contract.md
-        ├── 0007-agent-runtime-stack.md
-        ├── 0008-identity-governance-security.md
-        ├── 0009-context-layer.md
-        └── 0010-compute-and-edge-hosting.md
+│   ├── meridian-pnc-auto-claims/    packages, synthetic data corpus + Fabric gold-layer generator, ontology
+│   └── banking-loan-origination/    same shape, banking domain
+├── scripts/                      demo warm-up, Fabric sync/write-back, deploy helpers
+└── docs/                         solution doc, architecture, ADRs, demo playbooks, walkthrough scripts, migration runbook
 ```
 
-## Source materials (this folder's reading list)
-
-- `../Adp_Platform_DesignSpec.pdf` — Satish's IBM IQ spec (DSL, Digital Worker, Context Fabric, EA-layer mapping).
-- `../KickoffNotes_2026-05-13.md` — Miha's operating direction (ICA replacement, MS-native, Aspire, no vibe-coding).
-- `../repos/architecture/` — Chad's 7-layer reference architecture, ADRs 001–005, P&C Auto ontology v2.4.0.
-- `../repos/mvp-demo/` — Richard's high-fidelity claims wireframe (React + Carbon).
-- `../../Data Transformation/ICA_2.0_Deep_Analysis.md` — ICA 2.0 4-pillar shape we mirror MS-native.
-- `../adp-portal/api/data/PROJECT-ADP.md` — portal master doc (workstreams, 31-spec catalogue).
-- `../../DEPLOYMENT_REFERENCE.md` — Anand's deployment patterns (SWA, Databricks, Fabric, gpt-4o reuse).
-
-## Running the console (D1–D2 demo)
+## Running the console locally
 
 ```powershell
-cd "C:\Users\AnandBhushan\Desktop\MS DT\Project ADP\adp-v1\platform\console"
+cd apps/console
 npm install
-npm run dev    # http://localhost:5174
+npm run dev    # http://localhost:5173, points at the live backend by default
 ```
 
-The console renders a generic Trace. Demo data is at `platform/console/src/demo-trace.json` (use-case-shaped but the component knows nothing about insurance — see [platform/README.md](platform/README.md) invariants).
+## Technology
+
+.NET 10 · Microsoft Agent Framework 1.13 · Azure AI Foundry Agent Service · Azure OpenAI (GPT-4o) · Microsoft Fabric (Lakehouse, Ontology, GraphModel, Data Agent) · Azure AI Search · Cosmos DB · Event Hubs · Azure SignalR · Azure Container Apps · React 19 + Carbon v11 + Fluent 2.
 
 ## Boundary check
 
 ```powershell
-cd "C:\Users\AnandBhushan\Desktop\MS DT\Project ADP\adp-v1"
 node scripts/check-boundary.mjs
 ```
 
-Run before any commit that touches `platform/`. CI will run it on PRs once the GitHub workflow lands (D5+).
+`platform/` must never import from `usecases/` — this is what keeps the engine genuinely use-case-agnostic. Run before any commit that touches `platform/`.
 
-## Stack (pinned by ADR-001 through ADR-006)
+---
 
-- Runtime: .NET 10 + Microsoft Aspire
-- Agents: Microsoft Agent Framework + Foundry Agent Service
-- Orchestration: Azure Durable Functions
-- Context: FabricIQ + FoundryIQ + Cosmos DB + Event Grid
-- Data: Fabric Bronze/Silver/Gold
-- LLM: Azure OpenAI gpt-4o (reuse `dt-navigator-openai`)
-- IaC: Bicep
-- Console: Vite + React + Fluent UI v9
-
-See ADRs for the *why* of each.
-
-## Next steps (per SPEC.md cadence)
-
-- **D3–D5:** .NET Aspire scaffolding, Claim Intake + Coverage Verify agents on Foundry, first Durable Function orchestration.
-- **Prerequisite:** `winget install Microsoft.DotNet.SDK.10` + `dotnet workload install aspire` + `az bicep install`.
+*IBM Consulting — Data Transformation on Microsoft Cloud. Demonstration asset, all data synthetic, no client data. Carrier-agnostic by design.*
